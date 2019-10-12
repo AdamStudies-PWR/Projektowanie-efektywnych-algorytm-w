@@ -2,11 +2,15 @@
 //
 
 #include "pch.h"
-#include <iostream>
+#include "Interface.h"
 
+// Main umieszczono w sosobnym pliku w celu u³atwienia odnalezienia punktu startowego programu
 int main()
 {
-    std::cout << "Hello World!\n"; 
+	setlocale(LC_ALL, "pl");
+	Interface usr;
+	usr.main_menu();
+	return 0;
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
