@@ -16,8 +16,8 @@ private:
 public:
 	//Metody
 	string load(string filename);
-	void randomify(int size);
-	void manual(int size);
+	void randomify(int size, bool mirror);
+	void manual(int size, bool mirror);
 	void display();
 };
 #endif

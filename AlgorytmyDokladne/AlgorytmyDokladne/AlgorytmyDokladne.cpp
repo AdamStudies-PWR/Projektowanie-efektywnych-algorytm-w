@@ -7,6 +7,7 @@
 // Main umieszczono w sosobnym pliku w celu u³atwienia odnalezienia punktu startowego programu
 int main()
 {
+	srand(time(nullptr));
 	setlocale(LC_ALL, "pl");
 	Interface usr;
 	usr.main_menu();

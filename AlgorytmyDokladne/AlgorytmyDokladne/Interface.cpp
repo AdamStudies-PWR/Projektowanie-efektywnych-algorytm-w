@@ -8,6 +8,7 @@ void Interface::main_menu()
 {
 	char choice;
 	string input;
+	int num;
 	do
 	{
 		system("cls");
@@ -30,6 +31,32 @@ void Interface::main_menu()
 			nazwa = voy.load(input);
 			if (nazwa == "error") exists = false;
 			else exists = true;
+		} break;
+		case '2':
+		{
+			system("cls");
+			cout << "WprowadŸ rozmiar problemu: ";
+			cin >> num;
+			system("cls");
+			cout << "Czy macierz [T]/[N]";
+			choice = _getche();
+			if(choice == 't' || choice == 'T') voy.randomify(num, true);
+			else voy.randomify(num, false);
+			exists = true;
+			nazwa = "wygenerowane losowo";
+		} break;
+		case '3':
+		{
+			system("cls");
+			cout << "WprowadŸ rozmiar problemu: ";
+			cin >> num;
+			system("cls");
+			cout << "Czy macierz [T]/[N]";
+			choice = _getche();
+			if (choice == 't' || choice == 'T') voy.manual(num, true);
+			else voy.manual(num, false);
+			exists = true;
+			nazwa = "wygenerowane losowo";
 		} break;
 		case '4':
 		{
