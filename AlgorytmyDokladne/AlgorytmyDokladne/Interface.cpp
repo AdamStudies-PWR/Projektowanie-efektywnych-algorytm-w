@@ -38,7 +38,7 @@ void Interface::main_menu()
 			cout << "WprowadŸ rozmiar problemu: ";
 			cin >> num;
 			system("cls");
-			cout << "Czy macierz [T]/[N]";
+			cout << "Czy macierz parzysta [T]/[N]\n";
 			choice = _getche();
 			if(choice == 't' || choice == 'T') voy.randomify(num, true);
 			else voy.randomify(num, false);
@@ -51,7 +51,7 @@ void Interface::main_menu()
 			cout << "WprowadŸ rozmiar problemu: ";
 			cin >> num;
 			system("cls");
-			cout << "Czy macierz [T]/[N]";
+			cout << "Czy macierz parzysta [T]/[N]\n";
 			choice = _getche();
 			if (choice == 't' || choice == 'T') voy.manual(num, true);
 			else voy.manual(num, false);
