@@ -2,6 +2,12 @@
 #include "pch.h"
 #include "Data.h"
 
+//Destruktor
+Data::~Data()
+{
+	if (exists) delete[] tab;
+}
+
 //Metoda wczytuj¹ca dane z pliku
 string Data::load(string filename)
 {
@@ -36,7 +42,8 @@ string Data::load(string filename)
 void Data::display()
 {
 	system("cls");
-	cout << "\n Rozmiar: " << ext << endl;
+	cout << "\n Rozmiar: " << ext;
+	cout << "\n D³ugoœæ œcie¿ki: " << counttarget() << endl;
 	for (int i = 0; i < ext; i++)
 	{
 		cout << " ";
@@ -129,4 +136,13 @@ void Data::manual(int size, bool mirror)
 			}
 		}
 	}
+}
+
+//Metoda licz¹ca d³ugoœæ œciezki komiwoja¿era
+int Data::counttarget()
+{
+	int value = 0;
+	for (int i = 1; i < ext; i++) value = value + tab[i - 1][i];
+	value = value + tab[ext - 1][0];
+	return value;
 }

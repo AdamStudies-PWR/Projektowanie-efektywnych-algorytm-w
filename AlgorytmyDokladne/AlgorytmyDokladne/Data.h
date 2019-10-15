@@ -15,9 +15,11 @@ private:
 	const static int limit = 1000;
 public:
 	//Metody
+	~Data();
 	string load(string filename);
 	void randomify(int size, bool mirror);
 	void manual(int size, bool mirror);
 	void display();
+	int counttarget();
 };
 #endif

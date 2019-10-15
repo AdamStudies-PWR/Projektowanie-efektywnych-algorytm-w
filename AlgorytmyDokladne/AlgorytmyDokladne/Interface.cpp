@@ -71,6 +71,7 @@ void Interface::main_menu()
 		case '0':
 		{
 			system("cls");
+			voy.~Data();
 			cout << "Koniec" << endl;
 			_getch();
 		} break;
