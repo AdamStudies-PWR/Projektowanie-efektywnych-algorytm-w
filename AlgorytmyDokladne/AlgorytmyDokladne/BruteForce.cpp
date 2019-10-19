@@ -13,21 +13,25 @@ BruteForce::~BruteForce()
 void BruteForce::rectree(int line, vector<bool> visited, int  distance, int layer)
 {
 	visited[line] = true;
-	if (distance > max) return;
-	if (layer != ext)
+	if (distance > max && max != -1) return;
+	if (layer != (ext-1))
 	{
 		for (int i = 1; i < ext; i++)
 		{
-			if(!visited[i]) rectree((i), visited, (distance + tab[line][i]), layer++);
+			if(!visited[i]) rectree(i, visited, (distance + tab[line][i]), (layer + 1));
 		}
 	}
-	else if ((distance + tab[line][0]) < max || max == -1) max = distance + tab[line][0];
+	else if ((distance + tab[line][0]) < max || max == -1)
+	{
+		max = distance + tab[line][0];
+	}
 	return;
 }
 
 //Funkcja przeszukuj¹ca drzewo w poszukiwaniu najlepszych rozwi¹zañ
 void BruteForce::searchtree()
 {
+	max = -1;
 	vector<bool> visited(ext);
 	visited[0] = true;
 	for (int i = 1; i < ext; i++) visited[i] = false;

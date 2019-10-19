@@ -9,7 +9,7 @@ class BruteForce : public Data
 {
 private:
 	//zmienne
-	int max = -1;
+	int max;
 public:
 	//metody
 	~BruteForce();
