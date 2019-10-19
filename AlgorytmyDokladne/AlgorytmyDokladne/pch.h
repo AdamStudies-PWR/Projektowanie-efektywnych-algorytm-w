@@ -14,5 +14,6 @@
 #include <string>
 #include <fstream>
 #include <ctime>
+#include <vector>
 
 #endif //PCH_H

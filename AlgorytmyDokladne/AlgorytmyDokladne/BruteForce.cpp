@@ -9,48 +9,33 @@ BruteForce::~BruteForce()
 	if (exists) delete[] tab;
 }
 
-int BruteForce::findshort(int line)
+//Rekurencyjne przeszukiwanie drzewa
+void BruteForce::rectree(int line, vector<bool> visited, int  distance, int layer)
 {
-	int searched = 0;
-	int value;
-	for (int i = 1; i < ext; i++)
+	visited[line] = true;
+	if (distance > max) return;
+	if (layer != ext)
 	{
-		if (!visited[i])
+		for (int i = 1; i < ext; i++)
 		{
-			value = tab[line][i];
-			searched = i;
-			break;
+			if(!visited[i]) rectree((i), visited, (distance + tab[line][i]), layer++);
 		}
 	}
-	for (int i = 1; i < ext; i++)
-	{
-		if (tab[line][i] < value)
-		{
-			if (!visited[i] && tab[line][i] != -1)
-			{
-				value = tab[line][i];
-				searched = i;
-			}
-		}
-	}
-	visited[searched] = true;
-	return searched;
+	else if ((distance + tab[line][0]) < max || max == -1) max = distance + tab[line][0];
+	return;
 }
 
+//Funkcja przeszukuj¹ca drzewo w poszukiwaniu najlepszych rozwi¹zañ
 void BruteForce::searchtree()
 {
-	int next = 0, prev;
-	visited = new bool[ext];
+	vector<bool> visited(ext);
 	visited[0] = true;
 	for (int i = 1; i < ext; i++) visited[i] = false;
-	distance = 0;
 	for (int i = 0; i < (ext - 1); i++)
 	{
-		prev = next;
-		next = findshort(next);
-		distance = distance + tab[prev][next];
-
-		cout << "elo";
+		rectree((i + 1), visited, tab[0][i + 1], 1);
 	}
-	distance = distance + tab[next][0];
 }
+
+//Gettery i Settery
+int BruteForce::getDistance() { return max; }

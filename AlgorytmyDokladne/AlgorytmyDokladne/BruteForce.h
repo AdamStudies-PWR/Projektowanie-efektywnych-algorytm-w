@@ -9,12 +9,14 @@ class BruteForce : public Data
 {
 private:
 	//zmienne
-	bool *visited;
+	int max = -1;
 public:
 	//metody
 	~BruteForce();
 	void searchtree();
-	int findshort(int line);
+	void rectree(int line, vector<bool> visted, int distance, int layer);
+	//Gettery i settery
+	int getDistance();
 };
 
 #endif

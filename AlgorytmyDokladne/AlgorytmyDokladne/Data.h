@@ -14,7 +14,6 @@ protected:
 	int **tab;
 	int ext;
 	const static int limit = 1000;
-	int distance;
 public:
 	//Metody
 	string load(string filename);
@@ -22,8 +21,6 @@ public:
 	void manual(int size, bool mirror);
 	void display();
 	int counttarget();
-	//Gettery i settery
-	int getDistance();
 };
 
 #endif

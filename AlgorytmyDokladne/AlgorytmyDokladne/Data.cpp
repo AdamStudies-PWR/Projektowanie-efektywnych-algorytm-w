@@ -141,6 +141,3 @@ int Data::counttarget()
 	value = value + tab[ext - 1][0];
 	return value;
 }
-
-//Gettery i Settery
-int Data::getDistance() { return distance; }
