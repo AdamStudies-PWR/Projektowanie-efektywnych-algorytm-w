@@ -2,7 +2,7 @@
 #ifndef Interface_hpp
 #define Interface_hpp
 
-#include "Data.h"
+#include "BruteForce.h"
 
 using namespace std;
 
@@ -12,11 +12,12 @@ class Interface
 private:
 	//Atrybuty
 	string nazwa = "brak";
-	Data voy;
+	BruteForce voy;
 	bool exists = false;
 public:
 	//Metidy
 	void main_menu();
+	void brute_force();
 private:
 
 };

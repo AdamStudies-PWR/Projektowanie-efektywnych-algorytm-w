@@ -2,11 +2,6 @@
 #include "pch.h"
 #include "Data.h"
 
-//Destruktor
-Data::~Data()
-{
-	if (exists) delete[] tab;
-}
 
 //Metoda wczytuj¹ca dane z pliku
 string Data::load(string filename)
@@ -146,3 +141,6 @@ int Data::counttarget()
 	value = value + tab[ext - 1][0];
 	return value;
 }
+
+//Gettery i Settery
+int Data::getDistance() { return distance; }

@@ -18,6 +18,7 @@ void Interface::main_menu()
 		cout << " [2] Generuj losowo" << endl;
 		cout << " [3] WprowadŸ rêcznie" << endl;
 		cout << " [4] Wyœwietl" << endl;
+		cout << " [5] Brute Force" << endl;
 		cout << " [0] Zakoñcz program" << endl;
 		cout << " Wybór: ";
 		choice = _getche();
@@ -68,13 +69,49 @@ void Interface::main_menu()
 			}
 			else voy.display();
 		} break;
+		case '5':
+		{
+			if (!exists)
+			{
+				system("cls");
+				cout << "Brak danych" << endl;
+				_getche();
+			}
+			else brute_force();
+		} break;
 		case '0':
 		{
 			system("cls");
-			voy.~Data();
+			voy.~BruteForce();
 			cout << "Koniec" << endl;
 			_getch();
 		} break;
+		default: cout << "\nB³¹d wprowadzenia, spróbuj ponownie" << endl, _getch();
+		}
+	} while (choice != '0');
+}
+
+//Menu brute-force
+void Interface::brute_force()
+{
+	char choice;
+	do
+	{
+		system("cls");
+		cout << "\t---Brute Force---" << endl;
+		cout << " Obecne dane: " << nazwa << endl;
+		cout << " [1] Bazuj¹cy na drzewie przeszukiwañ" << endl;
+		cout << " [0] Cofnij" << endl;
+		choice = _getche();
+		switch (choice)
+		{
+		case '1':
+		{
+			voy.searchtree();
+			cout << "\n Rozwi¹zanie: " << voy.getDistance() << endl;
+			_getch();
+		}; break;
+		case '0': {}break;
 		default: cout << "\nB³¹d wprowadzenia, spróbuj ponownie" << endl, _getch();
 		}
 	} while (choice != '0');
