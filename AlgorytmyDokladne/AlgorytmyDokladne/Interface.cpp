@@ -100,7 +100,8 @@ void Interface::brute_force()
 		system("cls");
 		cout << "\t---Brute Force---" << endl;
 		cout << " Obecne dane: " << nazwa << endl;
-		cout << " [1] Bazuj¹cy na drzewie przeszukiwañ" << endl;
+		cout << " [1] Zwyk³y" << endl;
+		cout << " [2] Zoptymalizowany" << endl;
 		cout << " [0] Cofnij" << endl;
 		choice = _getche();
 		switch (choice)
@@ -108,6 +109,12 @@ void Interface::brute_force()
 		case '1':
 		{
 			voy.searchtree();
+			cout << "\n Rozwi¹zanie: " << voy.getDistance() << endl;
+			_getch();
+		}; break;
+		case '2':
+		{
+			voy.seacrhtree_opt();
 			cout << "\n Rozwi¹zanie: " << voy.getDistance() << endl;
 			_getch();
 		}; break;

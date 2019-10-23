@@ -14,9 +14,12 @@ public:
 	//metody
 	~BruteForce();
 	void searchtree();
-	void rectree(int line, vector<bool> visted, int distance, int layer);
+	void seacrhtree_opt();
 	//Gettery i settery
 	int getDistance();
+private:
+	void rectree(int line, vector<bool> visted, int distance, int layer);
+	void rectree_opt(int line, vector<bool> visted, int distance, int layer);
 };
 
 #endif
