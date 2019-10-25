@@ -36,7 +36,7 @@ void BruteForce::rectree_opt(int line, vector<bool> visited, int  distance, int 
 	{
 		for (int i = 1; i < ext; i++)
 		{
-			if (!visited[i]) rectree(i, visited, (distance + tab[line][i]), (layer + 1));
+			if (!visited[i]) rectree_opt(i, visited, (distance + tab[line][i]), (layer + 1));
 		}
 	}
 	else if ((distance + tab[line][0]) < max || max == -1)
