@@ -2,7 +2,7 @@
 #ifndef Interface_hpp
 #define Interface_hpp
 
-#include "BruteForce.h"
+#include "Solutions.h"
 
 using namespace std;
 
@@ -12,7 +12,7 @@ class Interface
 private:
 	//Atrybuty
 	string nazwa = "brak";
-	BruteForce voy;
+	Solutions voy;
 	bool exists = false;
 public:
 	//Metidy

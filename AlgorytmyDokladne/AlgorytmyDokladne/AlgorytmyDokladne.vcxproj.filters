@@ -24,7 +24,7 @@
     <ClInclude Include="Data.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BruteForce.h">
+    <ClInclude Include="Solutions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -41,7 +41,7 @@
     <ClCompile Include="Data.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BruteForce.cpp">
+    <ClCompile Include="Solutions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

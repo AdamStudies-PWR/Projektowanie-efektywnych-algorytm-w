@@ -1,18 +1,18 @@
 #pragma once
-#ifndef BruteForce_hpp
-#define BruteForce_hpp
+#ifndef Solutions_hpp
+#define Solutions_hpp
 
 #include "Data.h"
 
 //Klasa obs³uguj¹ca obliczanie problemu komiwoja¿era za pomoc¹ brute-force
-class BruteForce : public Data
+class Solutions : public Data
 {
 private:
 	//zmienne
 	int max;
 public:
 	//metody
-	~BruteForce();
+	~Solutions();
 	void searchtree();
 	void seacrhtree_opt();
 	//Gettery i settery

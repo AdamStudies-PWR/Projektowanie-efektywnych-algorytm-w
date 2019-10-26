@@ -1,16 +1,16 @@
 //Klasa obs³uguj¹ca obliczanie problemu komiwoja¿era za pomoc¹ brute-force
 #include "pch.h"
-#include "Bruteforce.h"
+#include "Solutions.h"
 using namespace std;
 
 //Destruktor
-BruteForce::~BruteForce()
+Solutions::~Solutions()
 {
 	if (exists) delete[] tab;
 }
 
 //Rekurencyjne przeszukiwanie drzewa
-void BruteForce::rectree(int line, vector<bool> visited, int  distance, int layer)
+void Solutions::rectree(int line, vector<bool> visited, int  distance, int layer)
 {
 	visited[line] = true;
 	if (layer != (ext-1))
@@ -28,7 +28,7 @@ void BruteForce::rectree(int line, vector<bool> visited, int  distance, int laye
 }
 
 //Rekurencyjne przeszukiwanie drzewa z dodatkow¹ optymalizacj¹
-void BruteForce::rectree_opt(int line, vector<bool> visited, int  distance, int layer)
+void Solutions::rectree_opt(int line, vector<bool> visited, int  distance, int layer)
 {
 	visited[line] = true;
 	if (distance > max && max != -1) return;
@@ -47,7 +47,7 @@ void BruteForce::rectree_opt(int line, vector<bool> visited, int  distance, int 
 }
 
 //Funkcja przeszukuj¹ca drzewo w poszukiwaniu najlepszych rozwi¹zañ
-void BruteForce::searchtree()
+void Solutions::searchtree()
 {
 	max = -1;
 	vector<bool> visited(ext);
@@ -58,7 +58,7 @@ void BruteForce::searchtree()
 		rectree((i + 1), visited, tab[0][i + 1], 1);
 	}
 }
-void BruteForce::seacrhtree_opt()
+void Solutions::seacrhtree_opt()
 {
 	max = -1;
 	vector<bool> visited(ext);
@@ -71,4 +71,4 @@ void BruteForce::seacrhtree_opt()
 }
 
 //Gettery i Settery
-int BruteForce::getDistance() { return max; }
+int Solutions::getDistance() { return max; }
