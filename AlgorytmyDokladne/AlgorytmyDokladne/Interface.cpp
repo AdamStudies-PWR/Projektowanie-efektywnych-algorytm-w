@@ -19,6 +19,7 @@ void Interface::main_menu()
 		cout << " [3] WprowadŸ rêcznie" << endl;
 		cout << " [4] Wyœwietl" << endl;
 		cout << " [5] Brute Force" << endl;
+		cout << " [6] Branch & Bound" << endl;
 		cout << " [0] Zakoñcz program" << endl;
 		cout << " Wybór: ";
 		choice = _getche();
@@ -79,6 +80,19 @@ void Interface::main_menu()
 			}
 			else brute_force();
 		} break;
+		case '6':
+		{
+			if (!exists)
+			{
+				system("cls");
+				cout << "Brak danych" << endl;
+				_getche();
+			}
+			else
+			{
+				voy.BiBbeging();
+			}
+		}break;
 		case '0':
 		{
 			system("cls");
