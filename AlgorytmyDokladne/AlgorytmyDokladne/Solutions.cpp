@@ -73,9 +73,8 @@ void Solutions::seacrhtree_opt()
 //Pocz¹tek Branch & Bound
 void Solutions::BiBbeging()
 {
-	Node first;
-	coppyarray(first.data, tab);
-	system("cls");
+	Node first(tab, ext);
+	/*system("cls");
 	cout<<minimize(first.data)<<endl;
 	for (int i = 0; i < ext; i++)
 	{
@@ -96,6 +95,7 @@ void Solutions::BiBbeging()
 		}
 		cout << endl;
 	}
+	_getche();*/
 }
 
 //Funkcja minimalizuj¹ca macierz
@@ -105,54 +105,38 @@ int Solutions::minimize(int **data)
 	for (int i = 0; i < ext; i++)
 	{
 		int small = data[i][0];
+		if (small == -1) small = data[i][1];
+		for (int j = 0; j < ext; j++)
+		{
+			if (data[i][j] < small && data[i][j] != -1) small = data[i][j];
+		}
+		if (small != 0)
 		{
 			for (int j = 0; j < ext; j++)
 			{
-				if (data[i][j] < small && data[i][j] != -1) small = data[i][j];
+				if (data[i][j] != -1) data[i][j] = data[i][j] - small;
 			}
-			if (small != 0)
-			{
-				for (int j = 0; j < ext; j++)
-				{
-					if (data[i][j] != -1)data[i][j] = data[i][j] - small;
-				}
-				result = result + small;
-			}
+			result = result + small;
 		}
 	}
 	for (int i = 0; i < ext; i++)
 	{
 		int small = data[0][i];
+		if (small == -1) small = data[1][i];
+		for (int j = 0; j < ext; j++)
+		{
+			if (data[j][i] < small && data[j][i] != -1) small = data[j][i];
+		}
+		if (small != 0)
 		{
 			for (int j = 0; j < ext; j++)
 			{
-				if (data[j][i] < small && data[j][i] != -1) small = data[j][i];
+				if (data[j][i] != -1)data[j][i] = data[j][i] - small;
 			}
-			if (small != 0)
-			{
-				for (int j = 0; j < ext; j++)
-				{
-					if (data[j][i] != -1)data[j][i] = data[j][i] - small;
-				}
-				result = result + small;
-			}
+			result = result + small;
 		}
 	}
 	return result;
-}
-
-//Funkcja tworz¹ca kopie tablicy
-void Solutions::coppyarray(int **arr, int **src)
-{
-	arr = new int*[ext];
-	for (int i = 0; i < ext; i++)
-	{
-		arr[i] = new int[ext];
-		for (int j = 0; j < ext; j++)
-		{
-			arr[i][j] = src[i][j];
-		}
-	}
 }
 
 //Gettery i Settery

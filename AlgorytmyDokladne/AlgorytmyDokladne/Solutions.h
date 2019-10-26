@@ -10,6 +10,18 @@ struct Node
 	int **data;
 	int remaining;
 	vector<bool> visisted;
+	Node(int **src, int ext)
+	{
+		data = new int*[ext];
+		for (int i = 0; i < ext; i++)
+		{
+			data[i] = new int[ext];
+			for (int j = 0; j < ext; j++)
+			{
+				data[i][j] = src[i][j];
+			}
+		}
+	}
 };
 
 //Klasa obs³uguj¹ca obliczanie problemu komiwoja¿era za pomoc¹ brute-force
@@ -35,7 +47,6 @@ private:
 	void rectree_opt(int line, vector<bool> visted, int distance, int layer);
 	//Branch&Bound
 	int minimize(int **node);
-	void coppyarray(int **arr, int **src);
 };
 
 #endif
