@@ -74,14 +74,19 @@ void Solutions::seacrhtree_opt()
 void Solutions::BiBbegin()
 {
 	max = -1;
-	Node *first = new Node(tab, ext, (ext - 1));
+	vector<bool> visited(ext);
+	for (int i = 0; i < ext; i++)visited[i] = false;
+	visited[0] = true;
+	Node *first = new Node(tab, ext, (ext - 1), visited);
 	nlist.push_back(first);
 	first->weight = minimize(first->data);
 	vector<Node*> nodes;
 	for (int i = 0; i < (ext - 1); i++)
 	{
-		nodes.push_back(new Node(first->data, ext, (first->rem - 1)));
+		nodes.push_back(new Node(first->data, ext, (first->rem - 1), first->visited));
 		nodes[i]->parent = first;
+		nodes[i]->visited[i] = true;
+		nodes[i]->location = (i + 1);
 		nodes[i]->weight = calculatecost(nodes[i], 0, (i + 1));
 		nlist.push_back(nodes[i]);
 	}
@@ -103,12 +108,51 @@ void Solutions::BiBbegin()
 		cout << nodes[z]->weight;
 		_getche();
 	}*/
+	BiBcalc(nodes);
 }
 
 //G³ówna pêtla dla Branch & Bound
 void Solutions::BiBcalc(vector<Node*> nodes)
 {
-
+	//system("cls");
+	int small, index;
+	Node *current;
+	while (nodes.size() != 0)
+	{
+		index = 0;
+		small = nodes[index]->weight;
+		for (int i = 0; i < nodes.size(); i++)
+		{
+			if (nodes[i]->weight < small)
+			{
+				small = nodes[i]->weight;
+				index = i;
+			}
+		}
+		current = nodes[index];
+		nodes.erase(nodes.begin() + index);
+		if (max != -1)
+		{
+			if (current->weight > max) continue;
+		}
+		for (int i = 0; i < (ext - 1); i++)
+		{
+			if (!current->visited[i])
+			{
+				nodes.push_back(new Node(current->data, ext, (current->rem - 1), current->visited));
+				nodes[nodes.size() - 1]->parent = current;
+				nodes[nodes.size() - 1]->visited[i] = true;
+				nodes[nodes.size() - 1]->location = (i + 1);
+				nodes[nodes.size() - 1]->weight = calculatecost(nodes[i], nodes[nodes.size() - 1]->location, (i + 1));
+				nlist.push_back(nodes[nodes.size() - 1]);
+			}
+		}
+		if (nodes[nodes.size() - 1]->rem == 0)
+		{
+			if (nodes[nodes.size() - 1]->weight < max || max == -1) max = nodes[nodes.size() - 1]->weight;
+		}
+		//cout << nodes.size() << endl;
+	}
 }
 
 //Funkcja obliczaj¹ca kost nastêpnego poziomu

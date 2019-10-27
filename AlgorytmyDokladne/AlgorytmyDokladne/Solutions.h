@@ -10,23 +10,22 @@ struct Node
 	int **data;
 	int rem;
 	int weight;
-	bool *visited;
+	vector<bool> visited;
+	int location;
 	Node *parent = nullptr;
-	Node(int **src, int ext, int remaining)
+	Node(int **src, int ext, int remaining, vector<bool> visits)
 	{
 		rem = remaining;
-		visited = new bool[ext];
+		visited = visits;
 		data = new int*[ext];
 		for (int i = 0; i < ext; i++)
 		{
-			visited[i] = false;
 			data[i] = new int[ext];
 			for (int j = 0; j < ext; j++)
 			{
 				data[i][j] = src[i][j];
 			}
 		}
-		visited[0] = true;
 	}
 	~Node()
 	{

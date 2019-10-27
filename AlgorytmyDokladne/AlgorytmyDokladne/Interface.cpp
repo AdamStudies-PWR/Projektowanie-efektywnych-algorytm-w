@@ -91,6 +91,8 @@ void Interface::main_menu()
 			else
 			{
 				voy.BiBbegin();
+				cout << "\n Rozwi¹zanie: " << voy.getDistance() << endl;
+				_getch();
 			}
 		}break;
 		case '0':
