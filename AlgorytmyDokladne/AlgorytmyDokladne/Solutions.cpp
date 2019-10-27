@@ -71,31 +71,58 @@ void Solutions::seacrhtree_opt()
 }
 
 //Pocz¹tek Branch & Bound
-void Solutions::BiBbeging()
+void Solutions::BiBbegin()
 {
-	Node first(tab, ext);
-	/*system("cls");
-	cout<<minimize(first.data)<<endl;
+	max = -1;
+	Node *first = new Node(tab, ext, (ext - 1));
+	nlist.push_back(first);
+	first->weight = minimize(first->data);
+	vector<Node*> nodes;
+	for (int i = 0; i < (ext - 1); i++)
+	{
+		nodes.push_back(new Node(first->data, ext, (first->rem - 1)));
+		nodes[i]->parent = first;
+		nodes[i]->weight = calculatecost(nodes[i], 0, (i + 1));
+		nlist.push_back(nodes[i]);
+	}
+
+	/*for (int z = 0; z < (ext - 1); z++)
+	{
+		system("cls");
+		cout << nodes.size();
+		_getche();
+		for (int i = 0; i < ext; i++)
+		{
+			cout << " ";
+			for (int j = 0; j < ext; j++)
+			{
+				cout << nodes[z]->data[i][j] << " ";
+			}
+			cout << endl;
+		}
+		cout << nodes[z]->weight;
+		_getche();
+	}*/
+}
+
+//G³ówna pêtla dla Branch & Bound
+void Solutions::BiBcalc(vector<Node*> nodes)
+{
+
+}
+
+//Funkcja obliczaj¹ca kost nastêpnego poziomu
+int Solutions::calculatecost(Node *node, int from, int to)
+{
+	int result = node->data[from][to] + node->parent->weight;
 	for (int i = 0; i < ext; i++)
 	{
-		cout << " ";
-		for (int j = 0; j < ext; j++)
-		{
-			cout << tab[i][j] << " ";
-		}
-		cout << endl;
+		node->data[from][i] = -1;
+		node->data[i][to] = -1;
 	}
-	cout << "\n" << endl;
-	for (int i = 0; i < ext; i++)
-	{
-		cout << " ";
-		for (int j = 0; j < ext; j++)
-		{
-			cout << first.data[i][j] << " ";
-		}
-		cout << endl;
-	}
-	_getche();*/
+	node->data[to][from] = -1;
+	result = result + minimize(node->data);
+	return result;
 }
 
 //Funkcja minimalizuj¹ca macierz

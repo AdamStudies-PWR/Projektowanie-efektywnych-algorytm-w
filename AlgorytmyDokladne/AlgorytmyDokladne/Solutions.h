@@ -8,19 +8,30 @@
 struct Node
 {
 	int **data;
-	int remaining;
-	vector<bool> visisted;
-	Node(int **src, int ext)
+	int rem;
+	int weight;
+	bool *visited;
+	Node *parent = nullptr;
+	Node(int **src, int ext, int remaining)
 	{
+		rem = remaining;
+		visited = new bool[ext];
 		data = new int*[ext];
 		for (int i = 0; i < ext; i++)
 		{
+			visited[i] = false;
 			data[i] = new int[ext];
 			for (int j = 0; j < ext; j++)
 			{
 				data[i][j] = src[i][j];
 			}
 		}
+		visited[0] = true;
+	}
+	~Node()
+	{
+		//delete[] data;
+		//delete[] visited;
 	}
 };
 
@@ -30,7 +41,7 @@ class Solutions : public Data
 private:
 	//zmienne
 	int max;
-	vector<Node> nlist;
+	vector<Node*> nlist;
 public:
 	//metody
 	~Solutions();
@@ -38,7 +49,7 @@ public:
 	void searchtree();
 	void seacrhtree_opt();
 	//Branch&Bound
-	void BiBbeging();
+	void BiBbegin();
 	//Gettery i settery
 	int getDistance();
 private:
@@ -47,6 +58,8 @@ private:
 	void rectree_opt(int line, vector<bool> visted, int distance, int layer);
 	//Branch&Bound
 	int minimize(int **node);
+	int calculatecost(Node *node, int from, int to);
+	void BiBcalc(vector<Node*> nodes);
 };
 
 #endif

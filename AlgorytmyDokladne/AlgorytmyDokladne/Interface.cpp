@@ -90,7 +90,7 @@ void Interface::main_menu()
 			}
 			else
 			{
-				voy.BiBbeging();
+				voy.BiBbegin();
 			}
 		}break;
 		case '0':
