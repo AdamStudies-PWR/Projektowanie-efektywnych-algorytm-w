@@ -85,30 +85,17 @@ void Solutions::BiBbegin()
 	{
 		nodes.push_back(new Node(first->data, ext, (first->rem - 1), first->visited));
 		nodes[i]->parent = first;
-		nodes[i]->visited[i] = true;
-		nodes[i]->location = (i + 1);
+		nodes[i]->visited[i + 1] = true;
+		nodes[i]->location = i + 1;
 		nodes[i]->weight = calculatecost(nodes[i], 0, (i + 1));
 		nlist.push_back(nodes[i]);
 	}
-
-	/*for (int z = 0; z < (ext - 1); z++)
-	{
-		system("cls");
-		cout << nodes.size();
-		_getche();
-		for (int i = 0; i < ext; i++)
-		{
-			cout << " ";
-			for (int j = 0; j < ext; j++)
-			{
-				cout << nodes[z]->data[i][j] << " ";
-			}
-			cout << endl;
-		}
-		cout << nodes[z]->weight;
-		_getche();
-	}*/
 	BiBcalc(nodes);
+	for (int i = 0; i < nlist.size(); i++)
+	{
+		nlist[i]->~Node();
+	}
+	nlist.clear();
 }
 
 //G³ówna pêtla dla Branch & Bound
@@ -135,15 +122,15 @@ void Solutions::BiBcalc(vector<Node*> nodes)
 		{
 			if (current->weight > max) continue;
 		}
-		for (int i = 0; i < (ext - 1); i++)
+		for (int i = 0; i < ext; i++)
 		{
 			if (!current->visited[i])
 			{
 				nodes.push_back(new Node(current->data, ext, (current->rem - 1), current->visited));
 				nodes[nodes.size() - 1]->parent = current;
 				nodes[nodes.size() - 1]->visited[i] = true;
-				nodes[nodes.size() - 1]->location = (i + 1);
-				nodes[nodes.size() - 1]->weight = calculatecost(nodes[i], nodes[nodes.size() - 1]->location, (i + 1));
+				nodes[nodes.size() - 1]->location = i;
+				nodes[nodes.size() - 1]->weight = calculatecost(nodes[nodes.size() - 1], current->location, i);
 				nlist.push_back(nodes[nodes.size() - 1]);
 			}
 		}
@@ -151,14 +138,13 @@ void Solutions::BiBcalc(vector<Node*> nodes)
 		{
 			if (nodes[nodes.size() - 1]->weight < max || max == -1) max = nodes[nodes.size() - 1]->weight;
 		}
-		//cout << nodes.size() << endl;
 	}
 }
 
 //Funkcja obliczaj¹ca kost nastêpnego poziomu
 int Solutions::calculatecost(Node *node, int from, int to)
 {
-	int result = node->data[from][to] + node->parent->weight;
+	int result = node->parent->data[from][to] + node->parent->weight;
 	for (int i = 0; i < ext; i++)
 	{
 		node->data[from][i] = -1;
@@ -173,13 +159,13 @@ int Solutions::calculatecost(Node *node, int from, int to)
 int Solutions::minimize(int **data)
 {
 	int result = 0;
+	int small;
 	for (int i = 0; i < ext; i++)
 	{
-		int small = data[i][0];
-		if (small == -1) small = data[i][1];
+		small = data[i][0];
 		for (int j = 0; j < ext; j++)
 		{
-			if (data[i][j] < small && data[i][j] != -1) small = data[i][j];
+			if ((data[i][j] < small && data[i][j] != -1) || small == -1) small = data[i][j];
 		}
 		if (small != 0)
 		{
@@ -187,16 +173,15 @@ int Solutions::minimize(int **data)
 			{
 				if (data[i][j] != -1) data[i][j] = data[i][j] - small;
 			}
-			result = result + small;
+			if(small > 0) result = result + small;
 		}
 	}
 	for (int i = 0; i < ext; i++)
 	{
 		int small = data[0][i];
-		if (small == -1) small = data[1][i];
 		for (int j = 0; j < ext; j++)
 		{
-			if (data[j][i] < small && data[j][i] != -1) small = data[j][i];
+			if ((data[j][i] < small && data[j][i] != -1) || small == -1) small = data[j][i];
 		}
 		if (small != 0)
 		{
@@ -204,7 +189,7 @@ int Solutions::minimize(int **data)
 			{
 				if (data[j][i] != -1)data[j][i] = data[j][i] - small;
 			}
-			result = result + small;
+			if (small > 0) result = result + small;
 		}
 	}
 	return result;

@@ -29,8 +29,7 @@ struct Node
 	}
 	~Node()
 	{
-		//delete[] data;
-		//delete[] visited;
+		delete[] data;
 	}
 };
 
