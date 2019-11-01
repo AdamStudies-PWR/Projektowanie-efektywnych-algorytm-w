@@ -8,7 +8,14 @@ string Data::load(string filename)
 {
 	string name;
 	system("cls");
-	if (exists) delete[] tab;
+	if (exists)
+	{
+		for (int i = 0; i < ext; i++)
+		{
+			delete[] tab[i];
+		}
+		delete[] tab;
+	}
 	ifstream plik(filename + ".txt");
 	if (plik.good() == true)
 	{
@@ -56,7 +63,14 @@ void Data::randomify(int size, bool mirror)
 {
 	int k = 0;
 	ext = size;
-	if (exists) delete[] tab;
+	if (exists)
+	{
+		for (int i = 0; i < ext; i++)
+		{
+			delete[] tab[i];
+		}
+		delete[] tab;
+	}
 	tab = new int*[ext];
 	for (int i = 0; i < ext; i++) tab[i] = new int[ext];
 	if (mirror)
@@ -93,7 +107,14 @@ void Data::manual(int size, bool mirror)
 {
 	int k = 0, num;
 	ext = size;
-	if (exists) delete[] tab;
+	if (exists)
+	{
+		for (int i = 0; i < ext; i++)
+		{
+			delete[] tab[i];
+		}
+		delete[] tab;
+	}
 	tab = new int*[ext];
 	for (int i = 0; i < ext; i++) tab[i] = new int[ext];
 	if (mirror)

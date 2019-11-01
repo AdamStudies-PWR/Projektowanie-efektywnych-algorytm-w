@@ -6,7 +6,14 @@ using namespace std;
 //Destruktor
 Solutions::~Solutions()
 {
-	if (exists) delete[] tab;
+	if (exists)
+	{
+		for (int i = 0; i < ext; i++)
+		{
+			delete[] tab[i];
+		}
+		delete[] tab;
+	}
 }
 
 //Rekurencyjne przeszukiwanie drzewa
@@ -93,7 +100,7 @@ void Solutions::BiBbegin()
 	BiBcalc(nodes);
 	for (int i = 0; i < nlist.size(); i++)
 	{
-		nlist[i]->~Node();
+		delete nlist[i];
 	}
 	nlist.clear();
 }
