@@ -10,11 +10,13 @@ struct Node
 	int **data;
 	int rem;
 	int weight;
+	int size;
 	vector<bool> visited;
 	int location;
 	Node *parent = nullptr;
 	Node(int **src, int ext, int remaining, vector<bool> visits)
 	{
+		size = ext;
 		rem = remaining;
 		visited = visits;
 		data = new int*[ext];
@@ -29,6 +31,10 @@ struct Node
 	}
 	~Node()
 	{
+		for (int i = 0; i < size; i++)
+		{
+			delete[] data[i];
+		}
 		delete[] data;
 	}
 };
