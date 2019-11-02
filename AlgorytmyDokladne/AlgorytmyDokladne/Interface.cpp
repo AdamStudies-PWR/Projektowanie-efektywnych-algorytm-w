@@ -20,6 +20,7 @@ void Interface::main_menu()
 		cout << " [4] Wyœwietl" << endl;
 		cout << " [5] Brute Force" << endl;
 		cout << " [6] Branch & Bound" << endl;
+		cout << " [7] Held-Karp" << endl;
 		cout << " [0] Zakoñcz program" << endl;
 		cout << " Wybór: ";
 		choice = _getche();
@@ -91,6 +92,21 @@ void Interface::main_menu()
 			else
 			{
 				voy.BiBbegin();
+				cout << "\n Rozwi¹zanie: " << voy.getDistance() << endl;
+				_getch();
+			}
+		}break;
+		case '7':
+		{
+			if (!exists)
+			{
+				system("cls");
+				cout << "Brak danych" << endl;
+				_getche();
+			}
+			else
+			{
+				voy.HPbegin();
 				cout << "\n Rozwi¹zanie: " << voy.getDistance() << endl;
 				_getch();
 			}

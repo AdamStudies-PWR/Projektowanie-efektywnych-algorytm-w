@@ -108,7 +108,6 @@ void Solutions::BiBbegin()
 //G³ówna pêtla dla Branch & Bound
 void Solutions::BiBcalc(vector<Node*> nodes)
 {
-	//system("cls");
 	int small, index;
 	Node *current;
 	while (nodes.size() != 0)
@@ -146,6 +145,77 @@ void Solutions::BiBcalc(vector<Node*> nodes)
 			if (nodes[nodes.size() - 1]->weight < max || max == -1) max = nodes[nodes.size() - 1]->weight;
 		}
 	}
+}
+
+//Pocz¹tek algorytmu Helda Karpa (Held-Karpa?)
+void Solutions::HPbegin()
+{
+	int kk ,it = 0;
+	vector<bool> visited(ext);
+	for (int i = 0; i < ext; i++)visited[i] = false;
+	visited[0] = true;
+	vector<Set*> list;
+	for (int i = 0; i < (ext - 1); i++)
+	{
+		kk = 1;
+		for (int j = 0; j < (ext - 2); j++)
+		{
+			list.push_back(new Set(visited));
+			if (i == j) kk++;
+			list[it]->weight = tab[0][i + 1] + tab[i + 1][j + kk];
+			list[it]->visited[i + 1] = true;
+			list[it]->visited[j + kk] = true;
+			list[it]->current = j + kk;
+			it++;
+		}
+	}
+	for (int i = 0; i < (ext - 3); i++)
+	{
+		list = addlayer(list);
+	}
+	//_getche();
+	int min = list[0]->weight + tab[list[0]->current][0];
+	for (int i = 1; i < list.size(); i++)
+	{
+		if ((list[i]->weight + tab[list[i]->current][0]) < min)
+		{
+			min = list[i]->weight + tab[list[i]->current][0];
+		}
+	}
+	max = min;
+}
+
+//Metoda dodaj¹ca kolejne "warstwy" do rozwi¹zania
+vector<Set*> Solutions::addlayer(vector<Set*> list)
+{
+	int dist;
+	int it = 0;
+	vector<bool> visited;
+	vector<Set*> newlist;
+	for (int i = 0; i < (ext - 1); i++)
+	{
+		dist = -1;
+		for (int j = 0; j < list.size(); j++)
+		{
+			if (!list[j]->visited[i + 1])
+			{
+				if ((list[j]->weight + tab[list[j]->current][i + 1]) < dist || dist == -1)
+				{
+					dist = list[j]->weight + tab[list[j]->current][i + 1];
+					visited = list[j]->visited;
+				}
+			}
+		}
+		if (dist == -1) continue;
+		//if (dist = -1) cout << "\nUPS";
+		newlist.push_back(new Set(visited));
+		newlist[it]->weight = dist;
+		newlist[it]->visited[i + 1] = true;
+		newlist[it]->current = i + 1;
+		it++;
+		//cout << endl;
+	}
+	return newlist;
 }
 
 //Funkcja obliczaj¹ca kost nastêpnego poziomu

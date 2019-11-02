@@ -39,6 +39,17 @@ struct Node
 	}
 };
 
+struct Set
+{
+	int current;
+	int weight;
+	vector<bool> visited;
+	Set(vector<bool> visits)
+	{
+		visited = visits;
+	}
+};
+
 //Klasa obs³uguj¹ca obliczanie problemu komiwoja¿era za pomoc¹ brute-force
 class Solutions : public Data
 {
@@ -54,6 +65,8 @@ public:
 	void seacrhtree_opt();
 	//Branch&Bound
 	void BiBbegin();
+	//Held-Karp
+	void HPbegin();
 	//Gettery i settery
 	int getDistance();
 private:
@@ -64,6 +77,8 @@ private:
 	int minimize(int **node);
 	int calculatecost(Node *node, int from, int to);
 	void BiBcalc(vector<Node*> nodes);
+	//Held-Karp
+	vector<Set*> addlayer(vector<Set*> data);
 };
 
 #endif
