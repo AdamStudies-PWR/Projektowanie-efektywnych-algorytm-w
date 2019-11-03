@@ -79,6 +79,7 @@ private:
 	void BiBcalc(vector<Node*> nodes);
 	//Held-Karp
 	vector<Set*> addlayer(vector<Set*> data);
+	bool compare(vector<bool> v1, vector<bool> v2);
 };
 
 #endif

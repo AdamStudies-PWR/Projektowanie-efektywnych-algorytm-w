@@ -181,8 +181,19 @@ void Solutions::HPbegin()
 		{
 			min = list[i]->weight + tab[list[i]->current][0];
 		}
+		delete list[i];
 	}
 	max = min;
+}
+
+//Funkcja porównuj¹ca odwiedzone 
+bool Solutions::compare(vector<bool> v1, vector<bool> v2)
+{
+	for (int i = 0; i < ext; i++)
+	{
+		if (v1[i] != v2[i]) return false;
+	}
+	return true;
 }
 
 //Metoda dodaj¹ca kolejne "warstwy" do rozwi¹zania
@@ -192,29 +203,39 @@ vector<Set*> Solutions::addlayer(vector<Set*> list)
 	int it = 0;
 	vector<bool> visited;
 	vector<Set*> newlist;
-	for (int i = 0; i < (ext - 1); i++)
+	vector<Set*> temp;
+	for (int i = 1; i < ext; i++)
 	{
-		dist = -1;
-		for (int j = 0; j < list.size(); j++)
+		temp = list;
+		for (int j = 0; j < temp.size(); j++)
 		{
-			if (!list[j]->visited[i + 1])
+			if (temp[j]->visited[i])
 			{
-				if ((list[j]->weight + tab[list[j]->current][i + 1]) < dist || dist == -1)
-				{
-					dist = list[j]->weight + tab[list[j]->current][i + 1];
-					visited = list[j]->visited;
-				}
+				temp.erase(temp.begin() + j);
+				j--;
 			}
 		}
-		if (dist == -1) continue;
-		//if (dist = -1) cout << "\nUPS";
-		newlist.push_back(new Set(visited));
-		newlist[it]->weight = dist;
-		newlist[it]->visited[i + 1] = true;
-		newlist[it]->current = i + 1;
-		it++;
-		//cout << endl;
+		while (temp.size() > 0)
+		{
+			dist = temp[0]->weight + tab[temp[0]->current][i];
+			visited = temp[0]->visited;
+			for (int j = 0; j < temp.size(); j++)
+			{
+				if (visited == temp[j]->visited)
+				{
+					if (dist > temp[j]->weight + tab[temp[j]->current][i]) dist = temp[j]->weight + tab[temp[j]->current][i];
+					temp.erase(temp.begin() + j);
+					j--;
+				}
+			}
+			newlist.push_back(new Set(visited));
+			newlist[it]->current = i;
+			newlist[it]->weight = dist;
+			newlist[it]->visited[i] = true;
+			it++;
+		}
 	}
+	for (int i = 0; i < list.size(); i++) delete list[i];
 	return newlist;
 }
 
