@@ -14,6 +14,7 @@ protected:
 	int **tab;
 	int ext;
 	const static int limit = 1000;
+	int limits;
 public:
 	//Metody
 	string load(string filename);

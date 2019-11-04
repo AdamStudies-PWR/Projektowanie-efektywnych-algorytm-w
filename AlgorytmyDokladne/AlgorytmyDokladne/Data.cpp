@@ -30,6 +30,7 @@ string Data::load(string filename)
 				plik >> tab[i][j];
 			}
 		}
+		limits = counttarget();
 		return "wczytane z " + name + ".txt";
 	}
 	else
@@ -45,7 +46,7 @@ void Data::display()
 {
 	system("cls");
 	cout << "\n Rozmiar: " << ext;
-	cout << "\n D³ugoœæ œcie¿ki: " << counttarget() << endl;
+	cout << "\n D³ugoœæ œcie¿ki: " << limits << endl;
 	for (int i = 0; i < ext; i++)
 	{
 		cout << " ";
@@ -100,6 +101,7 @@ void Data::randomify(int size, bool mirror)
 			}
 		}
 	}
+	limits = counttarget();
 }
 
 //Rêczne uzupe³nianie danych
@@ -152,6 +154,7 @@ void Data::manual(int size, bool mirror)
 			}
 		}
 	}
+	limits = counttarget();
 }
 
 //Metoda licz¹ca d³ugoœæ œciezki komiwoja¿era

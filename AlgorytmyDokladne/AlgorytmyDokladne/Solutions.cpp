@@ -80,7 +80,7 @@ void Solutions::seacrhtree_opt()
 //Pocz¹tek Branch & Bound
 void Solutions::BiBbegin()
 {
-	max = -1;
+	max = limits;
 	vector<bool> visited(ext);
 	for (int i = 0; i < ext; i++)visited[i] = false;
 	visited[0] = true;
