@@ -155,25 +155,17 @@ void Solutions::HPbegin()
 	for (int i = 0; i < ext; i++)visited[i] = false;
 	visited[0] = true;
 	vector<Set*> list;
-	for (int i = 0; i < (ext - 1); i++)
+	for (int i = 1; i < ext; i++)
 	{
-		kk = 1;
-		for (int j = 0; j < (ext - 2); j++)
-		{
-			list.push_back(new Set(visited));
-			if (i == j) kk++;
-			list[it]->weight = tab[0][i + 1] + tab[i + 1][j + kk];
-			list[it]->visited[i + 1] = true;
-			list[it]->visited[j + kk] = true;
-			list[it]->current = j + kk;
-			it++;
-		}
+		list.push_back(new Set(visited));
+		list[i - 1]->weight = tab[0][i];
+		list[i - 1]->visited[i] = true;
+		list[i - 1]->current = i;
 	}
-	for (int i = 0; i < (ext - 3); i++)
+	for (int i = 0; i < (ext - 2); i++)
 	{
 		list = addlayer(list);
 	}
-	//_getche();
 	int min = list[0]->weight + tab[list[0]->current][0];
 	for (int i = 1; i < list.size(); i++)
 	{
@@ -184,16 +176,6 @@ void Solutions::HPbegin()
 		delete list[i];
 	}
 	max = min;
-}
-
-//Funkcja porównuj¹ca odwiedzone 
-bool Solutions::compare(vector<bool> v1, vector<bool> v2)
-{
-	for (int i = 0; i < ext; i++)
-	{
-		if (v1[i] != v2[i]) return false;
-	}
-	return true;
 }
 
 //Metoda dodaj¹ca kolejne "warstwy" do rozwi¹zania
