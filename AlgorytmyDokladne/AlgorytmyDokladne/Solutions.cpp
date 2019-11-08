@@ -108,26 +108,23 @@ void Solutions::BiBbegin()
 //G³ówna pêtla dla Branch & Bound
 void Solutions::BiBcalc(vector<Node*> nodes)
 {
-	int small, index;
+	int smal, index;
 	Node *current;
 	while (nodes.size() != 0)
 	{
 		index = 0;
-		small = nodes[index]->weight;
+		smal = nodes[index]->weight;
 		for (int i = 0; i < nodes.size(); i++)
 		{
-			if (nodes[i]->weight < small)
+			if (nodes[i]->weight < smal)
 			{
-				small = nodes[i]->weight;
+				smal = nodes[i]->weight;
 				index = i;
 			}
 		}
 		current = nodes[index];
 		nodes.erase(nodes.begin() + index);
-		if (max != -1)
-		{
-			if (current->weight > max) return;
-		}
+		if (current->weight >= max) return;
 		for (int i = 0; i < ext; i++)
 		{
 			if (!current->visited[i])
@@ -239,66 +236,40 @@ int Solutions::calculatecost(Node *node, int from, int to)
 int Solutions::minimize(int **data)
 {
 	int result = 0;
-	int small;
+	int smal;
 	for (int i = 0; i < ext; i++)
 	{
-		small = data[i][0];
+		smal = data[i][0];
 		for (int j = 0; j < ext; j++)
 		{
-			if ((data[i][j] < small && data[i][j] != -1) || small == -1) small = data[i][j];
+			if ((data[i][j] < smal && data[i][j] != -1) || smal == -1) smal = data[i][j];
 		}
-		if (small != 0)
+		if (smal != 0)
 		{
 			for (int j = 0; j < ext; j++)
 			{
-				if (data[i][j] != -1) data[i][j] = data[i][j] - small;
+				if (data[i][j] != -1) data[i][j] = data[i][j] - smal;
 			}
-			if(small > 0) result = result + small;
+			if(smal > 0) result = result + smal;
 		}
 	}
 	for (int i = 0; i < ext; i++)
 	{
-		int small = data[0][i];
+		int smal = data[0][i];
 		for (int j = 0; j < ext; j++)
 		{
-			if ((data[j][i] < small && data[j][i] != -1) || small == -1) small = data[j][i];
+			if ((data[j][i] < smal && data[j][i] != -1) || smal == -1) smal = data[j][i];
 		}
-		if (small != 0)
+		if (smal != 0)
 		{
 			for (int j = 0; j < ext; j++)
 			{
-				if (data[j][i] != -1)data[j][i] = data[j][i] - small;
+				if (data[j][i] != -1)data[j][i] = data[j][i] - smal;
 			}
-			if (small > 0) result = result + small;
+			if (smal > 0) result = result + smal;
 		}
 	}
 	return result;
-}
-
-//Funkcja sortuj¹ca metod¹ quick sort
-void Solutions::quickSort(vector<Node*> &data, int start, int stop)
-{
-	if (start < stop)
-	{
-		Node *tmp;
-		int temp = start;
-		int div = data[stop]->weight;
-		for (int i = start; i <= (stop - 1); i++)
-		{
-			if (data[i]->weight < div)
-			{
-				tmp = data[temp];
-				data[temp] = data[i];
-				data[i] = tmp;
-				temp++;
-			}
-		}
-		tmp = data[stop];
-		data[stop] = data[temp + 1];
-		div = temp + 1;
-		quickSort(data, start, (div - 1));
-		quickSort(data, (div + 1), stop);
-	}
 }
 
 //Gettery i Settery

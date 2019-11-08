@@ -15,5 +15,6 @@
 #include <fstream>
 #include <ctime>
 #include <vector>
+#include <Windows.h>
 
 #endif //PCH_H

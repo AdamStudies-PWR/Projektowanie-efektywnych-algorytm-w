@@ -21,6 +21,7 @@ void Interface::main_menu()
 		cout << " [5] Brute Force" << endl;
 		cout << " [6] Branch & Bound" << endl;
 		cout << " [7] Held-Karp" << endl;
+		cout << " [8] Testowanie" << endl;
 		cout << " [0] Zakoñcz program" << endl;
 		cout << " Wybór: ";
 		choice = _getche();
@@ -111,6 +112,16 @@ void Interface::main_menu()
 				_getch();
 			}
 		}break;
+		case '8':
+		{
+			if (!exists)
+			{
+				system("cls");
+				cout << "Brak danych" << endl;
+				_getche();
+			}
+			else test_menu();
+		} break;
 		case '0':
 		{
 			system("cls");
@@ -149,6 +160,38 @@ void Interface::brute_force()
 			voy.seacrhtree_opt();
 			cout << "\n Rozwi¹zanie: " << voy.getDistance() << endl;
 			_getch();
+		}; break;
+		case '0': {}break;
+		default: cout << "\nB³¹d wprowadzenia, spróbuj ponownie" << endl, _getch();
+		}
+	} while (choice != '0');
+}
+
+void Interface::test_menu()
+{
+	char choice;
+	do
+	{
+		system("cls");
+		cout << "\t---Testowanie---" << endl;
+		cout << " Obecne dane: " << nazwa << endl;
+		cout << " Iloœæ prób: " << endl;
+		cout << " [1] Zmieñ iloœæ prób" << endl;
+		cout << " [2] Testowane algorytmy" << endl;
+		cout << " [3] Uruchom" << endl;
+		cout << " [4] Wyœwietl wynik pomiarów [Tylko ostatni pomiar]" << endl;
+		cout << " [5] Zapisz do pliku" << endl;
+		cout << " [0] Cofnij" << endl;
+		choice = _getche();
+		switch (choice)
+		{
+		case '1':
+		{
+
+		}; break;
+		case '2':
+		{
+
 		}; break;
 		case '0': {}break;
 		default: cout << "\nB³¹d wprowadzenia, spróbuj ponownie" << endl, _getch();

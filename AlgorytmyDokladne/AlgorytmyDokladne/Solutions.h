@@ -79,8 +79,6 @@ private:
 	void BiBcalc(vector<Node*> nodes);
 	//Held-Karp
 	vector<Set*> addlayer(vector<Set*> data);
-	//Funkcje pomocnicze
-	void quickSort(vector<Node*> &data, int start, int end);
 };
 
 #endif
