@@ -67,7 +67,7 @@ void Solutions::searchtree()
 }
 void Solutions::seacrhtree_opt()
 {
-	max = -1;
+	max = limits;
 	vector<bool> visited(ext);
 	visited[0] = true;
 	for (int i = 1; i < ext; i++) visited[i] = false;
@@ -126,7 +126,7 @@ void Solutions::BiBcalc(vector<Node*> nodes)
 		nodes.erase(nodes.begin() + index);
 		if (max != -1)
 		{
-			if (current->weight > max) continue;
+			if (current->weight > max) return;
 		}
 		for (int i = 0; i < ext; i++)
 		{
@@ -147,7 +147,7 @@ void Solutions::BiBcalc(vector<Node*> nodes)
 	}
 }
 
-//Pocz¹tek algorytmu Helda Karpa (Held-Karpa?)
+//Pocz¹tek algorytmu Held-Karpa
 void Solutions::HPbegin()
 {
 	int kk ,it = 0;
@@ -273,6 +273,32 @@ int Solutions::minimize(int **data)
 		}
 	}
 	return result;
+}
+
+//Funkcja sortuj¹ca metod¹ quick sort
+void Solutions::quickSort(vector<Node*> &data, int start, int stop)
+{
+	if (start < stop)
+	{
+		Node *tmp;
+		int temp = start;
+		int div = data[stop]->weight;
+		for (int i = start; i <= (stop - 1); i++)
+		{
+			if (data[i]->weight < div)
+			{
+				tmp = data[temp];
+				data[temp] = data[i];
+				data[i] = tmp;
+				temp++;
+			}
+		}
+		tmp = data[stop];
+		data[stop] = data[temp + 1];
+		div = temp + 1;
+		quickSort(data, start, (div - 1));
+		quickSort(data, (div + 1), stop);
+	}
 }
 
 //Gettery i Settery
