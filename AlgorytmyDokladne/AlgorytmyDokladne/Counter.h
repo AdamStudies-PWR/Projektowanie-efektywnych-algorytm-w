@@ -14,7 +14,7 @@ private:
 public:
 	//Metody uruchamiaj¹ce odliczanie i zwracaj¹ce czas
 	void StartCounter();
-	void StartfileCounter();
+	void StartFileCounter();
 	double GetCounter();
 };
 #endif

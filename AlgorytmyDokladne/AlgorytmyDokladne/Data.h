@@ -2,6 +2,7 @@
 #ifndef Data_hpp
 #define Data_hpp
 
+#include "Counter.h"
 
 using namespace std;
 
@@ -10,8 +11,10 @@ class Data
 {
 protected:
 	//Atrybuty
+	Counter count;
 	bool exists = false;
 	int **tab;
+	double **results = nullptr;
 	int ext;
 	const static int limit = 1000;
 	int limits;
@@ -21,6 +24,9 @@ public:
 	void randomify(int size, bool mirror);
 	void manual(int size, bool mirror);
 	void display();
+	void dispaly_results(bool table[], int size);
+	void save(bool table[], int size, string filename);
+protected:
 	int counttarget();
 };
 

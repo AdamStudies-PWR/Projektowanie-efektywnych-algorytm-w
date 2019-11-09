@@ -14,6 +14,14 @@ Solutions::~Solutions()
 		}
 		delete[] tab;
 	}
+	if (results != nullptr)
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			delete results[i];
+		}
+		delete[] results;
+	}
 }
 
 //Rekurencyjne przeszukiwanie drzewa
@@ -270,6 +278,53 @@ int Solutions::minimize(int **data)
 		}
 	}
 	return result;
+}
+
+//Metoda automatyzuj¹ca testowanie 
+void Solutions::testing(int size, bool tab[])
+{
+	system("cls");
+	if (results != nullptr)
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			delete[] results[i];
+		}
+		delete[] results;
+	}
+	results = new double*[4];
+	for (int i = 0; i < 4; i++)
+	{
+		results[i] = new double [size];
+	}
+	for (int i = 0; i < size; i++)
+	{
+		cout << i << endl;
+		if (tab[0])
+		{
+			count.StartFileCounter();
+			this->searchtree();
+			results[0][i] = count.GetCounter();
+		}
+		if (tab[1])
+		{
+			count.StartFileCounter();
+			this->seacrhtree_opt();
+			results[1][i] = count.GetCounter();
+		}
+		if (tab[2])
+		{
+			count.StartFileCounter();
+			this->BiBbegin();
+			results[2][i] = count.GetCounter();
+		}
+		if (tab[3])
+		{
+			count.StartFileCounter();
+			this->HPbegin();
+			results[3][i] = count.GetCounter();
+		}
+	}
 }
 
 //Gettery i Settery

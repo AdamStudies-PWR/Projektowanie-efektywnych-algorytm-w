@@ -3,7 +3,6 @@
 #define Interface_hpp
 
 #include "Solutions.h"
-#include "Counter.h"
 
 using namespace std;
 
@@ -14,13 +13,15 @@ private:
 	//Atrybuty
 	string nazwa = "brak";
 	Solutions voy;
-	Counter count;
 	bool exists = false;
+	int loops = 100;
+	bool tested[4] = { true, true, true, true };
 public:
 	//Metody
 	void main_menu();
 private:
 	void brute_force();
 	void test_menu();
+	void tested_alg();
 };
 #endif

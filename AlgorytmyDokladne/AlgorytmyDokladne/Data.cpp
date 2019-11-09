@@ -165,3 +165,45 @@ int Data::counttarget()
 	value = value + tab[ext - 1][0];
 	return value;
 }
+
+//Wyœwietlanie wyników pomiaru (ostatniego pomiaru)
+void Data::dispaly_results(bool tab[], int size)
+{
+	system("cls");
+	if (results == nullptr) cout << "Brak pomiarów!" << endl;
+	else
+	{
+		if (tab[0]) cout << "Brute force: " << results[0][size - 1] << endl;
+		if (tab[1]) cout << "Brute force z optymalizacj¹: " << results[1][size - 1] << endl;
+		if (tab[2]) cout << "Branch and Bound: " << results[2][size - 1] << endl;
+		if (tab[3]) cout << "Held-Karp: " << results[3][size - 1] << endl;
+	}
+	_getche();
+}
+
+//Funkcja zapisuj¹ca wyniki pomiarów do pliku
+void Data::save(bool tab[], int size, string filename)
+{
+	system("cls");
+	if (results == nullptr) cout << "Brak pomiarów!" << endl, _getche;
+	else
+	{
+		ofstream plik(filename + ".txt");
+		if (plik.good() == true)
+		{
+			if (tab[0]) plik << "BRT;";
+			if (tab[1]) plik << "BRTopt;";
+			if (tab[2]) plik << "BnB;";
+			if (tab[3]) plik << "HP" << endl;
+			for (int i = 0; i < size; i++)
+			{
+				if (tab[0]) plik << results[0][i] << ";";
+				if (tab[1]) plik << results[1][i] << ";";
+				if (tab[2]) plik << results[2][i] << ";";
+				if (tab[3]) plik << results[3][i] << endl;
+			}
+			plik.close();
+		}
+		else cout << "B³¹d zapisu" << endl, _getche();
+	}
+}

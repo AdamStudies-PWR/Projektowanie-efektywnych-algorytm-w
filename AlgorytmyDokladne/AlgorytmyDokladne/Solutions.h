@@ -69,6 +69,8 @@ public:
 	void HPbegin();
 	//Gettery i settery
 	int getDistance();
+	//Testowanie
+	void testing(int number, bool tab[]);
 private:
 	//Brute force
 	void rectree(int line, vector<bool> visted, int distance, int layer);
