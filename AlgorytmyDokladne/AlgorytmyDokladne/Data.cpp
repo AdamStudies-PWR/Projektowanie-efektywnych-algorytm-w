@@ -194,13 +194,15 @@ void Data::save(bool tab[], int size, string filename)
 			if (tab[0]) plik << "BRT;";
 			if (tab[1]) plik << "BRTopt;";
 			if (tab[2]) plik << "BnB;";
-			if (tab[3]) plik << "HP" << endl;
+			if (tab[3]) plik << "HP";
+			plik << endl;
 			for (int i = 0; i < size; i++)
 			{
 				if (tab[0]) plik << results[0][i] << ";";
 				if (tab[1]) plik << results[1][i] << ";";
 				if (tab[2]) plik << results[2][i] << ";";
-				if (tab[3]) plik << results[3][i] << endl;
+				if (tab[3]) plik << results[3][i];
+				plik << endl;
 			}
 			plik.close();
 		}
