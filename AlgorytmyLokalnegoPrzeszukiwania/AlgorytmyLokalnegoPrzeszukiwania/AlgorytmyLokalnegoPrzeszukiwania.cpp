@@ -1,12 +1,17 @@
-// AlgorytmyLokalnegoPrzeszukiwania.cpp : This file contains the 'main' function. Program execution begins and ends there.
+﻿// AlgorytmyDokladne.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
 #include "pch.h"
-#include <iostream>
+#include "Interface.h"
 
+// Main umieszczono w sosobnym pliku w celu u�atwienia odnalezienia punktu startowego programu
 int main()
 {
-    std::cout << "Hello World!\n"; 
+	srand(time(nullptr));
+	setlocale(LC_ALL, "pl");
+	Interface usr;
+	usr.main_menu();
+	return 0;
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu

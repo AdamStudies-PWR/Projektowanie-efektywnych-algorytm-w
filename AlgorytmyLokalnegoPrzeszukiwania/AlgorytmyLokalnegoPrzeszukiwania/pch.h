@@ -9,6 +9,12 @@
 #ifndef PCH_H
 #define PCH_H
 
-// TODO: add headers that you want to pre-compile here
+#include <iostream>
+#include <conio.h>
+#include <string>
+#include <fstream>
+#include <ctime>
+#include <vector>
+#include <Windows.h>
 
 #endif //PCH_H
