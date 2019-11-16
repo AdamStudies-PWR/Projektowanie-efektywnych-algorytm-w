@@ -7,7 +7,11 @@
 //Klasa obs³uguj¹ce obliczenia dla realizowanych w tym programie problemów
 class Solutions : public Data
 {
-
+public:
+	//Zmienne
+	int result;
+	//Metody
+	void naive_search();
 };
 
 #endif
