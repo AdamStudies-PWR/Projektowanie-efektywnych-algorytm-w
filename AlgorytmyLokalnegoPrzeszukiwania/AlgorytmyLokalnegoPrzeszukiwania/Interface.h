@@ -2,7 +2,7 @@
 #ifndef Interface_hpp
 #define Interface_hpp
 
-#include "Data.h"
+#include "Solutions.h"
 
 using namespace std;
 
@@ -12,7 +12,7 @@ class Interface
 private:
 	//Atrybuty
 	string nazwa = "brak";
-	Data voy;
+	Solutions voy;
 	bool exists = false;
 public:
 	//Metody
