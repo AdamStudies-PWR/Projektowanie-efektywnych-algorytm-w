@@ -32,42 +32,65 @@ void Solutions::naive_search()
 	result = res + tab[index][0];
 }
 
+//Rekurencyjne rozwiniêcie tabu searcha
+void Solutions::tabu_rec(int line, vector<bool> visited, int distance, int layer)
+{
+	tabu_list.push_back(line);
+	if (tabu_list.size() > max_tabu)
+	{
+		tabu_list.erase(tabu_list.begin() + 0);
+	}
+	visited[line] = true;
+	if (distance > result) return;
+	if (layer != (ext - 1))
+	{
+		Node *temp;
+		vector<Node*> solutions;
+		for (int i = 1; i < ext; i++)
+		{
+			if (!visited[i] && !contains(i))
+			{
+				solutions.push_back(new Node(i, tab[0][i]));
+			}
+		}
+		quick_sort(solutions, 0, (solutions.size() - 1));
+		while (solutions.size() > 0)
+		{
+			temp = solutions.back();
+			solutions.pop_back();
+			tabu_rec(temp->index, visited, temp->cost, 1);
+			delete temp;
+		}
+	}
+	else if ((distance + tab[line][0]) < result)
+	{
+		result = distance + tab[line][0];
+	}
+	return;
+}
+
 //Funkcja szukaj¹ca rozwi¹zania poprzez tabu search
 void Solutions::tabu_search()
 {
-	int counter = 0;
-	int parent;
+	Node *temp;
+	vector<Node*> solutions;
 	result = limits;
 	vector<bool> visited(ext);
-	for (int i = 0; i < ext; i++) visited[i] = false;
-	tabu_list.push_back(new Node(0, visited, 0));
-	Node *candidate;
-	Node *best = tabu_list[0];
-	Node *temp;
-	while (counter != ext)
+	visited[0] = true;
+	tabu_list.push_back(0);
+	for (int i = 1; i < ext; i++)
 	{
-		counter++;
-		parent = best->current;
-		candidate = find_candidate(best);
-		for (int i = 0; i < ext; i++)
-		{
-			//if (!candidate->visited[i])
-			{
-				if (!contains(i) && (best->cost > (candidate->cost + tab[parent][i])))
-				{
-					temp = new Node(i, best->visited, (candidate->cost + tab[parent][i]));
-					//delete best;
-					best = temp;
-				}
-			}
-		}
-		tabu_list.push_back(best);
-		if (tabu_list.size() > max_tabu)
-		{
-			tabu_list.erase(tabu_list.begin() + 0);
-		}
+		visited[i] = false;
+		solutions.push_back(new Node(i, tab[0][i]));
 	}
-	if (best->cost < result) result = best->cost;
+	quick_sort(solutions, 0, (solutions.size() - 1));
+	while(solutions.size() > 0)
+	{
+		temp = solutions.back();
+		solutions.pop_back();
+		tabu_rec(temp->index, visited, temp->cost, 1);
+		delete temp;
+	}
 }
 
 //Funkcja sprawdzaj¹ca czy dany wêze³ znajduje siê na liœcie tabu
@@ -75,19 +98,38 @@ bool Solutions::contains(int index)
 {
 	for (int i = 0; i < tabu_list.size(); i++)
 	{
-		if (tabu_list[i]->current = index) return true;
+		if (tabu_list[i] == index) return true;
 	}
 	return false;
 }
 
-//Funkcja wybieraj¹ca kandydata
-Node* Solutions::find_candidate(Node* best)
+//Utility
+void Solutions::quick_sort(vector<Node*> &array, int left, int right)
 {
-	for (int i = 0; i < ext; i++)
+	if (left < right)
 	{
-		if (!contains(i))
+		Node *temp;
+		int index = left + (right - left)/2;
+		int part = array[index]->cost;
+		int i = left, j = right;
+		while (i <= j)
 		{
-			return new Node(i, best->visited, (best->cost + tab[best->current][i]));
+			while (array[i]->cost > part) i++;
+			while (array[j]->cost < part) j--;
+			if (i <= j)
+			{
+				temp = array[i];
+				array[i] = array[j];
+				array[j] = temp;
+				i++;
+				j--;
+			}
 		}
+		part = i;
+		quick_sort(array, left, part - 1);
+		quick_sort(array, part, right);
 	}
 }
+
+//Gettery i settery
+int Solutions::get_result() { return result; }

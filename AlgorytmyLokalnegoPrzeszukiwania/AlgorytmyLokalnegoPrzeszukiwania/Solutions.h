@@ -4,35 +4,37 @@
 
 #include "Data.h"
 
-//Struktura reprezentuj¹ca miasto
+//Struktura reprezentuj¹ca wêze³
 struct Node
 {
-	int current;
+	int index;
 	int cost;
-	vector<bool> visited;
-	Node(int index, vector<bool> visited, int cost)
+	Node(int ii, int cc)
 	{
-		this->cost = cost;
-		current = index;
-		this->visited = visited;
-		this->visited[index] = true;
+		index = ii;
+		cost = cc;
 	}
 };
 
 //Klasa obs³uguj¹ce obliczenia dla realizowanych w tym programie problemów
 class Solutions : public Data
 {
-public:
+private:
 	//Zmienne
 	int result;
 	//tabu search
-	vector<Node*> tabu_list;
-	int max_tabu = 3;
+	vector<int> tabu_list;
+	int max_tabu = 20;
+public:
 	//Metody
 	void naive_search();
 	void tabu_search();
+	//Gettery i settery
+	int get_result();
+private:
 	bool contains(int index);
-	Node* find_candidate(Node* best);
+	void tabu_rec(int line, vector<bool> visited, int distance, int layer);
+	void quick_sort(vector<Node*> &arr, int left, int right);
 };
 
 #endif

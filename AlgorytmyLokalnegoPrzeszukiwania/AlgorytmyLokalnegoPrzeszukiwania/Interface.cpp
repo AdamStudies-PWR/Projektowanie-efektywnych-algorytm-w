@@ -81,7 +81,7 @@ void Interface::main_menu()
 			else
 			{
 				voy.naive_search();
-				cout << "\nWynik: " << voy.result << endl;
+				cout << "\nWynik: " << voy.get_result() << endl;
 				_getche();
 			}
 		} break;
@@ -96,7 +96,7 @@ void Interface::main_menu()
 			else
 			{
 				voy.tabu_search();
-				cout << "\nWynik: " << voy.result << endl;
+				cout << "\nWynik: " << voy.get_result() << endl;
 				_getche();
 			}
 		} break;
