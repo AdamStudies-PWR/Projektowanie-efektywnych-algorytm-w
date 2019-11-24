@@ -29,6 +29,7 @@ public:
 	//Metody
 	void naive_search();
 	void tabu_search();
+	void simulated_annealing();
 	//Gettery i settery
 	int get_result();
 private:

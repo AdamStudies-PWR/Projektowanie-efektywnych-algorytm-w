@@ -36,6 +36,10 @@ void Solutions::naive_search()
 void Solutions::tabu_rec(int line, vector<bool> visited, int distance, int layer)
 {
 	tabu_list.push_back(line);
+	if (tabu_list.size() > max_tabu)
+	{
+		tabu_list.erase(tabu_list.begin() + 0);
+	}
 	visited[line] = true;
 	if (distance > result) return;
 	if (layer != (ext - 1))
@@ -44,7 +48,7 @@ void Solutions::tabu_rec(int line, vector<bool> visited, int distance, int layer
 		vector<Node*> solutions;
 		for (int i = 1; i < ext; i++)
 		{
-			if (!visited[i] && !contains(i))
+			if (!visited[i] /*&& !contains(i)*/)
 			{
 				solutions.push_back(new Node(i, tab[0][i]));
 			}
@@ -52,13 +56,10 @@ void Solutions::tabu_rec(int line, vector<bool> visited, int distance, int layer
 		quick_sort(solutions, 0, (solutions.size() - 1));
 		while (solutions.size() > 0)
 		{
-			if (tabu_list.size() > max_tabu)
-			{
-				tabu_list.erase(tabu_list.begin() + 0);
-			}
 			temp = solutions.back();
 			solutions.pop_back();
-			tabu_rec(temp->index, visited, temp->cost, 1);
+			if (contains(temp->index)) continue;
+			tabu_rec(temp->index, visited, temp->cost, (layer + 1));
 			delete temp;
 		}
 	}
@@ -91,6 +92,7 @@ void Solutions::tabu_search()
 		tabu_rec(temp->index, visited, temp->cost, 1);
 		delete temp;
 	}
+	tabu_list.clear();
 }
 
 //Funkcja sprawdzaj¹ca czy dany wêze³ znajduje siê na liœcie tabu
@@ -101,6 +103,12 @@ bool Solutions::contains(int index)
 		if (tabu_list[i] == index) return true;
 	}
 	return false;
+}
+
+//Funkcja obs³uguj¹ca Sumulowane wyzarzanie 
+void Solutions::simulated_annealing()
+{
+
 }
 
 //Utility
