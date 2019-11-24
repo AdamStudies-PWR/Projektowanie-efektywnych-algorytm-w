@@ -36,10 +36,6 @@ void Solutions::naive_search()
 void Solutions::tabu_rec(int line, vector<bool> visited, int distance, int layer)
 {
 	tabu_list.push_back(line);
-	if (tabu_list.size() > max_tabu)
-	{
-		tabu_list.erase(tabu_list.begin() + 0);
-	}
 	visited[line] = true;
 	if (distance > result) return;
 	if (layer != (ext - 1))
@@ -56,6 +52,10 @@ void Solutions::tabu_rec(int line, vector<bool> visited, int distance, int layer
 		quick_sort(solutions, 0, (solutions.size() - 1));
 		while (solutions.size() > 0)
 		{
+			if (tabu_list.size() > max_tabu)
+			{
+				tabu_list.erase(tabu_list.begin() + 0);
+			}
 			temp = solutions.back();
 			solutions.pop_back();
 			tabu_rec(temp->index, visited, temp->cost, 1);
