@@ -115,6 +115,7 @@ void Solutions::tabu_search()
 		{
 			result = best;
 			tabu[line[current]][line[index]] = lock;
+			//tabu[line[index]][line[current]] = lock;
 			temp = line[current];
 			line[current] = line[index];
 			line[index] = temp;
