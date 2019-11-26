@@ -95,7 +95,7 @@ void Interface::main_menu()
 			}
 			else
 			{
-				voy.tabu_search();
+				voy.tabu_setup();
 				cout << "\nWynik: " << voy.get_result() << endl;
 				_getche();
 			}

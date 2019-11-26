@@ -33,77 +33,111 @@ void Solutions::naive_search()
 }
 
 //Rekurencyjne rozwiniêcie tabu searcha
-void Solutions::tabu_rec(int line, vector<bool> visited, int distance, int layer)
+void Solutions::tabu_setup()
 {
-	tabu_list.push_back(line);
-	if (tabu_list.size() > max_tabu)
+	result = limits;
+	tabu = new int*[ext];
+	for (int i = 0; i < ext; i++)
 	{
-		tabu_list.erase(tabu_list.begin() + 0);
+		tabu[i] = new int[ext];
+		for (int j = 0; j < ext; j++)tabu[i][j] = 0;
+		line.push_back(i);
 	}
-	visited[line] = true;
-	if (distance > result) return;
-	if (layer != (ext - 1))
+	/*for (int i = 0; i < ext; i++)
 	{
-		Node *temp;
-		vector<Node*> solutions;
-		for (int i = 1; i < ext; i++)
-		{
-			if (!visited[i] /*&& !contains(i)*/)
-			{
-				solutions.push_back(new Node(i, tab[0][i]));
-			}
-		}
-		quick_sort(solutions, 0, (solutions.size() - 1));
-		while (solutions.size() > 0)
-		{
-			temp = solutions.back();
-			solutions.pop_back();
-			if (contains(temp->index)) continue;
-			tabu_rec(temp->index, visited, temp->cost, (layer + 1));
-			delete temp;
-		}
-	}
-	else if ((distance + tab[line][0]) < result)
+		cout << line[i];
+	}*/
+	tabu_search();
+	for (int i = 0; i < ext; i++)
 	{
-		result = distance + tab[line][0];
+		delete[] tabu[i];
 	}
-	return;
+	delete[] tabu;
+	line.clear();
 }
 
 //Funkcja szukaj¹ca rozwi¹zania poprzez tabu search
 void Solutions::tabu_search()
 {
-	Node *temp;
-	vector<Node*> solutions;
-	result = limits;
-	vector<bool> visited(ext);
-	visited[0] = true;
-	tabu_list.push_back(0);
-	for (int i = 1; i < ext; i++)
+	int best, index, temp, cost, up;
+	for (int i = 0; i < iterations; i++)
 	{
-		visited[i] = false;
-		solutions.push_back(new Node(i, tab[0][i]));
+		cost = result;
+		best = INT_MAX;
+		index = -1;
+		if ((current + 1 == ext)) up = 0;
+		else up = current + 1;
+		for (int j = (current - 1); j > 0 && j > (current - 4); j--)
+		{
+			if (tabu[line[current]][line[j]] == 0)
+			{
+				if ((j + 1) == current)
+				{
+					temp = cost - tab[line[j]][line[current]] - tab[line[current]][line[up]] - tab[line[j - 1]][line[j]];
+					temp = temp + tab[line[current]][line[j]] + tab[line[j]][line[up]] + tab[line[j - 1]][line[current]];
+				}
+				else
+				{
+					temp = cost - tab[line[current - 1]][line[current]] - tab[line[current]][line[up]] - tab[line[j - 1]][line[j]] - tab[line[j]][line[j + 1]];
+					temp = temp + tab[line[current - 1]][line[j]] + tab[line[j]][up] + tab[line[j - 1]][line[current]] + tab[line[current]][line[j + 1]];
+				}
+				if (temp < best)
+				{
+					index = j;
+					best = temp;
+				}
+			}
+		}
+		for (int j = (current +  1); j < ext && j < (current + 4); j++)
+		{
+			if ((j + 1 == ext)) up = 0;
+			else up = j + 1;
+			if (tabu[line[current]][line[j]] == 0)
+			{
+				if ((j - 1) == current)
+				{
+					temp = cost - tab[line[current]][line[j]] - tab[line[current - 1]][line[current]] - tab[line[j]][line[up]];
+					temp = temp + tab[line[j]][line[current]] + tab[line[current - 1]][line[j]] + tab[line[current]][line[up]];
+				}
+				else
+				{
+					temp = cost - tab[line[current - 1]][line[current]] - tab[line[current]][line[current + 1]] - tab[line[j - 1]][line[j]] - tab[line[j]][line[up]];
+					temp = temp + tab[line[current - 1]][line[j]] + tab[line[j]][line[current + 1]] + tab[line[j - 1]][line[current]] + tab[line[current]][line[up]];
+				}
+				if (temp < best)
+				{
+					index = j;
+					best = temp;
+				}
+			}
+		}
+		if (best < result && index != -1)
+		{
+			result = best;
+			tabu[line[current]][line[index]] = lock;
+			temp = line[current];
+			line[current] = line[index];
+			line[index] = temp;
+			current = index;
+		}
+		else current = (rand() % (ext - 2) + 1);
+		for (int j = 0; j < ext; j++)
+		{
+			for (int z = 0; z < ext; z++)
+			{
+				if (tabu[j][z] != 0) tabu[j][z]--;
+			}
+		}
+		/*cout << "\nResult: " << result << ", path: ";
+		for (int i = 0; i < ext; i++)
+		{
+			cout << line[i] << ", ";
+		}
+		cout << "0, Current: "<<current;
+		_getche();*/
 	}
-	quick_sort(solutions, 0, (solutions.size() - 1));
-	while(solutions.size() > 0)
-	{
-		temp = solutions.back();
-		solutions.pop_back();
-		tabu_rec(temp->index, visited, temp->cost, 1);
-		delete temp;
-	}
-	tabu_list.clear();
 }
 
-//Funkcja sprawdzaj¹ca czy dany wêze³ znajduje siê na liœcie tabu
-bool Solutions::contains(int index)
-{
-	for (int i = 0; i < tabu_list.size(); i++)
-	{
-		if (tabu_list[i] == index) return true;
-	}
-	return false;
-}
 
 //Funkcja obs³uguj¹ca Sumulowane wyzarzanie 
 void Solutions::simulated_annealing()
@@ -111,7 +145,7 @@ void Solutions::simulated_annealing()
 
 }
 
-//Utility
+/*//Utility
 void Solutions::quick_sort(vector<Node*> &array, int left, int right)
 {
 	if (left < right)
@@ -137,7 +171,7 @@ void Solutions::quick_sort(vector<Node*> &array, int left, int right)
 		quick_sort(array, left, part - 1);
 		quick_sort(array, part, right);
 	}
-}
+}*/
 
 //Gettery i settery
 int Solutions::get_result() { return result; }
