@@ -36,6 +36,7 @@ void Solutions::naive_search()
 void Solutions::tabu_setup()
 {
 	result = limits;
+	current = ext/2;
 	tabu = new int*[ext];
 	for (int i = 0; i < ext; i++)
 	{
@@ -71,26 +72,30 @@ void Solutions::tabu_search()
 		}
 		for (int j = 0; j < proxy.size(); j++)
 		{
-			if ((proxy[j] + 1) == current)
+			if (tabu[current][proxy[j]] == 0)
 			{
-				temp = cost - tab[line[proxy[j] - 1]][line[proxy[j]]] - tab[line[proxy[j]]][line[current]] - tab[line[current]][line[current + 1]];
-				temp = temp + tab[line[proxy[j] - 1]][line[current]] + tab[line[current]][line[proxy[j]]] + tab[line[proxy[j]]][line[current + 1]];
+				if ((proxy[j] + 1) == current)
+				{
+					temp = cost - tab[line[proxy[j] - 1]][line[proxy[j]]] - tab[line[proxy[j]]][line[current]] - tab[line[current]][line[current + 1]];
+					temp = temp + tab[line[proxy[j] - 1]][line[current]] + tab[line[current]][line[proxy[j]]] + tab[line[proxy[j]]][line[current + 1]];
+				}
+				else if ((proxy[j] - 1) == current)
+				{
+					temp = cost - tab[line[current - 1]][line[current]] - tab[line[current]][line[proxy[j]]] - tab[line[proxy[j]]][line[proxy[j] + 1]];
+					temp = temp + tab[line[current - 1]][line[proxy[j]]] + tab[line[proxy[j]]][line[current]] + tab[line[current]][line[proxy[j] + 1]];
+				}
+				else
+				{
+					temp = cost - tab[line[proxy[j] - 1]][line[proxy[j]]] - tab[line[proxy[j]]][line[proxy[j] + 1]] - tab[line[current - 1]][line[current]] - tab[line[current]][line[current + 1]];
+					temp = temp + tab[line[proxy[j] - 1]][line[current]] + tab[line[current]][line[proxy[j] + 1]] + tab[line[current - 1]][line[proxy[j]]] + tab[line[proxy[j]]][line[current + 1]];
+				}
+				if (temp < best) best = temp, index = proxy[j];
 			}
-			else if ((proxy[j] - 1) == current)
-			{
-				temp = cost - tab[line[current - 1]][line[current]] - tab[line[current]][line[proxy[j]]] - tab[line[proxy[j]]][line[proxy[j] + 1]];
-				temp = temp + tab[line[current - 1]][line[proxy[j]]] + tab[line[proxy[j]]][line[current]] + tab[line[current]][line[proxy[j] + 1]];
-			}
-			else
-			{
-				temp = cost - tab[line[proxy[j] - 1]][line[proxy[j]]] - tab[line[proxy[j]]][line[proxy[j] + 1]] - tab[line[current - 1]][line[current]] - tab[line[current]][line[current + 1]];
-				temp = temp + tab[line[proxy[j] - 1]][line[current]] + tab[line[current]][line[proxy[j] + 1]] + tab[line[current - 1]][line[proxy[j]]] + tab[line[proxy[j]]][line[current + 1]];
-			}
-			if (temp < best) best = temp, index = proxy[j];
 		}
 		if (best < result)
 		{
 			result = best;
+			tabu[line[current]][line[index]] = lock;
 			temp = line[index];
 			line[index] = line[current];
 			line[current] = temp;
@@ -98,6 +103,13 @@ void Solutions::tabu_search()
 		}
 		else current = (rand() % (ext - 1)) + 1;
 		proxy.clear();
+		for (int i = 0; i < ext; i++)
+		{
+			for (int j = 0; j < ext; j++)
+			{
+				if (tabu[i][j] != 0) tabu[i][j]--;
+			}
+		}
 	}
 }
 

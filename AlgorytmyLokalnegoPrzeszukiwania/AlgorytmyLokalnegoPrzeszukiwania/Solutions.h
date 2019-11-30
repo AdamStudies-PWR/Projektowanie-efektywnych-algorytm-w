@@ -12,7 +12,7 @@ private:
 	int result;
 	//tabu search
 	int **tabu;
-	int current = 1;
+	int current;
 	int lock = 7;
 	int iterations = 100000;
 	vector<int> line;
