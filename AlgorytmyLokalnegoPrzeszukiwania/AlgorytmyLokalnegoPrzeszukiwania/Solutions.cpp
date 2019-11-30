@@ -43,10 +43,7 @@ void Solutions::tabu_setup()
 		for (int j = 0; j < ext; j++)tabu[i][j] = 0;
 		line.push_back(i);
 	}
-	/*for (int i = 0; i < ext; i++)
-	{
-		cout << line[i];
-	}*/
+	line.push_back(0);
 	tabu_search();
 	for (int i = 0; i < ext; i++)
 	{
@@ -59,83 +56,48 @@ void Solutions::tabu_setup()
 //Funkcja szukaj¹ca rozwi¹zania poprzez tabu search
 void Solutions::tabu_search()
 {
-	int best, index, temp, cost, up;
+	int x, y;
+	int cost, temp;
+	int best, index;
+	vector<int> proxy;
 	for (int i = 0; i < iterations; i++)
 	{
-		cost = result;
 		best = INT_MAX;
-		index = -1;
-		if ((current + 1 == ext)) up = 0;
-		else up = current + 1;
-		for (int j = (current - 1); j > 0 && j > (current - 4); j--)
+		cost = result;
+		for (x = (current - 1), y = (current + 1); x > (current - 4); x--, y++)
 		{
-			if (tabu[line[current]][line[j]] == 0)
-			{
-				if ((j + 1) == current)
-				{
-					temp = cost - tab[line[j]][line[current]] - tab[line[current]][line[up]] - tab[line[j - 1]][line[j]];
-					temp = temp + tab[line[current]][line[j]] + tab[line[j]][line[up]] + tab[line[j - 1]][line[current]];
-				}
-				else
-				{
-					temp = cost - tab[line[current - 1]][line[current]] - tab[line[current]][line[up]] - tab[line[j - 1]][line[j]] - tab[line[j]][line[j + 1]];
-					temp = temp + tab[line[current - 1]][line[j]] + tab[line[j]][up] + tab[line[j - 1]][line[current]] + tab[line[current]][line[j + 1]];
-				}
-				if (temp < best)
-				{
-					index = j;
-					best = temp;
-				}
-			}
+			if (x > 0) proxy.push_back(x);
+			if (y < (line.size() - 1)) proxy.push_back(y);
 		}
-		for (int j = (current +  1); j < ext && j < (current + 4); j++)
+		for (int j = 0; j < proxy.size(); j++)
 		{
-			if ((j + 1 == ext)) up = 0;
-			else up = j + 1;
-			if (tabu[line[current]][line[j]] == 0)
+			if ((proxy[j] + 1) == current)
 			{
-				if ((j - 1) == current)
-				{
-					temp = cost - tab[line[current]][line[j]] - tab[line[current - 1]][line[current]] - tab[line[j]][line[up]];
-					temp = temp + tab[line[j]][line[current]] + tab[line[current - 1]][line[j]] + tab[line[current]][line[up]];
-				}
-				else
-				{
-					temp = cost - tab[line[current - 1]][line[current]] - tab[line[current]][line[current + 1]] - tab[line[j - 1]][line[j]] - tab[line[j]][line[up]];
-					temp = temp + tab[line[current - 1]][line[j]] + tab[line[j]][line[current + 1]] + tab[line[j - 1]][line[current]] + tab[line[current]][line[up]];
-				}
-				if (temp < best)
-				{
-					index = j;
-					best = temp;
-				}
+				temp = cost - tab[line[proxy[j] - 1]][line[proxy[j]]] - tab[line[proxy[j]]][line[current]] - tab[line[current]][line[current + 1]];
+				temp = temp + tab[line[proxy[j] - 1]][line[current]] + tab[line[current]][line[proxy[j]]] + tab[line[proxy[j]]][line[current + 1]];
 			}
+			else if ((proxy[j] - 1) == current)
+			{
+				temp = cost - tab[line[current - 1]][line[current]] - tab[line[current]][line[proxy[j]]] - tab[line[proxy[j]]][line[proxy[j] + 1]];
+				temp = temp + tab[line[current - 1]][line[proxy[j]]] + tab[line[proxy[j]]][line[current]] + tab[line[current]][line[proxy[j] + 1]];
+			}
+			else
+			{
+				temp = cost - tab[line[proxy[j] - 1]][line[proxy[j]]] - tab[line[proxy[j]]][line[proxy[j] + 1]] - tab[line[current - 1]][line[current]] - tab[line[current]][line[current + 1]];
+				temp = temp + tab[line[proxy[j] - 1]][line[current]] + tab[line[current]][line[proxy[j] + 1]] + tab[line[current - 1]][line[proxy[j]]] + tab[line[proxy[j]]][line[current + 1]];
+			}
+			if (temp < best) best = temp, index = proxy[j];
 		}
-		if (best < result && index != -1)
+		if (best < result)
 		{
 			result = best;
-			tabu[line[current]][line[index]] = lock;
-			//tabu[line[index]][line[current]] = lock;
-			temp = line[current];
-			line[current] = line[index];
-			line[index] = temp;
+			temp = line[index];
+			line[index] = line[current];
+			line[current] = temp;
 			current = index;
 		}
-		else current = (rand() % (ext - 2) + 1);
-		for (int j = 0; j < ext; j++)
-		{
-			for (int z = 0; z < ext; z++)
-			{
-				if (tabu[j][z] != 0) tabu[j][z]--;
-			}
-		}
-		/*cout << "\nResult: " << result << ", path: ";
-		for (int i = 0; i < ext; i++)
-		{
-			cout << line[i] << ", ";
-		}
-		cout << "0, Current: "<<current;
-		_getche();*/
+		else current = (rand() % (ext - 1)) + 1;
+		proxy.clear();
 	}
 }
 
