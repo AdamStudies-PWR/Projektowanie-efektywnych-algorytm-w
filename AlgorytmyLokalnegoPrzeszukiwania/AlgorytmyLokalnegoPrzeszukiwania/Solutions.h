@@ -29,7 +29,6 @@ public:
 private:
 	void tabu_search();
 	void simulated_annealing();
-	//void quick_sort(vector<Node*> &arr, int left, int right);
 };
 
 #endif
