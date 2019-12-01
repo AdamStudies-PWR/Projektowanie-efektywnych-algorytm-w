@@ -18,5 +18,7 @@ public:
 	//Metody
 	void main_menu();
 private:
+	void annealing();
+	void tabu();
 };
 #endif

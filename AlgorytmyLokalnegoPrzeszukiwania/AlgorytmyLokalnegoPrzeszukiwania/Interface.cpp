@@ -20,6 +20,7 @@ void Interface::main_menu()
 		cout << " [4] Wyœwietl" << endl;
 		cout << " [5] Algorytm naiwny" << endl;
 		cout << " [6] Tabu Search" << endl;
+		cout << " [7] Simulated Annealing" << endl;
 		cout << " [0] Zakoñcz program" << endl;
 		cout << " Wybór: ";
 		choice = _getche();
@@ -93,12 +94,17 @@ void Interface::main_menu()
 				cout << "Brak danych" << endl;
 				_getche();
 			}
-			else
+			else tabu();
+		} break;
+		case '7':
+		{
+			if (!exists)
 			{
-				voy.tabu_setup();
-				cout << "\nWynik: " << voy.get_result() << endl;
+				system("cls");
+				cout << "Brak danych" << endl;
 				_getche();
 			}
+			else annealing();
 		} break;
 		case '0':
 		{
@@ -106,6 +112,74 @@ void Interface::main_menu()
 			cout << "Koniec" << endl;
 			_getch();
 		} break;
+		default: cout << "\nB³¹d wprowadzenia, spróbuj ponownie" << endl, _getch();
+		}
+	} while (choice != '0');
+}
+
+//Menu dla tabu search
+void Interface::tabu()
+{
+	char choice;
+	do
+	{
+		system("cls");
+		cout << "\t---Tabu Search---" << endl;
+		cout << " Obecne dane: " << nazwa << endl;
+		cout << " [1] Tabu Search [Funkcja celu]" << endl;
+		cout << " [2] Tabu Search [Algorytm naiwny]" << endl;
+		cout << " [0] Cofnij" << endl;
+		cout << " Wybór: ";
+		choice = _getche();
+		switch (choice)
+		{
+		case '1':
+		{
+			voy.tabu_setup();
+			cout << "\nWynik: " << voy.get_result() << endl;
+			_getche();
+		} break;
+		case '2':
+		{
+			voy.tabu_setup_naive();
+			cout << "\nWynik: " << voy.get_result() << endl;
+			_getche();
+		} break;
+		case '0': {} break;
+		default: cout << "\nB³¹d wprowadzenia, spróbuj ponownie" << endl, _getch();
+		}
+	} while (choice != '0');
+}
+
+//Menu dla Simulated Annealing
+void Interface::annealing()
+{
+	char choice;
+	do
+	{
+		system("cls");
+		cout << "\t---Simulated Annealing---" << endl;
+		cout << " Obecne dane: " << nazwa << endl;
+		cout << " [1] Simulated Annealing [Funkcja celu]" << endl;
+		cout << " [2] Simulated Annealing [Algorytm naiwny]" << endl;
+		cout << " [0] Cofnij" << endl;
+		cout << " Wybór: ";
+		choice = _getche();
+		switch (choice)
+		{
+		case '1':
+		{
+			//voy.tabu_setup();
+			cout << "\nWynik: " << voy.get_result() << endl;
+			_getche();
+		} break;
+		case '2':
+		{
+			//voy.tabu_setup_naive();
+			cout << "\nWynik: " << voy.get_result() << endl;
+			_getche();
+		} break;
+		case '0': {} break;
 		default: cout << "\nB³¹d wprowadzenia, spróbuj ponownie" << endl, _getch();
 		}
 	} while (choice != '0');

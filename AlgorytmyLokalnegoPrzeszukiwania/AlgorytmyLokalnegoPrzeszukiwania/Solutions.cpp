@@ -11,6 +11,7 @@ void Solutions::naive_search()
 	vector<bool> visited(ext);
 	for (int i = 1; i < ext; i++) visited[i] = false;
 	visited[0] = true;
+	line.push_back(0);
 	while (rem != 0)
 	{
 		min = INT_MAX;
@@ -25,16 +26,19 @@ void Solutions::naive_search()
 				}
 			}
 		}
+		line.push_back(index);
 		visited[index] = true;
 		res = res + min;
 		rem--;
 	}
+	line.push_back(0);
 	result = res + tab[index][0];
 }
 
 //Rekurencyjne rozwiniêcie tabu searcha
 void Solutions::tabu_setup()
 {
+	line.clear();
 	result = limits;
 	current = ext/2;
 	tabu = new int*[ext];
@@ -51,28 +55,51 @@ void Solutions::tabu_setup()
 		delete[] tabu[i];
 	}
 	delete[] tabu;
+}
+
+//Rekurencyjne rozwiniêcie tabu searcha
+void Solutions::tabu_setup_naive()
+{
 	line.clear();
+	current = ext / 2;
+	tabu = new int*[ext];
+	for (int i = 0; i < ext; i++)
+	{
+		tabu[i] = new int[ext];
+		for (int j = 0; j < ext; j++)tabu[i][j] = 0;
+	}
+	naive_search();
+	tabu_search();
+	for (int i = 0; i < ext; i++)
+	{
+		delete[] tabu[i];
+	}
+	delete[] tabu;
 }
 
 //Funkcja szukaj¹ca rozwi¹zania poprzez tabu search
 void Solutions::tabu_search()
 {
-	int x, y;
+	//int x, y;
 	int cost, temp;
 	int best, index;
 	vector<int> proxy;
 	for (int i = 0; i < iterations; i++)
 	{
+		/*cout << "\nCurrent: " << current << ", wskzaujena: " << line[current] << ", Result: " << result <<"\nOrder: ";
+		for (int j = 0; j < line.size(); j++) cout << line[j] << ", ";
+		_getche();*/
 		best = INT_MAX;
 		cost = result;
-		for (x = (current - 1), y = (current + 1); x > (current - 4); x--, y++)
+		/*for (x = (current - 1), y = (current + 1); x > (current - 4); x--, y++)
 		{
 			if (x > 0) proxy.push_back(x);
 			if (y < (line.size() - 1)) proxy.push_back(y);
-		}
+		}*/
+		for (int j = 1; j < ext; j++) if (tabu[current][j] == 0 && current != j && tabu[j][current] == 0) proxy.push_back(j);
 		for (int j = 0; j < proxy.size(); j++)
 		{
-			if (tabu[current][proxy[j]] == 0)
+			//if (tabu[current][proxy[j]] == 0)
 			{
 				if ((proxy[j] + 1) == current)
 				{
@@ -94,12 +121,21 @@ void Solutions::tabu_search()
 		}
 		if (best < result)
 		{
+			/////////
+			//cout << "\nCurrent: " << current << ", wskzaujena: " << line[current] << ", Result: " << result << "\nOrder: ";
+			//for (int j = 0; j < line.size(); j++) cout << line[j] << ", ";
+			//////////
 			result = best;
 			tabu[line[current]][line[index]] = lock;
+			tabu[line[index]][line[current]] = lock;
 			temp = line[index];
 			line[index] = line[current];
 			line[current] = temp;
-			current = index;
+			//current = index;
+			/////////
+			//cout << "\nCurrent: " << current << ", wskzaujena: " << line[current] << ", Result: " << result << "\nOrder: ";
+			//for (int j = 0; j < line.size(); j++) cout << line[j] << ", ";
+			//////////
 		}
 		else current = (rand() % (ext - 1)) + 1;
 		proxy.clear();
@@ -115,6 +151,27 @@ void Solutions::tabu_search()
 
 
 //Funkcja obs³uguj¹ca Sumulowane wyzarzanie 
+void Solutions::annealing_setup()
+{
+	line.clear();
+	result = limits;
+	current = ext / 2;
+	tabu = new int*[ext];
+	for (int i = 0; i < ext; i++)
+	{
+		tabu[i] = new int[ext];
+		for (int j = 0; j < ext; j++)tabu[i][j] = 0;
+		line.push_back(i);
+	}
+	line.push_back(0);
+	simulated_annealing();
+	for (int i = 0; i < ext; i++)
+	{
+		delete[] tabu[i];
+	}
+	delete[] tabu;
+}
+
 void Solutions::simulated_annealing()
 {
 
