@@ -96,10 +96,28 @@ void Solutions::tabu_search()
 			if (x > 0) proxy.push_back(x);
 			if (y < (line.size() - 1)) proxy.push_back(y);
 		}*/
-		for (int j = 1; j < ext; j++) if (tabu[current][j] == 0 && current != j && tabu[j][current] == 0) proxy.push_back(j);
+		for (int j = 0; j < ext; j++) if (tabu[current][j] == 0 && current != j && tabu[j][current] == 0) proxy.push_back(j);
 		for (int j = 0; j < proxy.size(); j++)
 		{
-			//if (tabu[current][proxy[j]] == 0)
+			if (proxy[j] == 0)
+			{
+				if (current == 1)
+				{
+					temp = cost - tab[line[0]][line[1]] - tab[line[1]][line[2]] - tab[line[ext - 1]][line[ext]];
+					temp = temp + tab[line[1]][line[0]] + tab[line[0]][line[2]] + tab[line[ext - 1]][line[1]];
+				}
+				else if (current == (ext - 1))
+				{
+					temp = cost - tab[line[0]][line[1]] - tab[line[ext - 2]][line[ext - 1]] - tab[line[ext - 1]][line[ext]];
+					temp = temp + tab[line[ext - 1]][line[1]] + tab[line[ext - 2]][line[0]] + tab[line[0]][line[ext - 1]];
+				}
+				else
+				{
+					temp = cost - tab[line[0]][line[1]] - tab[line[ext - 1]][line[ext]] - tab[line[current - 1]][line[current]] - tab[line[current]][line[current + 1]];
+					temp = temp + tab[line[current]][line[1]] + tab[line[ext - 1]][line[current]] + tab[line[current - 1]][line[0]] + tab[line[0]][line[current + 1]];
+				}
+			}
+			else
 			{
 				if ((proxy[j] + 1) == current)
 				{
@@ -129,8 +147,17 @@ void Solutions::tabu_search()
 			tabu[line[current]][line[index]] = lock;
 			tabu[line[index]][line[current]] = lock;
 			temp = line[index];
-			line[index] = line[current];
-			line[current] = temp;
+			if (index != 0)
+			{
+				line[index] = line[current];
+				line[current] = temp;
+			}
+			else
+			{
+				line[index] = line[current];
+				line[ext] = line[current];
+				line[current] = temp;
+			}
 			//current = index;
 			/////////
 			//cout << "\nCurrent: " << current << ", wskzaujena: " << line[current] << ", Result: " << result << "\nOrder: ";
@@ -153,28 +180,147 @@ void Solutions::tabu_search()
 //Funkcja obs³uguj¹ca Sumulowane wyzarzanie 
 void Solutions::annealing_setup()
 {
+	TT = 10;
 	line.clear();
 	result = limits;
 	current = ext / 2;
-	tabu = new int*[ext];
-	for (int i = 0; i < ext; i++)
-	{
-		tabu[i] = new int[ext];
-		for (int j = 0; j < ext; j++)tabu[i][j] = 0;
-		line.push_back(i);
-	}
+	for (int i = 0; i < ext; i++) line.push_back(i);
 	line.push_back(0);
 	simulated_annealing();
-	for (int i = 0; i < ext; i++)
-	{
-		delete[] tabu[i];
-	}
-	delete[] tabu;
 }
 
 void Solutions::simulated_annealing()
 {
-
+	int cost, temp;
+	int best, index, prev;
+	double chance, prob;
+	vector<int> proxy;
+	while(TT > 0)
+	{
+		best = INT_MAX;
+		cost = result;
+		for (int j = 0; j < ext; j++) if (current != j && j != prev) proxy.push_back(j);
+		for (int j = 0; j < proxy.size(); j++)
+		{
+			if (proxy[j] == 0)
+			{
+				if (current == 1)
+				{
+					temp = cost - tab[line[0]][line[1]] - tab[line[1]][line[2]] - tab[line[ext - 1]][line[ext]];
+					temp = temp + tab[line[1]][line[0]] + tab[line[0]][line[2]] + tab[line[ext - 1]][line[1]];
+				}
+				else if (current == (ext - 1))
+				{
+					temp = cost - tab[line[0]][line[1]] - tab[line[ext - 2]][line[ext - 1]] - tab[line[ext - 1]][line[ext]];
+					temp = temp + tab[line[ext - 1]][line[1]] + tab[line[ext - 2]][line[0]] + tab[line[0]][line[ext - 1]];
+				}
+				else
+				{
+					temp = cost - tab[line[0]][line[1]] - tab[line[ext - 1]][line[ext]] - tab[line[current - 1]][line[current]] - tab[line[current]][line[current + 1]];
+					temp = temp + tab[line[current]][line[1]] + tab[line[ext - 1]][line[current]] + tab[line[current - 1]][line[0]] + tab[line[0]][line[current + 1]];
+				}
+			}
+			else
+			{
+				if ((proxy[j] + 1) == current)
+				{
+					temp = cost - tab[line[proxy[j] - 1]][line[proxy[j]]] - tab[line[proxy[j]]][line[current]] - tab[line[current]][line[current + 1]];
+					temp = temp + tab[line[proxy[j] - 1]][line[current]] + tab[line[current]][line[proxy[j]]] + tab[line[proxy[j]]][line[current + 1]];
+				}
+				else if ((proxy[j] - 1) == current)
+				{
+					temp = cost - tab[line[current - 1]][line[current]] - tab[line[current]][line[proxy[j]]] - tab[line[proxy[j]]][line[proxy[j] + 1]];
+					temp = temp + tab[line[current - 1]][line[proxy[j]]] + tab[line[proxy[j]]][line[current]] + tab[line[current]][line[proxy[j] + 1]];
+				}
+				else
+				{
+					temp = cost - tab[line[proxy[j] - 1]][line[proxy[j]]] - tab[line[proxy[j]]][line[proxy[j] + 1]] - tab[line[current - 1]][line[current]] - tab[line[current]][line[current + 1]];
+					temp = temp + tab[line[proxy[j] - 1]][line[current]] + tab[line[current]][line[proxy[j] + 1]] + tab[line[current - 1]][line[proxy[j]]] + tab[line[proxy[j]]][line[current + 1]];
+				}
+			}
+			if (temp < best) best = temp, index = proxy[j];
+		}
+		if (best < result)
+		{
+			prev = current;
+			result = best;
+			temp = line[index];
+			if (index != 0)
+			{
+				line[index] = line[current];
+				line[current] = temp;
+			}
+			else
+			{
+				line[index] = line[current];
+				line[ext] = line[current];
+				line[current] = temp;
+			}
+		}
+		else
+		{
+			chance = (rand() % 99) / (double)100;
+			//cout << "\nChance: " << chance;
+			prob = pow(2.76, -double((best - result)/TT)) * 100;
+			//cout << "\nProb1: " << result;
+			prob = min(1, prob);
+			//cout << "\nProb2: " << best;
+			if (chance < prob)
+			{
+				//cout << "\nIT WORKS UWU OWO";
+				result = best;
+				temp = line[index];
+				if (index != 0)
+				{
+					line[index] = line[current];
+					line[current] = temp;
+				}
+				else
+				{
+					line[index] = line[current];
+					line[ext] = line[current];
+					line[current] = temp;
+				}
+			}
+			//else cout << "\nNOPE";
+		}
+		TT = TT - 0.1;
+		proxy.clear();
+	}
+	while (true)
+	{
+		best = INT_MAX;
+		cost = result;
+		for (int j = 1; j < ext; j++) if (current != j) proxy.push_back(j);
+		for (int j = 0; j < proxy.size(); j++)
+		{
+			if ((proxy[j] + 1) == current)
+			{
+				temp = cost - tab[line[proxy[j] - 1]][line[proxy[j]]] - tab[line[proxy[j]]][line[current]] - tab[line[current]][line[current + 1]];
+				temp = temp + tab[line[proxy[j] - 1]][line[current]] + tab[line[current]][line[proxy[j]]] + tab[line[proxy[j]]][line[current + 1]];
+			}
+			else if ((proxy[j] - 1) == current)
+			{
+				temp = cost - tab[line[current - 1]][line[current]] - tab[line[current]][line[proxy[j]]] - tab[line[proxy[j]]][line[proxy[j] + 1]];
+				temp = temp + tab[line[current - 1]][line[proxy[j]]] + tab[line[proxy[j]]][line[current]] + tab[line[current]][line[proxy[j] + 1]];
+			}
+			else
+			{
+				temp = cost - tab[line[proxy[j] - 1]][line[proxy[j]]] - tab[line[proxy[j]]][line[proxy[j] + 1]] - tab[line[current - 1]][line[current]] - tab[line[current]][line[current + 1]];
+				temp = temp + tab[line[proxy[j] - 1]][line[current]] + tab[line[current]][line[proxy[j] + 1]] + tab[line[current - 1]][line[proxy[j]]] + tab[line[proxy[j]]][line[current + 1]];
+			}
+			if (temp < best) best = temp, index = proxy[j];
+		}
+		if (best < result)
+		{
+			result = best;
+			temp = line[index];
+			line[index] = line[current];
+			line[current] = temp;
+		}
+		else return;
+		proxy.clear();
+	}
 }
 
 /*//Utility

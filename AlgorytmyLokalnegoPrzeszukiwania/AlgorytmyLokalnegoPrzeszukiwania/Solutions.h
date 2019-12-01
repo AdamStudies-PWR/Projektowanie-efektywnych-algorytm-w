@@ -16,6 +16,8 @@ private:
 	static const int lock = 10;
 	static const int iterations = 100000;
 	vector<int> line;
+	//Simulated Annealing
+	float TT;
 public:
 	//Metody
 	void naive_search();

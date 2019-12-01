@@ -16,5 +16,6 @@
 #include <ctime>
 #include <vector>
 #include <Windows.h>
+#include <math.h>
 
 #endif //PCH_H

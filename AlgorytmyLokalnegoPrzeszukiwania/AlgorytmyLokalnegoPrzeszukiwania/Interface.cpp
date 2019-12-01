@@ -169,7 +169,7 @@ void Interface::annealing()
 		{
 		case '1':
 		{
-			//voy.tabu_setup();
+			voy.annealing_setup();
 			cout << "\nWynik: " << voy.get_result() << endl;
 			_getche();
 		} break;
