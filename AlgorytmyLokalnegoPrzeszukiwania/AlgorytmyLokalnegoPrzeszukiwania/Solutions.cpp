@@ -57,7 +57,7 @@ void Solutions::tabu_setup()
 	delete[] tabu;
 }
 
-//Rekurencyjne rozwiniêcie tabu searcha
+//Ustawienia tabu searcha
 void Solutions::tabu_setup_naive()
 {
 	line.clear();
@@ -180,11 +180,10 @@ void Solutions::tabu_search()
 	}
 }
 
-
-//Funkcja obs³uguj¹ca Sumulowane wyzarzanie 
+//Ustawianie parametrów symulowanego wyrza¿ania
 void Solutions::annealing_setup()
 {
-	TT = 10;
+	TT = 1000;
 	line.clear();
 	result = limits;
 	current = ext / 2;
@@ -193,177 +192,222 @@ void Solutions::annealing_setup()
 	simulated_annealing();
 }
 
+//Symulowane wyrza¿anie obliczenia
 void Solutions::simulated_annealing()
 {
-	int cost, temp;
+    int temp;
 	int best, index, prev = -1;
-	int safety;
 	double chance, prob;
 	vector<int> proxy;
-	while(TT > 0)
+	while (TT > 0)
 	{
+		proxy.clear();
 		best = INT_MAX;
-		cost = result;
-		for (int j = 0; j < ext; j++) if (current != j && j != prev) proxy.push_back(j);
-		for (int j = 0; j < proxy.size(); j++)
+		for (int i = 0; i < ext; i++) if (current != i && i != prev) proxy.push_back(i);
+		//cout << "\nSize: " << proxy.size() << ", Result: " << result;
+		for (int i = 0; i < proxy.size(); i++)
 		{
-			if (proxy[j] == 0 || current == 0)
+			temp = perform_move(proxy[i]);
+			if (temp < best)
 			{
-				if (current == 0) safety = proxy[j], proxy[j] = 0;
-				else safety = current;
-				if (safety == 1)
-				{
-					temp = cost - tab[line[0]][line[1]] - tab[line[1]][line[2]] - tab[line[ext - 1]][line[ext]];
-					temp = temp + tab[line[1]][line[0]] + tab[line[0]][line[2]] + tab[line[ext - 1]][line[1]];
-				}
-				else if (safety == (ext - 1))
-				{
-					temp = cost - tab[line[0]][line[1]] - tab[line[ext - 2]][line[ext - 1]] - tab[line[ext - 1]][line[ext]];
-					temp = temp + tab[line[ext - 1]][line[1]] + tab[line[ext - 2]][line[0]] + tab[line[0]][line[ext - 1]];
-				}
-				else
-				{
-					temp = cost - tab[line[0]][line[1]] - tab[line[ext - 1]][line[ext]] - tab[line[safety - 1]][line[safety]] - tab[line[safety]][line[safety + 1]];
-					temp = temp + tab[line[safety]][line[1]] + tab[line[ext - 1]][line[safety]] + tab[line[safety - 1]][line[0]] + tab[line[0]][line[safety + 1]];
-				}
+				best = temp;
+				index = i;
 			}
-			else
-			{
-				if ((proxy[j] + 1) == current)
-				{
-					temp = cost - tab[line[proxy[j] - 1]][line[proxy[j]]] - tab[line[proxy[j]]][line[current]] - tab[line[current]][line[current + 1]];
-					temp = temp + tab[line[proxy[j] - 1]][line[current]] + tab[line[current]][line[proxy[j]]] + tab[line[proxy[j]]][line[current + 1]];
-				}
-				else if ((proxy[j] - 1) == current)
-				{
-					temp = cost - tab[line[current - 1]][line[current]] - tab[line[current]][line[proxy[j]]] - tab[line[proxy[j]]][line[proxy[j] + 1]];
-					temp = temp + tab[line[current - 1]][line[proxy[j]]] + tab[line[proxy[j]]][line[current]] + tab[line[current]][line[proxy[j] + 1]];
-				}
-				else
-				{
-					temp = cost - tab[line[proxy[j] - 1]][line[proxy[j]]] - tab[line[proxy[j]]][line[proxy[j] + 1]] - tab[line[current - 1]][line[current]] - tab[line[current]][line[current + 1]];
-					temp = temp + tab[line[proxy[j] - 1]][line[current]] + tab[line[current]][line[proxy[j] + 1]] + tab[line[current - 1]][line[proxy[j]]] + tab[line[proxy[j]]][line[current + 1]];
-				}
-			}
-			if (temp < best) best = temp, index = proxy[j];
 		}
-		if (best < result)
+		if (best > result)
 		{
-			prev = current;
-			result = best;
+			chance = (rand() % 99) / (double)100;
+			prob = pow(2.76, -double((best - result) / TT));
+			prob = min(1, prob);
+			//cout << "\nCH: " << chance << " PR: " << prob;
+			//if(TT < 10000) continue;
+			if (chance >= prob)
+			{
+				current = index;
+				TT = TT - 1;
+				continue;
+			}
+		}
+		if (index == 0)
+		{
+			temp = line[current];
+			line[current] = line[index];
+			line[ext] = temp;
+			line[index] = temp;
+		}
+		else if (current == 0)
+		{
 			temp = line[index];
-			if (index != 0)
-			{
-				line[index] = line[current];
-				line[current] = temp;
-			}
-			else
-			{
-				line[index] = line[current];
-				line[ext] = line[current];
-				line[current] = temp;
-			}
-			//current = index;
+			line[index] = line[current];
+			line[current] = temp;
+			line[ext] = temp;
 		}
 		else
 		{
-			chance = (rand() % 99) / (double)100;
-			//cout << "\nChance: " << chance;
-			prob = pow(2.76, -double((best - result)/TT)) * 100;
-			//cout << "\nProb1: " << result;
-			prob = min(1, prob);
-			//cout << "\nProb2: " << best;
-			if (chance < prob)
-			{
-				//cout << "\nIT WORKS UWU OWO";
-				result = best;
-				temp = line[index];
-				if (index != 0)
-				{
-					line[index] = line[current];
-					line[current] = temp;
-				}
-				else
-				{
-					line[index] = line[current];
-					line[ext] = line[current];
-					line[current] = temp;
-				}
-				//current = index;
-			}
-			//else cout << "\nNOPE";
+			temp = line[index];
+			line[index] = line[current];
+			line[current] = temp;
 		}
-		TT = TT - 0.1;
-		proxy.clear();
+		current = index;
+		prev = index;
+		result = best;
+		TT = TT - 1;
+		//cout << endl;
+		//for (int j = 0; j < line.size(); j++) cout << line[j] << ", ";
 	}
 	while (true)
 	{
 		best = INT_MAX;
-		cost = result;
-		for (int j = 0; j < ext; j++) if (current != j && j!= prev) proxy.push_back(j);
-		for (int j = 0; j < proxy.size(); j++)
+		for (int i = 0; i < ext; i++) if (current != i && i != prev) proxy.push_back(i);
+		for (int i = 0; i < proxy.size(); i++)
 		{
-			if (proxy[j] == 0 || current == 0)
+			temp = perform_move(proxy[i]);
+			if (temp < best)
 			{
-				if (current == 0) safety = proxy[j], proxy[j] = 0;
-				else safety = current;
-				if (safety == 1)
-				{
-					temp = cost - tab[line[0]][line[1]] - tab[line[1]][line[2]] - tab[line[ext - 1]][line[ext]];
-					temp = temp + tab[line[1]][line[0]] + tab[line[0]][line[2]] + tab[line[ext - 1]][line[1]];
-				}
-				else if (safety == (ext - 1))
-				{
-					temp = cost - tab[line[0]][line[1]] - tab[line[ext - 2]][line[ext - 1]] - tab[line[ext - 1]][line[ext]];
-					temp = temp + tab[line[ext - 1]][line[1]] + tab[line[ext - 2]][line[0]] + tab[line[0]][line[ext - 1]];
-				}
-				else
-				{
-					temp = cost - tab[line[0]][line[1]] - tab[line[ext - 1]][line[ext]] - tab[line[safety - 1]][line[safety]] - tab[line[safety]][line[safety + 1]];
-					temp = temp + tab[line[safety]][line[1]] + tab[line[ext - 1]][line[safety]] + tab[line[safety - 1]][line[0]] + tab[line[0]][line[safety + 1]];
-				}
+				best = temp;
+				index = i;
 			}
-			else
-			{
-				if ((proxy[j] + 1) == current)
-				{
-					temp = cost - tab[line[proxy[j] - 1]][line[proxy[j]]] - tab[line[proxy[j]]][line[current]] - tab[line[current]][line[current + 1]];
-					temp = temp + tab[line[proxy[j] - 1]][line[current]] + tab[line[current]][line[proxy[j]]] + tab[line[proxy[j]]][line[current + 1]];
-				}
-				else if ((proxy[j] - 1) == current)
-				{
-					temp = cost - tab[line[current - 1]][line[current]] - tab[line[current]][line[proxy[j]]] - tab[line[proxy[j]]][line[proxy[j] + 1]];
-					temp = temp + tab[line[current - 1]][line[proxy[j]]] + tab[line[proxy[j]]][line[current]] + tab[line[current]][line[proxy[j] + 1]];
-				}
-				else
-				{
-					temp = cost - tab[line[proxy[j] - 1]][line[proxy[j]]] - tab[line[proxy[j]]][line[proxy[j] + 1]] - tab[line[current - 1]][line[current]] - tab[line[current]][line[current + 1]];
-					temp = temp + tab[line[proxy[j] - 1]][line[current]] + tab[line[current]][line[proxy[j] + 1]] + tab[line[current - 1]][line[proxy[j]]] + tab[line[proxy[j]]][line[current + 1]];
-				}
-			}
-			if (temp < best) best = temp, index = proxy[j];
 		}
 		if (best < result)
 		{
-			prev = current;
-			result = best;
-			temp = line[index];
-			if (index != 0)
+			if (index == 0)
 			{
+				temp = line[current];
+				line[current] = line[index];
+				line[ext] = temp;
+				line[index] = temp;
+			}
+			else if (current == 0)
+			{
+				temp = line[index];
 				line[index] = line[current];
 				line[current] = temp;
+				line[ext] = temp;
 			}
 			else
 			{
+				temp = line[index];
 				line[index] = line[current];
-				line[ext] = line[current];
 				line[current] = temp;
 			}
 			current = index;
+			result = best;
 		}
 		else return;
 		proxy.clear();
 	}
+}
+
+/*void Solutions::simulated_annealing()
+{
+	int next;
+	int best;
+	int temp;
+	///
+	double chance;
+	double prob;
+	///
+	while (TT > 0)
+	{
+		do
+		{
+			next = (rand() % (ext - 1));
+		} while (next == current);
+		best = perform_move(next);
+		if (best > result)
+		{
+			TT = TT - 1;
+			chance = (rand() % 99) / (double)100;
+			prob = pow(2.76, -double((best - result) / TT));
+			prob = min(1, prob);
+			//cout << "\nCH: " << chance << " PR: " << prob;
+			//if(TT < 10000) continue;
+			if (chance >= prob) continue;
+		}
+		if (next == 0)
+		{
+			temp = line[current];
+			line[current] = line[next];
+			line[ext] = temp;
+			line[next] = temp;
+		}
+		else if (current == 0)
+		{
+			temp = line[next];
+			line[next] = line[current];
+			line[current] = temp;
+			line[ext] = temp;
+		}
+		else
+		{
+			temp = line[next];
+			line[next] = line[current];
+			line[current] = temp;
+		}
+		result = best;
+		TT = TT - 1;
+	}
+}*/
+
+//Wykonanie ruchu zamiany miast
+int Solutions::perform_move(int next)
+{
+	int finall;
+	if (next == 0)
+	{
+		if (current == 1)
+		{
+			finall = result - tab[line[next]][line[current]] - tab[line[current]][line[current + 1]] - tab[line[ext - 1]][line[next]];
+			finall = finall + tab[line[current]][line[next]] + tab[line[next]][line[current + 1]] + tab[line[ext - 1]][line[current]];
+		}
+		else if (current == (ext - 1))
+		{
+			finall = result - tab[line[next]][line[next + 1]] - tab[line[current - 1]][line[current]] - tab[line[current]][line[next]];
+			finall = finall + tab[line[current]][line[next + 1]] + tab[line[current - 1]][line[next]] + tab[line[next]][line[current]];
+		}
+		else
+		{
+			finall = result - tab[line[next]][line[next + 1]] - tab[line[current - 1]][line[current]] - tab[line[current]][line[current + 1]] - tab[line[ext - 1]][line[next]];
+			finall = finall + tab[line[current]][line[next + 1]] + tab[line[current - 1]][line[next]] + tab[line[next]][line[current + 1]] + tab[line[ext - 1]][line[current]];
+		}
+	}
+	else if (current == 0)
+	{
+		if (next == 1)
+		{
+			finall = result - tab[line[current]][line[next]] - tab[line[next]][line[next + 1]] - tab[line[ext - 1]][line[current]];
+			finall = finall + tab[line[next]][line[current]] + tab[line[current]][line[next + 1]] + tab[line[ext - 1]][line[next]];
+		}
+		else if (next == (ext - 1))
+		{
+			finall = result - tab[line[current]][line[current + 1]] - tab[line[next - 1]][line[next]] - tab[line[next]][line[current]];
+			finall = finall + tab[line[next]][line[current + 1]] + tab[line[next - 1]][line[current]] + tab[line[current]][line[next]];
+		}
+		else
+		{
+			finall = result - tab[line[current]][line[current + 1]] - tab[line[next - 1]][line[next]] - tab[line[next]][line[next + 1]] - tab[line[ext - 1]][line[current]];
+			finall = finall + tab[line[next]][line[current + 1]] + tab[line[next - 1]][line[current]] + tab[line[current]][line[next + 1]] + tab[line[ext - 1]][line[next]];
+		}
+	}
+	else
+	{
+		if (next == (current - 1))
+		{
+			finall = result - tab[line[next - 1]][line[next]] - tab[line[next]][line[current]] - tab[line[current]][line[current + 1]];
+			finall = finall + tab[line[next - 1]][line[current]] + tab[line[current]][line[next]] + tab[line[next]][line[current + 1]];
+		}
+		else if (next == (current + 1))
+		{
+			finall = result - tab[line[current - 1]][line[current]] - tab[line[current]][line[next]] - tab[line[next]][line[next + 1]];
+			finall = finall + tab[line[current - 1]][line[next]] + tab[line[next]][line[current]] + tab[line[current]][line[next + 1]];
+		}
+		else
+		{
+			finall = result - tab[line[next - 1]][line[next]] - tab[line[next]][line[next + 1]] - tab[line[current - 1]][line[current]] - tab[line[current]][line[current + 1]];
+			finall = finall + tab[line[next - 1]][line[current]] + tab[line[current]][line[next + 1]] + tab[line[current - 1]][line[next]] + tab[line[next]][line[current + 1]];
+		}
+	}
+	return finall;
 }
 
 //Gettery i settery

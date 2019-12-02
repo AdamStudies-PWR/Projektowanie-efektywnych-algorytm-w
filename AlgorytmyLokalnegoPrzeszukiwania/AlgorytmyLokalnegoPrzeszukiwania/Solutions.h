@@ -29,6 +29,7 @@ public:
 private:
 	void tabu_search();
 	void simulated_annealing();
+	int perform_move(int next);
 };
 
 #endif
