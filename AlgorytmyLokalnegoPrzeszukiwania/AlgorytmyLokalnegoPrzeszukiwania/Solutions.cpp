@@ -192,6 +192,31 @@ void Solutions::annealing_setup()
 	simulated_annealing();
 }
 
+//Kod testowy
+/*void Solutions::simulated_annealing()
+{
+	cout << "\nWartoœæ pocz¹tkowa: " << result << endl;
+	cout << "Kolejnoœæ: ";
+	for (int j = 0; j < line.size(); j++) cout << line[j] << ", ";
+	current = 5;
+	result = perform_move(7);
+	line[5] = 7;
+	//line[ext] = 9;
+	line[7] = 5;
+	cout << "\n\nZamiana: " << result << endl;
+	cout << "Kolejnoœæ: ";
+	for (int j = 0; j < line.size(); j++) cout << line[j] << ", ";
+	current = 7;
+	result = perform_move(5);
+	line[5] = 5;
+	//line[ext] = 0;
+	line[7] = 7;
+	cout << "\n\nCofnij: " << result << endl;
+	cout << "Kolejnoœæ: ";
+	for (int j = 0; j < line.size(); j++) cout << line[j] << ", ";
+	_getche();
+}*/
+
 //Symulowane wyrza¿anie obliczenia
 void Solutions::simulated_annealing()
 {
@@ -204,7 +229,7 @@ void Solutions::simulated_annealing()
 		proxy.clear();
 		best = INT_MAX;
 		for (int i = 0; i < ext; i++) if (current != i && i != prev) proxy.push_back(i);
-		//cout << "\nSize: " << proxy.size() << ", Result: " << result;
+		cout << "\nSize: " << proxy.size() << ", Result: " << result;
 		for (int i = 0; i < proxy.size(); i++)
 		{
 			temp = perform_move(proxy[i]);
