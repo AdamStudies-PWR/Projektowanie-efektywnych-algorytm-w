@@ -228,44 +228,43 @@ void Solutions::simulated_annealing()
 	{
 		proxy.clear();
 		best = INT_MAX;
-		for (int i = 0; i < ext; i++) if (current != i && i != prev) proxy.push_back(i);
-		cout << "\nSize: " << proxy.size() << ", Result: " << result;
+		for (int i = 0; i < ext; i++) if (current != i) proxy.push_back(i);
 		for (int i = 0; i < proxy.size(); i++)
 		{
 			temp = perform_move(proxy[i]);
 			if (temp < best)
 			{
 				best = temp;
-				index = i;
+				index = proxy[i];
 			}
 		}
-		if (best > result)
+		if (best >= result)
 		{
 			chance = (rand() % 99) / (double)100;
 			prob = pow(2.76, -double((best - result) / TT));
 			prob = min(1, prob);
 			//cout << "\nCH: " << chance << " PR: " << prob;
-			//if(TT < 10000) continue;
 			if (chance >= prob)
 			{
-				current = index;
 				TT = TT - 1;
+				current = rand() % (ext - 2) + 1;
+				//current = index;
 				continue;
 			}
 		}
-		if (index == 0)
+		if (current == 0)
 		{
 			temp = line[current];
 			line[current] = line[index];
-			line[ext] = temp;
+			line[ext] = line[index];
 			line[index] = temp;
 		}
-		else if (current == 0)
+		else if (index == 0)
 		{
 			temp = line[index];
 			line[index] = line[current];
+			line[ext] = line[current];
 			line[current] = temp;
-			line[ext] = temp;
 		}
 		else
 		{
@@ -273,12 +272,9 @@ void Solutions::simulated_annealing()
 			line[index] = line[current];
 			line[current] = temp;
 		}
-		current = index;
-		prev = index;
 		result = best;
+		//current = index;
 		TT = TT - 1;
-		//cout << endl;
-		//for (int j = 0; j < line.size(); j++) cout << line[j] << ", ";
 	}
 	while (true)
 	{
@@ -290,7 +286,7 @@ void Solutions::simulated_annealing()
 			if (temp < best)
 			{
 				best = temp;
-				index = i;
+				index = proxy[i];
 			}
 		}
 		if (best < result)
@@ -378,21 +374,22 @@ void Solutions::simulated_annealing()
 int Solutions::perform_move(int next)
 {
 	int finall;
+	int tecost = result;
 	if (next == 0)
 	{
 		if (current == 1)
 		{
-			finall = result - tab[line[next]][line[current]] - tab[line[current]][line[current + 1]] - tab[line[ext - 1]][line[next]];
+			finall = tecost - tab[line[next]][line[current]] - tab[line[current]][line[current + 1]] - tab[line[ext - 1]][line[next]];
 			finall = finall + tab[line[current]][line[next]] + tab[line[next]][line[current + 1]] + tab[line[ext - 1]][line[current]];
 		}
 		else if (current == (ext - 1))
 		{
-			finall = result - tab[line[next]][line[next + 1]] - tab[line[current - 1]][line[current]] - tab[line[current]][line[next]];
+			finall = tecost - tab[line[next]][line[next + 1]] - tab[line[current - 1]][line[current]] - tab[line[current]][line[next]];
 			finall = finall + tab[line[current]][line[next + 1]] + tab[line[current - 1]][line[next]] + tab[line[next]][line[current]];
 		}
 		else
 		{
-			finall = result - tab[line[next]][line[next + 1]] - tab[line[current - 1]][line[current]] - tab[line[current]][line[current + 1]] - tab[line[ext - 1]][line[next]];
+			finall = tecost - tab[line[next]][line[next + 1]] - tab[line[current - 1]][line[current]] - tab[line[current]][line[current + 1]] - tab[line[ext - 1]][line[next]];
 			finall = finall + tab[line[current]][line[next + 1]] + tab[line[current - 1]][line[next]] + tab[line[next]][line[current + 1]] + tab[line[ext - 1]][line[current]];
 		}
 	}
@@ -400,36 +397,36 @@ int Solutions::perform_move(int next)
 	{
 		if (next == 1)
 		{
-			finall = result - tab[line[current]][line[next]] - tab[line[next]][line[next + 1]] - tab[line[ext - 1]][line[current]];
+			finall = tecost - tab[line[current]][line[next]] - tab[line[next]][line[next + 1]] - tab[line[ext - 1]][line[current]];
 			finall = finall + tab[line[next]][line[current]] + tab[line[current]][line[next + 1]] + tab[line[ext - 1]][line[next]];
 		}
 		else if (next == (ext - 1))
 		{
-			finall = result - tab[line[current]][line[current + 1]] - tab[line[next - 1]][line[next]] - tab[line[next]][line[current]];
+			finall = tecost - tab[line[current]][line[current + 1]] - tab[line[next - 1]][line[next]] - tab[line[next]][line[current]];
 			finall = finall + tab[line[next]][line[current + 1]] + tab[line[next - 1]][line[current]] + tab[line[current]][line[next]];
 		}
 		else
 		{
-			finall = result - tab[line[current]][line[current + 1]] - tab[line[next - 1]][line[next]] - tab[line[next]][line[next + 1]] - tab[line[ext - 1]][line[current]];
+			finall = tecost - tab[line[current]][line[current + 1]] - tab[line[next - 1]][line[next]] - tab[line[next]][line[next + 1]] - tab[line[ext - 1]][line[current]];
 			finall = finall + tab[line[next]][line[current + 1]] + tab[line[next - 1]][line[current]] + tab[line[current]][line[next + 1]] + tab[line[ext - 1]][line[next]];
 		}
 	}
 	else
 	{
-		if (next == (current - 1))
+		if ((next + 1) == current)
 		{
-			finall = result - tab[line[next - 1]][line[next]] - tab[line[next]][line[current]] - tab[line[current]][line[current + 1]];
+			finall = tecost - tab[line[next - 1]][line[next]] - tab[line[next]][line[current]] - tab[line[current]][line[current + 1]];
 			finall = finall + tab[line[next - 1]][line[current]] + tab[line[current]][line[next]] + tab[line[next]][line[current + 1]];
 		}
-		else if (next == (current + 1))
+		else if ((next - 1) == current)
 		{
-			finall = result - tab[line[current - 1]][line[current]] - tab[line[current]][line[next]] - tab[line[next]][line[next + 1]];
+			finall = tecost - tab[line[current - 1]][line[current]] - tab[line[current]][line[next]] - tab[line[next]][line[next + 1]];
 			finall = finall + tab[line[current - 1]][line[next]] + tab[line[next]][line[current]] + tab[line[current]][line[next + 1]];
 		}
 		else
 		{
-			finall = result - tab[line[next - 1]][line[next]] - tab[line[next]][line[next + 1]] - tab[line[current - 1]][line[current]] - tab[line[current]][line[current + 1]];
-			finall = finall + tab[line[next - 1]][line[current]] + tab[line[current]][line[next + 1]] + tab[line[current - 1]][line[next]] + tab[line[next]][line[current + 1]];
+			finall = tecost - tab[line[current - 1]][line[current]] - tab[line[current]][line[current + 1]] - tab[line[next - 1]][line[next]] - tab[line[next]][line[next + 1]];
+			finall = finall + tab[line[current - 1]][line[next]] + tab[line[next]][line[current + 1]] + tab[line[next - 1]][line[current]] + tab[line[current]][line[next + 1]];
 		}
 	}
 	return finall;
