@@ -162,6 +162,8 @@ void Interface::annealing()
 		cout << " Obecne dane: " << nazwa << endl;
 		cout << " [1] Simulated Annealing [Funkcja celu]" << endl;
 		cout << " [2] Simulated Annealing [Algorytm naiwny]" << endl;
+		cout << " [3] SA - wersja 1 [Funkcja celu]" << endl;
+		cout << " [4] SA - wersja 1 [Algorytm naiwny]" << endl;
 		cout << " [0] Cofnij" << endl;
 		cout << " Wybór: ";
 		choice = _getche();
@@ -176,6 +178,18 @@ void Interface::annealing()
 		case '2':
 		{
 			//voy.tabu_setup_naive();
+			cout << "\nWynik: " << voy.get_result() << endl;
+			_getche();
+		} break;
+		case '3':
+		{
+			voy.sa_setup();
+			cout << "\nWynik: " << voy.get_result() << endl;
+			_getche();
+		} break;
+		case '4':
+		{
+			voy.sa_setup_naive();
 			cout << "\nWynik: " << voy.get_result() << endl;
 			_getche();
 		} break;

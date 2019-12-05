@@ -23,12 +23,16 @@ public:
 	void naive_search();
 	void tabu_setup();
 	void tabu_setup_naive();
+	void sa_setup();
+	void sa_setup_naive();
 	void annealing_setup();
+
 	//Gettery i settery
 	int get_result();
 private:
 	void tabu_search();
 	void simulated_annealing();
+	void sa_first();
 	int perform_move(int next);
 };
 

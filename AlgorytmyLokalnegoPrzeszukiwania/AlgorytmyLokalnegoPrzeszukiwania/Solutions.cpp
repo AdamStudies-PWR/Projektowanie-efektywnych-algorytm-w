@@ -2,45 +2,12 @@
 #include "pch.h"
 #include "Solutions.h"
 
-//Funkcja szukaj¹ca rozwi¹zania naiwnie - najmniejsza odleg³oœæ od danego miasta
-void Solutions::naive_search()
-{
-	int res = 0, min, index = 0;
-	int temp = 0;
-	int rem = ext - 1;
-	vector<bool> visited(ext);
-	for (int i = 1; i < ext; i++) visited[i] = false;
-	visited[0] = true;
-	line.push_back(0);
-	while (rem != 0)
-	{
-		min = INT_MAX;
-		for (int i = 1; i < ext; i++)
-		{
-			if (!visited[i])
-			{
-				if (tab[temp][i] < min)
-				{
-					index = i;
-					min = tab[temp][i];
-				}
-			}
-		}
-		line.push_back(index);
-		visited[index] = true;
-		res = res + min;
-		rem--;
-	}
-	line.push_back(0);
-	result = res + tab[index][0];
-}
-
 //Rekurencyjne rozwiniêcie tabu searcha
 void Solutions::tabu_setup()
 {
 	line.clear();
 	result = limits;
-	current = ext/2;
+	current = ext / 2;
 	tabu = new int*[ext];
 	for (int i = 0; i < ext; i++)
 	{
@@ -75,6 +42,75 @@ void Solutions::tabu_setup_naive()
 		delete[] tabu[i];
 	}
 	delete[] tabu;
+}
+
+//Ustawianie parametrów próbnej wersji algorytmu SA
+void Solutions::sa_setup()
+{
+	TT = 10000;
+	line.clear();
+	result = limits;
+	current = ext / 2;
+	for (int i = 0; i < ext; i++) line.push_back(i);
+	line.push_back(0);
+	sa_first();
+}
+
+//Ustawianie parametrów próbnej wersji algorytmu SA - algorytm zach³anny
+void Solutions::sa_setup_naive()
+{
+	TT = 100000;
+	line.clear();
+	result = limits;
+	current = ext / 2;
+	naive_search();
+	line.push_back(0);
+	sa_first();
+}
+
+//Ustawianie parametrów symulowanego wyrza¿ania
+void Solutions::annealing_setup()
+{
+	TT = 10000;
+	line.clear();
+	result = limits;
+	current = ext / 2;
+	for (int i = 0; i < ext; i++) line.push_back(i);
+	line.push_back(0);
+	simulated_annealing();
+}
+
+//Funkcja szukaj¹ca rozwi¹zania naiwnie - najmniejsza odleg³oœæ od danego miasta
+void Solutions::naive_search()
+{
+	int res = 0, min, index = 0;
+	int temp = 0;
+	int rem = ext - 1;
+	vector<bool> visited(ext);
+	for (int i = 1; i < ext; i++) visited[i] = false;
+	visited[0] = true;
+	line.push_back(0);
+	while (rem != 0)
+	{
+		min = INT_MAX;
+		for (int i = 1; i < ext; i++)
+		{
+			if (!visited[i])
+			{
+				if (tab[temp][i] < min)
+				{
+					index = i;
+					min = tab[temp][i];
+				}
+			}
+		}
+		line.push_back(index);
+		visited[index] = true;
+		res = res + min;
+		rem--;
+	}
+	line.push_back(0);
+	result = res + tab[index][0];
 }
 
 //Funkcja szukaj¹ca rozwi¹zania poprzez tabu search
@@ -180,133 +216,10 @@ void Solutions::tabu_search()
 	}
 }
 
-//Ustawianie parametrów symulowanego wyrza¿ania
-void Solutions::annealing_setup()
-{
-	TT = 100000;
-	line.clear();
-	result = limits;
-	current = ext / 2;
-	for (int i = 0; i < ext; i++) line.push_back(i);
-	line.push_back(0);
-	simulated_annealing();
-}
-
-//S¹siedztwo - ca³oœæ, zamieniamy losowo
-/*void Solutions::simulated_annealing()
+//Próbana wersja algorytmu SA
+void Solutions::sa_first()
 {
 	int temp;
-	int best, index;
-	double chance, prob;
-	while (TT > 0)
-	{
-		current = rand() % (ext - 1);
-		do
-		{
-			index = rand() % (ext - 1);
-		} while (current == index);
-		best = perform_move(index);
-		if (best >= result)
-		{
-			chance = (rand() % 99) / (double)100;
-			prob = pow(2.76, -double((best - result) / TT));
-			prob = min(1, prob);
-			//cout << "\nCH: " << chance << " PR: " << prob;
-			if (chance <= prob)
-			{
-				TT = TT - 1;
-				continue;
-			}
-		}
-		if (current == 0)
-		{
-			temp = line[current];
-			line[current] = line[index];
-			line[ext] = line[index];
-			line[index] = temp;
-		}
-		else if (index == 0)
-		{
-			temp = line[index];
-			line[index] = line[current];
-			line[ext] = line[current];
-			line[current] = temp;
-		}
-		else
-		{
-			temp = line[index];
-			line[index] = line[current];
-			line[current] = temp;
-		}
-		result = best;
-		TT = TT - 1;
-	}
-	while (true)
-	{
-		current = rand() % (ext - 1);
-		do
-		{
-			index = rand() % (ext - 1);
-		} while (current == index);
-		best = perform_move(index);
-		if (best < result)
-		{
-			if (index == 0)
-			{
-				temp = line[current];
-				line[current] = line[index];
-				line[ext] = temp;
-				line[index] = temp;
-			}
-			else if (current == 0)
-			{
-				temp = line[index];
-				line[index] = line[current];
-				line[current] = temp;
-				line[ext] = temp;
-			}
-			else
-			{
-				temp = line[index];
-				line[index] = line[current];
-				line[current] = temp;
-			}
-			current = index;
-			result = best;
-		}
-		else return;
-	}
-}*/
-
-//Kod testowy
-/*void Solutions::simulated_annealing()
-{
-	cout << "\nWartoœæ pocz¹tkowa: " << result << endl;
-	cout << "Kolejnoœæ: ";
-	for (int j = 0; j < line.size(); j++) cout << line[j] << ", ";
-	current = 5;
-	result = perform_move(7);
-	line[5] = 7;
-	//line[ext] = 9;
-	line[7] = 5;
-	cout << "\n\nZamiana: " << result << endl;
-	cout << "Kolejnoœæ: ";
-	for (int j = 0; j < line.size(); j++) cout << line[j] << ", ";
-	current = 7;
-	result = perform_move(5);
-	line[5] = 5;
-	//line[ext] = 0;
-	line[7] = 7;
-	cout << "\n\nCofnij: " << result << endl;
-	cout << "Kolejnoœæ: ";
-	for (int j = 0; j < line.size(); j++) cout << line[j] << ", ";
-	_getche();
-}*/
-
-//Symulowane wyrza¿anie obliczenia
-/*void Solutions::simulated_annealing()
-{
-    int temp;
 	int best, index;
 	double chance, prob;
 	vector<int> proxy;
@@ -329,12 +242,10 @@ void Solutions::annealing_setup()
 			chance = (rand() % 99) / (double)100;
 			prob = pow(2.76, -double((best - result) / TT));
 			prob = min(1, prob);
-			//cout << "\nCH: " << chance << " PR: " << prob;
 			if (chance <= prob)
 			{
 				TT = TT - 1;
 				current = rand() % (ext - 1);
-				//current = index;
 				continue;
 			}
 		}
@@ -359,8 +270,6 @@ void Solutions::annealing_setup()
 			line[current] = temp;
 		}
 		result = best;
-		//current = rand() % (ext - 1);
-		//current = index;
 		TT = TT - 1;
 	}
 	while (true)
@@ -404,57 +313,15 @@ void Solutions::annealing_setup()
 		}
 		else return;
 	}
-}*/
+}
 
-
+//Simulated anneling  -obliczenia
 void Solutions::simulated_annealing()
 {
-	int next;
-	int best;
-	int temp;
-	///
-	double chance;
-	double prob;
-	///
+	vector<int> proxy;
 	while (TT > 0)
 	{
-		do
-		{
-			next = (rand() % (ext - 1));
-		} while (next == current);
-		best = perform_move(next);
-		if (best > result)
-		{
-			TT = TT - 1;
-			chance = (rand() % 99) / (double)100;
-			prob = pow(2.76, -double((best - result) / TT));
-			prob = min(1, prob);
-			//cout << "\nCH: " << chance << " PR: " << prob;
-			//if(TT < 10000) continue;
-			if (chance >= prob) continue;
-		}
-		if (next == 0)
-		{
-			temp = line[current];
-			line[current] = line[next];
-			line[ext] = temp;
-			line[next] = temp;
-		}
-		else if (current == 0)
-		{
-			temp = line[next];
-			line[next] = line[current];
-			line[current] = temp;
-			line[ext] = temp;
-		}
-		else
-		{
-			temp = line[next];
-			line[next] = line[current];
-			line[current] = temp;
-		}
-		result = best;
-		TT = TT - 1;
+		for (int i = 0; i < ext; i++) if (current != i) proxy.push_back(i);
 	}
 }
 
