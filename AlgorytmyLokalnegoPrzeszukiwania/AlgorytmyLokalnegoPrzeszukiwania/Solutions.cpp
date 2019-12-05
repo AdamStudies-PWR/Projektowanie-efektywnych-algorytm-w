@@ -183,7 +183,7 @@ void Solutions::tabu_search()
 //Ustawianie parametrów symulowanego wyrza¿ania
 void Solutions::annealing_setup()
 {
-	TT = 1000;
+	TT = 100000;
 	line.clear();
 	result = limits;
 	current = ext / 2;
@@ -191,6 +191,92 @@ void Solutions::annealing_setup()
 	line.push_back(0);
 	simulated_annealing();
 }
+
+//S¹siedztwo - ca³oœæ, zamieniamy losowo
+/*void Solutions::simulated_annealing()
+{
+	int temp;
+	int best, index;
+	double chance, prob;
+	while (TT > 0)
+	{
+		current = rand() % (ext - 1);
+		do
+		{
+			index = rand() % (ext - 1);
+		} while (current == index);
+		best = perform_move(index);
+		if (best >= result)
+		{
+			chance = (rand() % 99) / (double)100;
+			prob = pow(2.76, -double((best - result) / TT));
+			prob = min(1, prob);
+			//cout << "\nCH: " << chance << " PR: " << prob;
+			if (chance <= prob)
+			{
+				TT = TT - 1;
+				continue;
+			}
+		}
+		if (current == 0)
+		{
+			temp = line[current];
+			line[current] = line[index];
+			line[ext] = line[index];
+			line[index] = temp;
+		}
+		else if (index == 0)
+		{
+			temp = line[index];
+			line[index] = line[current];
+			line[ext] = line[current];
+			line[current] = temp;
+		}
+		else
+		{
+			temp = line[index];
+			line[index] = line[current];
+			line[current] = temp;
+		}
+		result = best;
+		TT = TT - 1;
+	}
+	while (true)
+	{
+		current = rand() % (ext - 1);
+		do
+		{
+			index = rand() % (ext - 1);
+		} while (current == index);
+		best = perform_move(index);
+		if (best < result)
+		{
+			if (index == 0)
+			{
+				temp = line[current];
+				line[current] = line[index];
+				line[ext] = temp;
+				line[index] = temp;
+			}
+			else if (current == 0)
+			{
+				temp = line[index];
+				line[index] = line[current];
+				line[current] = temp;
+				line[ext] = temp;
+			}
+			else
+			{
+				temp = line[index];
+				line[index] = line[current];
+				line[current] = temp;
+			}
+			current = index;
+			result = best;
+		}
+		else return;
+	}
+}*/
 
 //Kod testowy
 /*void Solutions::simulated_annealing()
@@ -218,10 +304,10 @@ void Solutions::annealing_setup()
 }*/
 
 //Symulowane wyrza¿anie obliczenia
-void Solutions::simulated_annealing()
+/*void Solutions::simulated_annealing()
 {
     int temp;
-	int best, index, prev = -1;
+	int best, index;
 	double chance, prob;
 	vector<int> proxy;
 	while (TT > 0)
@@ -244,10 +330,10 @@ void Solutions::simulated_annealing()
 			prob = pow(2.76, -double((best - result) / TT));
 			prob = min(1, prob);
 			//cout << "\nCH: " << chance << " PR: " << prob;
-			if (chance >= prob)
+			if (chance <= prob)
 			{
 				TT = TT - 1;
-				current = rand() % (ext - 2) + 1;
+				current = rand() % (ext - 1);
 				//current = index;
 				continue;
 			}
@@ -273,13 +359,15 @@ void Solutions::simulated_annealing()
 			line[current] = temp;
 		}
 		result = best;
+		//current = rand() % (ext - 1);
 		//current = index;
 		TT = TT - 1;
 	}
 	while (true)
 	{
+		proxy.clear();
 		best = INT_MAX;
-		for (int i = 0; i < ext; i++) if (current != i && i != prev) proxy.push_back(i);
+		for (int i = 0; i < ext; i++) if (current != i) proxy.push_back(i);
 		for (int i = 0; i < proxy.size(); i++)
 		{
 			temp = perform_move(proxy[i]);
@@ -315,11 +403,11 @@ void Solutions::simulated_annealing()
 			result = best;
 		}
 		else return;
-		proxy.clear();
 	}
-}
+}*/
 
-/*void Solutions::simulated_annealing()
+
+void Solutions::simulated_annealing()
 {
 	int next;
 	int best;
@@ -368,7 +456,7 @@ void Solutions::simulated_annealing()
 		result = best;
 		TT = TT - 1;
 	}
-}*/
+}
 
 //Wykonanie ruchu zamiany miast
 int Solutions::perform_move(int next)
