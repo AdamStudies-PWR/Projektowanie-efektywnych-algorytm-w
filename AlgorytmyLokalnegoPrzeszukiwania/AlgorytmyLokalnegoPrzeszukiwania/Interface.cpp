@@ -81,8 +81,10 @@ void Interface::main_menu()
 			}
 			else
 			{
+				count.StartFileCounter();
 				voy.naive_search();
-				cout << "\nWynik: " << voy.get_result() << endl;
+				cout << "\nCzas: " << count.GetCounter() << "ms" << endl;
+				cout << "Wynik: " << voy.get_result() << endl;
 				_getche();
 			}
 		} break;
@@ -135,14 +137,18 @@ void Interface::tabu()
 		{
 		case '1':
 		{
+			count.StartFileCounter();
 			voy.tabu_setup();
-			cout << "\nWynik: " << voy.get_result() << endl;
+			cout << "\nCzas: " << count.GetCounter() << "ms" << endl;
+			cout << "Wynik: " << voy.get_result() <<  endl;
 			_getche();
 		} break;
 		case '2':
 		{
+			count.StartFileCounter();
 			voy.tabu_setup_naive();
-			cout << "\nWynik: " << voy.get_result() << endl;
+			cout << "\nCzas: " << count.GetCounter() << "ms" << endl;
+			cout << "Wynik: " << voy.get_result() << endl;
 			_getche();
 		} break;
 		case '0': {} break;
@@ -171,26 +177,34 @@ void Interface::annealing()
 		{
 		case '1':
 		{
+			count.StartFileCounter();
 			voy.annealing_setup();
-			cout << "\nWynik: " << voy.get_result() << endl;
+			cout << "\nCzas: " << count.GetCounter() << "ms" << endl;
+			cout << "Wynik: " << voy.get_result() << endl;
 			_getche();
 		} break;
 		case '2':
 		{
+			count.StartFileCounter();
 			voy.annealing_setup_naive();
-			cout << "\nWynik: " << voy.get_result() << endl;
+			cout << "\nCzas: " << count.GetCounter() << "ms" << endl;
+			cout << "Wynik: " << voy.get_result() << endl;
 			_getche();
 		} break;
 		case '3':
 		{
+			count.StartFileCounter();
 			voy.sa_setup();
-			cout << "\nWynik: " << voy.get_result() << endl;
+			cout << "\nCzas: " << count.GetCounter() << "ms" << endl;
+			cout << "Wynik: " << voy.get_result() << endl;
 			_getche();
 		} break;
 		case '4':
 		{
+			count.StartFileCounter();
 			voy.sa_setup_naive();
-			cout << "\nWynik: " << voy.get_result() << endl;
+			cout << "\nCzas: " << count.GetCounter() << "ms" << endl;
+			cout << "Wynik: " << voy.get_result() << endl;
 			_getche();
 		} break;
 		case '0': {} break;
