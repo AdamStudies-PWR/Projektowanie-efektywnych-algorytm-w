@@ -177,7 +177,7 @@ void Interface::annealing()
 		} break;
 		case '2':
 		{
-			//voy.tabu_setup_naive();
+			voy.annealing_setup_naive();
 			cout << "\nWynik: " << voy.get_result() << endl;
 			_getche();
 		} break;

@@ -61,14 +61,12 @@ void Solutions::sa_setup_naive()
 {
 	TT = 100000;
 	line.clear();
-	result = limits;
 	current = ext / 2;
 	naive_search();
-	line.push_back(0);
 	sa_first();
 }
 
-//Ustawianie parametrów symulowanego wyrza¿ania
+//Ustawianie parametrów symulowanego wyrza¿ania - algorytm zach³anny
 void Solutions::annealing_setup()
 {
 	TT = 1000000;
@@ -77,6 +75,16 @@ void Solutions::annealing_setup()
 	current = ext / 2;
 	for (int i = 0; i < ext; i++) line.push_back(i);
 	line.push_back(0);
+	simulated_annealing();
+}
+
+//Ustawianie parametrów symulowanego wyrza¿ania
+void Solutions::annealing_setup_naive()
+{
+	TT = 1000000;
+	line.clear();
+	current = ext / 2;
+	naive_search();
 	simulated_annealing();
 }
 
@@ -104,6 +112,7 @@ void Solutions::naive_search()
 				}
 			}
 		}
+		temp = index;
 		line.push_back(index);
 		visited[index] = true;
 		res = res + min;

@@ -26,6 +26,7 @@ public:
 	void sa_setup();
 	void sa_setup_naive();
 	void annealing_setup();
+	void annealing_setup_naive();
 
 	//Gettery i settery
 	int get_result();
