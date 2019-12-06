@@ -335,9 +335,9 @@ void Solutions::simulated_annealing()
 	vector<int> proxy;
 	while (TT > 0.0001)
 	{
-		//cout << "\n temperatura: " << TT;
 		for (int i = 0; i < (ext / 3); i++)
 		{
+			//current = rand() % (ext - 1);
 			proxy.clear();
 			for (int i = 0; i < ext; i++) if (current != i) proxy.push_back(i);
 			next = rand() % (ext - 1);
@@ -349,11 +349,9 @@ void Solutions::simulated_annealing()
 				prob = min(1, prob);
 				if (chance >= prob)
 				{
-					//cout << "\nkwi";
 					current = rand() % (ext - 1);
 					continue;
 				}
-				//else cout << "\nwtf";
 			}
 			if (current == 0)
 			{
