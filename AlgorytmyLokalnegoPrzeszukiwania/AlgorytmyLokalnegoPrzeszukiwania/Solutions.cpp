@@ -71,7 +71,7 @@ void Solutions::sa_setup_naive()
 //Ustawianie parametrów symulowanego wyrza¿ania
 void Solutions::annealing_setup()
 {
-	TT = 10000;
+	TT = 1000000;
 	line.clear();
 	result = limits;
 	current = ext / 2;
@@ -318,10 +318,102 @@ void Solutions::sa_first()
 //Simulated anneling  -obliczenia
 void Solutions::simulated_annealing()
 {
+	int temp;
+	int best;
+	int next;
+	double chance, prob;
+	float gem = 0.9;
 	vector<int> proxy;
-	while (TT > 0)
+	while (TT > 0.0001)
 	{
+		//cout << "\n temperatura: " << TT;
+		for (int i = 0; i < (ext / 3); i++)
+		{
+			proxy.clear();
+			for (int i = 0; i < ext; i++) if (current != i) proxy.push_back(i);
+			next = rand() % (ext - 1);
+			best = perform_move(proxy[next]);
+			if (best >= result)
+			{
+				chance = (rand() % 99) / (double)100;
+				prob = pow(2.76, -double((best - result) / TT));
+				prob = min(1, prob);
+				if (chance >= prob)
+				{
+					//cout << "\nkwi";
+					current = rand() % (ext - 1);
+					continue;
+				}
+				//else cout << "\nwtf";
+			}
+			if (current == 0)
+			{
+				temp = line[current];
+				line[current] = line[proxy[next]];
+				line[ext] = line[proxy[next]];
+				line[proxy[next]] = temp;
+			}
+			else if (proxy[next] == 0)
+			{
+				temp = line[proxy[next]];
+				line[proxy[next]] = line[current];
+				line[ext] = line[current];
+				line[current] = temp;
+			}
+			else
+			{
+				temp = line[proxy[next]];
+				line[proxy[next]] = line[current];
+				line[current] = temp;
+			}
+			result = best;
+			current = proxy[next];
+		}
+		TT = TT * gem;
+		if (TT < 10000) gem = 0.999;
+		else if (TT < 1000000) gem = 0.99;
+	}
+	int index;
+	while (true)
+	{
+		proxy.clear();
+		best = INT_MAX;
 		for (int i = 0; i < ext; i++) if (current != i) proxy.push_back(i);
+		for (int i = 0; i < proxy.size(); i++)
+		{
+			temp = perform_move(proxy[i]);
+			if (temp < best)
+			{
+				best = temp;
+				index = proxy[i];
+			}
+		}
+		if (best < result)
+		{
+			if (index == 0)
+			{
+				temp = line[current];
+				line[current] = line[index];
+				line[ext] = temp;
+				line[index] = temp;
+			}
+			else if (current == 0)
+			{
+				temp = line[index];
+				line[index] = line[current];
+				line[current] = temp;
+				line[ext] = temp;
+			}
+			else
+			{
+				temp = line[index];
+				line[index] = line[current];
+				line[current] = temp;
+			}
+			current = index;
+			result = best;
+		}
+		else return;
 	}
 }
 
