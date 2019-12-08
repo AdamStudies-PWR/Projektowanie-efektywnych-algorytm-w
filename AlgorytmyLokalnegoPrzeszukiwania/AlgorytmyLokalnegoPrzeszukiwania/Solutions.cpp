@@ -212,7 +212,7 @@ void Solutions::sa_first()
 			if (chance <= prob)
 			{
 				TT = TT - 1;
-				current = rand() % (ext - 1);
+				current = rand() % ext;
 				continue;
 			}
 		}
@@ -295,7 +295,7 @@ void Solutions::simulated_annealing()
 	{
 		for (int i = 0; i < (ext / 3); i++)
 		{
-			//current = rand() % (ext - 1);
+			//current = rand() % ext;
 			proxy.clear();
 			for (int i = 0; i < ext; i++) if (current != i) proxy.push_back(i);
 			next = rand() % (ext - 1);
@@ -307,7 +307,7 @@ void Solutions::simulated_annealing()
 				prob = min(1, prob);
 				if (chance >= prob)
 				{
-					current = rand() % (ext - 1);
+					current = rand() % ext;
 					continue;
 				}
 			}
@@ -375,6 +375,7 @@ void Solutions::simulated_annealing()
 				line[index] = line[current];
 				line[current] = temp;
 			}
+			//current = rand() % ext;
 			current = index;
 			result = best;
 		}
