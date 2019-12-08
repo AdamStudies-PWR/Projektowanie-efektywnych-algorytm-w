@@ -130,24 +130,33 @@ void Solutions::tabu_search()
 	vector<int> proxy;
 	for (int i = 0; i < iterations; i++)
 	{
+		proxy.clear();
 		best = INT_MAX;
-		/*cout << "\nCurrent: " << current << ", wskzaujena: " << line[current] << ", Result: " << result <<"\nOrder: ";
-		for (int j = 0; j < line.size(); j++) cout << line[j] << ", ";
-		_getche();*/
-		for (int j = 0; j < ext; j++) if (tabu[current][j] == 0 && current != j && tabu[j][current] == 0) proxy.push_back(j);
+		for (int j = 0; j < ext; j++) if (current != j) proxy.push_back(j);
 		for (int j = 0; j < proxy.size(); j++)
 		{
 			temp = perform_move(proxy[j]);
-			if (temp < best)
+			if (tabu[current][proxy[j]] != 0)
 			{
-				index = proxy[j];
-				best = temp;
+				if (temp < result)
+				{
+					index = proxy[j];
+					best = temp;
+				}
+			}
+			else
+			{
+				if (temp < best)
+				{
+					index = proxy[j];
+					best = temp;
+				}
 			}
 		}
 		if (best < result)
 		{
 			result = best;
-			tabu[line[current]][line[index]] = lock;
+			//tabu[line[current]][line[index]] = lock;
 			tabu[line[index]][line[current]] = lock;
 			if (current == 0)
 			{
@@ -169,10 +178,10 @@ void Solutions::tabu_search()
 				line[index] = line[current];
 				line[current] = temp;
 			}
-			current = index;
+			//current = index;
+			current = rand() % ext;
 		}
-		else current = rand() % (ext - 1);
-		proxy.clear();
+		else current = rand() % ext;
 		for (int i = 0; i < ext; i++)
 		{
 			for (int j = 0; j < ext; j++)
