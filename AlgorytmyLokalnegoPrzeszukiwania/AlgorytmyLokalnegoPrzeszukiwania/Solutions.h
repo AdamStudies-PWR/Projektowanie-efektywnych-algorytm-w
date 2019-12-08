@@ -13,7 +13,7 @@ private:
 	//tabu search
 	int **tabu;
 	int current;
-	static const int lock = 10;
+	static const int lock = 7;
 	static const int iterations = 100000;
 	vector<int> line;
 	//Simulated Annealing

@@ -153,10 +153,10 @@ void Solutions::tabu_search()
 				}
 			}
 		}
-		if (best < result)
+		if (best <= result)
 		{
 			result = best;
-			//tabu[line[current]][line[index]] = lock;
+			tabu[line[current]][line[index]] = lock;
 			tabu[line[index]][line[current]] = lock;
 			if (current == 0)
 			{
