@@ -27,7 +27,8 @@ public:
 	void sa_setup_naive();
 	void annealing_setup();
 	void annealing_setup_naive();
-
+	//Testowanie
+	void testing(int number, bool tab[]);
 	//Gettery i settery
 	int get_result();
 private:

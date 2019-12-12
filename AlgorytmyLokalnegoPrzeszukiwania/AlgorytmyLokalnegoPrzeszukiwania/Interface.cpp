@@ -21,6 +21,7 @@ void Interface::main_menu()
 		cout << " [5] Algorytm naiwny" << endl;
 		cout << " [6] Tabu Search" << endl;
 		cout << " [7] Simulated Annealing" << endl;
+		cout << " [8] Testowanie" << endl;
 		cout << " [0] Zakoñcz program" << endl;
 		cout << " Wybór: ";
 		choice = _getche();
@@ -107,6 +108,16 @@ void Interface::main_menu()
 				_getche();
 			}
 			else annealing();
+		} break;
+		case '8':
+		{
+			if (!exists)
+			{
+				system("cls");
+				cout << "Brak danych" << endl;
+				_getche();
+			}
+			else test_menu();
 		} break;
 		case '0':
 		{
@@ -208,6 +219,101 @@ void Interface::annealing()
 			_getche();
 		} break;
 		case '0': {} break;
+		default: cout << "\nB³¹d wprowadzenia, spróbuj ponownie" << endl, _getch();
+		}
+	} while (choice != '0');
+}
+
+//Menu testowania algorytmów
+void Interface::test_menu()
+{
+	char choice;
+	string filename;
+	do
+	{
+		system("cls");
+		cout << "\t---Testowanie---" << endl;
+		cout << " Obecne dane: " << nazwa << endl;
+		cout << " Iloœæ prób: " << loops << endl;
+		cout << " [1] Zmieñ iloœæ prób" << endl;
+		cout << " [2] Testowane algorytmy" << endl;
+		cout << " [3] Uruchom" << endl;
+		cout << " [4] Wyœwietl wynik pomiarów [Tylko ostatni pomiar]" << endl;
+		cout << " [5] Zapisz do pliku" << endl;
+		cout << " [0] Cofnij" << endl;
+		cout << " Wybór: ";
+		choice = _getche();
+		switch (choice)
+		{
+		case '1':
+		{
+			cout << "\n Podaj now¹ wartoœæ: ";
+			cin >> loops;
+		}; break;
+		case '2':
+		{
+			tested_alg();
+		}; break;
+		case '3':
+		{
+			voy.testing(loops, tested);
+		}; break;
+		case '4':
+		{
+			voy.dispaly_results(tested, loops);
+		}; break;
+		case '5':
+		{
+			system("cls");
+			cout << "WprowadŸ nazwê pliku: ";
+			cin >> filename;
+			voy.save(tested, loops, filename);
+		}; break;
+		case '0': {}break;
+		default: cout << "\nB³¹d wprowadzenia, spróbuj ponownie" << endl, _getch();
+		}
+	} while (choice != '0');
+}
+
+//Menu wyboru testowanych algorytmów
+void Interface::tested_alg()
+{
+	char choice;
+	do
+	{
+		system("cls");
+		cout << "\t---Testowane algorytmy---" << endl;
+		cout << " [1] Algorytm Naiwny\t\t\t\t" << tested[0] << endl;
+		cout << " [2] Tabu Search\t\t\t\t" << tested[1] << endl;
+		cout << " [3] Tabu Search - AN\t\t\t\t" << tested[2] << endl;
+		cout << " [4] Symulowane wygaszanie\t\t\t" << tested[3] << endl;
+		cout << " [5] Symulowane wygaszanie - AN\t\t\t" << tested[4] << endl;
+		cout << " [0] Cofnij" << endl;
+		cout << " Wybór: ";
+		choice = _getche();
+		switch (choice)
+		{
+		case '1':
+		{
+			tested[0] = !tested[0];
+		}; break;
+		case '2':
+		{
+			tested[1] = !tested[1];
+		}; break;
+		case '3':
+		{
+			tested[2] = !tested[2];
+		}; break;
+		case '4':
+		{
+			tested[3] = !tested[3];
+		}; break;
+		case '5':
+		{
+			tested[4] = !tested[4];
+		}; break;
+		case '0': {}break;
 		default: cout << "\nB³¹d wprowadzenia, spróbuj ponownie" << endl, _getch();
 		}
 	} while (choice != '0');

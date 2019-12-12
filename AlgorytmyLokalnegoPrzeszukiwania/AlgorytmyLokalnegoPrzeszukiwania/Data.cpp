@@ -165,3 +165,56 @@ int Data::counttarget()
 	value = value + tab[ext - 1][0];
 	return value;
 }
+
+//Funkca wyœwietlaj¹ca wyniki testowania
+void Data::dispaly_results(bool tab[], int size)
+{
+	system("cls");
+	if (results == nullptr) cout << "Brak pomiarów!" << endl;
+	else
+	{
+		if (tab[0]) cout << "Algorytm naiwny: " << results[0][size - 1] << endl;
+		if (tab[1]) cout << "Tabu search: " << results[1][size - 1] << endl;
+		if (tab[2]) cout << "Tabu search - AN: " << results[2][size - 1] << endl;
+		if (tab[3]) cout << "Symulowane wyrza¿anie: " << results[3][size - 1] << endl;
+		if (tab[4]) cout << "Symulowane wyrza¿anie - AN: " << results[4][size - 1] << endl;
+		if (tab[5]) cout << "Mój algorytm: " << results[5][size - 1] << endl;
+		if (tab[6]) cout << "Mój algorytm - AN: " << results[6][size - 1] << endl;
+	}
+	_getche();
+}
+
+//Funckja zapisuj¹ca wyniki do pliku
+void Data::save(bool tab[], int size, string filename)
+{
+	system("cls");
+	if (results == nullptr) cout << "Brak pomiarów!" << endl, _getche;
+	else
+	{
+		ofstream plik(filename + ".txt");
+		if (plik.good() == true)
+		{
+			if (tab[0]) plik << "NS;";
+			if (tab[1]) plik << "Tabu;";
+			if (tab[2]) plik << "TabuNS;";
+			if (tab[3]) plik << "ANN";
+			if (tab[4]) plik << "ANNNS;";
+			if (tab[5]) plik << "SA;";
+			if (tab[6]) plik << "SANS;";
+			plik << endl;
+			for (int i = 0; i < size; i++)
+			{
+				if (tab[0]) plik << results[0][i] << ";";
+				if (tab[1]) plik << results[1][i] << ";";
+				if (tab[2]) plik << results[2][i] << ";";
+				if (tab[3]) plik << results[3][i] << ";";
+				if (tab[4]) plik << results[4][i] << ";";
+				if (tab[5]) plik << results[5][i] << ";";
+				if (tab[6]) plik << results[6][i];
+				plik << endl;
+			}
+			plik.close();
+		}
+		else cout << "B³¹d zapisu" << endl, _getche();
+	}
+}

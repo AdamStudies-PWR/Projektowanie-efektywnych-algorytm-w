@@ -16,11 +16,15 @@ private:
 	Solutions voy;
 	Counter count;
 	bool exists = false;
+	int loops = 100;
+	bool tested[7] = { true, true, true, true, true, true, true };
 public:
 	//Metody
 	void main_menu();
 private:
 	void annealing();
 	void tabu();
+	void test_menu();
+	void tested_alg();
 };
 #endif

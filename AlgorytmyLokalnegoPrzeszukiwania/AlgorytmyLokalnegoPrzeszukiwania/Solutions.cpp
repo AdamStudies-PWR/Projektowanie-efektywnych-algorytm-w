@@ -456,3 +456,68 @@ int Solutions::perform_move(int next)
 
 //Gettery i settery
 int Solutions::get_result() { return result; }
+
+//Funkcja testuj¹ca
+void Solutions::testing(int size, bool tab[])
+{
+	system("cls");
+	if (results != nullptr)
+	{
+		for (int i = 0; i < 7; i++)
+		{
+			delete[] results[i];
+		}
+		delete[] results;
+	}
+	results = new double*[7];
+	for (int i = 0; i < 7; i++)
+	{
+		results[i] = new double[size];
+	}
+	for (int i = 0; i < size; i++)
+	{
+		cout << i << endl;
+		if (tab[0])
+		{
+			count.StartFileCounter();
+			this->naive_search();
+			results[0][i] = count.GetCounter();
+		}
+		if (tab[1])
+		{
+			count.StartFileCounter();
+			this->tabu_setup();
+			results[1][i] = count.GetCounter();
+		}
+		if (tab[2])
+		{
+			count.StartFileCounter();
+			this->tabu_setup_naive();
+			results[2][i] = count.GetCounter();
+		}
+		if (tab[3])
+		{
+			count.StartFileCounter();
+			this->annealing_setup();
+			results[3][i] = count.GetCounter();
+		}
+		if (tab[4])
+		{
+			count.StartFileCounter();
+			this->annealing_setup_naive();
+			results[4][i] = count.GetCounter();
+		}
+		if (tab[5])
+		{
+			count.StartFileCounter();
+			this->sa_setup();
+			results[5][i] = count.GetCounter();
+		}
+		if (tab[6])
+		{
+			count.StartFileCounter();
+			this->sa_setup_naive();
+			results[6][i] = count.GetCounter();
+		}
+	}
+}
