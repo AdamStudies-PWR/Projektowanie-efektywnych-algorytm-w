@@ -173,13 +173,13 @@ void Data::dispaly_results(bool tab[], int size)
 	if (results == nullptr) cout << "Brak pomiarów!" << endl;
 	else
 	{
-		if (tab[0]) cout << "Algorytm naiwny: " << results[0][size - 1] << endl;
-		if (tab[1]) cout << "Tabu search: " << results[1][size - 1] << endl;
-		if (tab[2]) cout << "Tabu search - AN: " << results[2][size - 1] << endl;
-		if (tab[3]) cout << "Symulowane wyrza¿anie: " << results[3][size - 1] << endl;
-		if (tab[4]) cout << "Symulowane wyrza¿anie - AN: " << results[4][size - 1] << endl;
-		if (tab[5]) cout << "Mój algorytm: " << results[5][size - 1] << endl;
-		if (tab[6]) cout << "Mój algorytm - AN: " << results[6][size - 1] << endl;
+		if (tab[0]) cout << "Algorytm naiwny: " << results[0][size - 1] << ", wynik: " << results[1][size - 1] << endl;
+		if (tab[1]) cout << "Tabu search: " << results[2][size - 1] << ", wynik: " << results[3][size - 1] << endl;
+		if (tab[2]) cout << "Tabu search - AN: " << results[4][size - 1] << ", wynik: " << results[5][size - 1] << endl;
+		if (tab[3]) cout << "Symulowane wyrza¿anie: " << results[6][size - 1] << ", wynik: " << results[7][size - 1] << endl;
+		if (tab[4]) cout << "Symulowane wyrza¿anie - AN: " << results[8][size - 1] << ", wynik: " << results[9][size - 1] << endl;
+		if (tab[5]) cout << "Mój algorytm: " << results[10][size - 1] << ", wynik: " << results[11][size - 1] << endl;
+		if (tab[6]) cout << "Mój algorytm - AN: " << results[12][size - 1] << ", wynik: " << results[13][size - 1] << endl;
 	}
 	_getche();
 }
@@ -201,16 +201,30 @@ void Data::save(bool tab[], int size, string filename)
 			if (tab[4]) plik << "ANNNS;";
 			if (tab[5]) plik << "SA;";
 			if (tab[6]) plik << "SANS;";
+			if (tab[0]) plik << "Wynik_NS;";
+			if (tab[1]) plik << "Wynik_Tabu;";
+			if (tab[2]) plik << "Wynik_TabuNS;";
+			if (tab[3]) plik << "Wynik_ANN;";
+			if (tab[4]) plik << "Wynik_ANNNS;";
+			if (tab[5]) plik << "Wynik_SA;";
+			if (tab[6]) plik << "Wynik_SANS;";
 			plik << endl;
 			for (int i = 0; i < size; i++)
 			{
 				if (tab[0]) plik << results[0][i] << ";";
-				if (tab[1]) plik << results[1][i] << ";";
-				if (tab[2]) plik << results[2][i] << ";";
-				if (tab[3]) plik << results[3][i] << ";";
-				if (tab[4]) plik << results[4][i] << ";";
-				if (tab[5]) plik << results[5][i] << ";";
-				if (tab[6]) plik << results[6][i];
+				if (tab[1]) plik << results[2][i] << ";";
+				if (tab[2]) plik << results[4][i] << ";";
+				if (tab[3]) plik << results[6][i] << ";";
+				if (tab[4]) plik << results[8][i] << ";";
+				if (tab[5]) plik << results[10][i] << ";";
+				if (tab[6]) plik << results[12][i] << ";";
+				if (tab[0]) plik << results[1][i] << ";";
+				if (tab[1]) plik << results[3][i] << ";";
+				if (tab[2]) plik << results[5][i] << ";";
+				if (tab[3]) plik << results[7][i] << ";";
+				if (tab[4]) plik << results[9][i] << ";";
+				if (tab[5]) plik << results[11][i] << ";";
+				if (tab[6]) plik << results[13][i];
 				plik << endl;
 			}
 			plik.close();

@@ -463,14 +463,14 @@ void Solutions::testing(int size, bool tab[])
 	system("cls");
 	if (results != nullptr)
 	{
-		for (int i = 0; i < 7; i++)
+		for (int i = 0; i < 14; i++)
 		{
 			delete[] results[i];
 		}
 		delete[] results;
 	}
-	results = new double*[7];
-	for (int i = 0; i < 7; i++)
+	results = new double*[14];
+	for (int i = 0; i < 14; i++)
 	{
 		results[i] = new double[size];
 	}
@@ -482,42 +482,49 @@ void Solutions::testing(int size, bool tab[])
 			count.StartFileCounter();
 			this->naive_search();
 			results[0][i] = count.GetCounter();
+			results[1][i] = result;
 		}
 		if (tab[1])
 		{
 			count.StartFileCounter();
 			this->tabu_setup();
-			results[1][i] = count.GetCounter();
+			results[2][i] = count.GetCounter();
+			results[3][i] = result;
 		}
 		if (tab[2])
 		{
 			count.StartFileCounter();
 			this->tabu_setup_naive();
-			results[2][i] = count.GetCounter();
+			results[4][i] = count.GetCounter();
+			results[5][i] = result;
 		}
 		if (tab[3])
 		{
 			count.StartFileCounter();
 			this->annealing_setup();
-			results[3][i] = count.GetCounter();
+			results[6][i] = count.GetCounter();
+			results[7][i] = result;
 		}
 		if (tab[4])
 		{
 			count.StartFileCounter();
 			this->annealing_setup_naive();
-			results[4][i] = count.GetCounter();
+			results[8][i] = count.GetCounter();
+			results[9][i] = result;
 		}
 		if (tab[5])
 		{
 			count.StartFileCounter();
 			this->sa_setup();
-			results[5][i] = count.GetCounter();
+			results[10][i] = count.GetCounter();
+			results[11][i] = result;
 		}
 		if (tab[6])
 		{
 			count.StartFileCounter();
 			this->sa_setup_naive();
-			results[6][i] = count.GetCounter();
+			results[12][i] = count.GetCounter();
+			results[13][i] = result;
 		}
 	}
 }
