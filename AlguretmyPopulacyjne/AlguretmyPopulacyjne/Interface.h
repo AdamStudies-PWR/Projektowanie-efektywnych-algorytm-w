@@ -4,21 +4,19 @@
 
 using namespace std;
 
+#include "Solutions.h"
+
 // Klasa obs³uguj¹ca interakcje z u¿ytkownikiem
 class Interface
 {
 private:
 	//Atrybuty
 	string nazwa = "brak";
-	//Solutions voy;
+	Solutions voy;
 	bool exists = false;
 public:
 	//Metody
 	void main_menu();
 private:
-	void annealing();
-	void tabu();
-	void test_menu();
-	void tested_alg();
 };
 #endif

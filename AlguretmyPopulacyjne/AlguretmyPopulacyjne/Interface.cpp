@@ -12,7 +12,7 @@ void Interface::main_menu()
 	do
 	{
 		system("cls");
-		cout << "\t---Algorytmy Lokalnego Przeszukiwania---" << endl;
+		cout << "\t---Algorytmy populacyjne---" << endl;
 		cout << " Obecne dane: " << nazwa << endl;
 		cout << " [1] Wczytaj z pliku" << endl;
 		cout << " [2] Generuj losowo" << endl;
