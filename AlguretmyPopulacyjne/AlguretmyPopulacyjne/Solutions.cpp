@@ -5,7 +5,7 @@
 //Funkcja inicuj¹j¹ca dzia³anie algorytmu genetycznego
 void Solutions::genetic_setup()
 {
-	int *path;
+	int *path = new int;
 	vector<Genes*> pops(population);
 	pops[0] = new Genes(natural_route(path), *path);
 	pops[1] = new Genes(naive_route(path), *path);
@@ -13,12 +13,23 @@ void Solutions::genetic_setup()
 	{
 		pops[i] = new Genes(random_route(path), *path);
 	}
+	genetic_algorithm(pops);
 }
 
 //G³ówna pêtla algorytmu genetycznego
 void Solutions::genetic_algorithm(vector<Genes*> pops)
 {
-
+	system("cls");
+	for (int i = 0; i < population; i++)
+	{
+		cout << "\nScie¿ka:" << endl;
+		for (int j = 0; j < pops[i]->path.size(); j++)
+		{
+			cout << pops[i]->path[j] << ", ";
+		}
+		cout << "\nD³ugoœæ: " << pops[i]->fitnes << endl;
+	}
+	_getche();
 }
 
 //Gettery i settery
@@ -79,8 +90,33 @@ vector<int> Solutions::naive_route(int *path)
 vector<int> Solutions::random_route(int *path)
 {
 	vector<int> line;
-	*path = limits;
-	for (int i = 0; i < ext; i++) line.push_back(i);
-	line.push_back(0);
+	*path = 0;
+	int index;
+	int fate, counter;
+	int rem = ext;
+	int temp = rand() % rem;
+	int last = temp;
+	rem--;
+	vector<bool> visited(ext);
+	for (int i = 0; i < ext; i++) visited[i] = false;
+	visited[temp] = true;
+	line.push_back(temp);
+	while (rem != 0)
+	{
+		fate = rand() % rem;
+		rem--;
+		for (int i = 0, counter = 0; i < ext; i++)
+		{
+			if (!visited[i]) counter++;
+			index = i;
+			if (counter == fate) break;
+		}
+		line.push_back(index);
+		visited[index] = true;
+		*path = *path + tab[temp][index];
+		temp = index;
+	}
+	line.push_back(last);
+	*path = *path + tab[index][last];
 	return line;
 }
