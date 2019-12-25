@@ -103,7 +103,7 @@ vector<int> Solutions::random_route(int *path)
 	line.push_back(temp);
 	while (rem != 0)
 	{
-		fate = rand() % rem;
+		fate = rand() % rem + 1;
 		rem--;
 		for (int i = 0, counter = 0; i < ext; i++)
 		{
