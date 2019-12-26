@@ -107,7 +107,8 @@ vector<int> Solutions::random_route(int *path)
 		rem--;
 		for (int i = 0, counter = 0; i < ext; i++)
 		{
-			if (!visited[i]) counter++;
+			if (visited[i]) continue;
+			counter++;
 			index = i;
 			if (counter == fate) break;
 		}
