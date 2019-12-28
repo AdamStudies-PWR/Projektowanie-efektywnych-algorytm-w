@@ -5,6 +5,7 @@
 //Funkcja inicuj¹j¹ca dzia³anie algorytmu genetycznego
 void Solutions::genetic_setup()
 {
+	result = INT_MAX;
 	int *path = new int;
 	vector<Genes*> pops(population);
 	pops[0] = new Genes(natural_route(path), *path);
@@ -19,17 +20,31 @@ void Solutions::genetic_setup()
 //G³ówna pêtla algorytmu genetycznego
 void Solutions::genetic_algorithm(vector<Genes*> pops)
 {
-	system("cls");
-	for (int i = 0; i < population; i++)
+	vector<Genes*> temp;
+	int p1 = -1, p2, min;
+	for (int i = 0; i < sim; i++)
 	{
-		cout << "\nScie¿ka:" << endl;
-		for (int j = 0; j < pops[i]->path.size(); j++)
+		min = INT_MAX;
+		for (int i = 0; i < population; i++)
 		{
-			cout << pops[i]->path[j] << ", ";
+			if (pops[i]->fitnes < min)
+			{
+				p2 = p1;
+				p1 = i;
+				min = pops[i]->fitnes;
+			}
 		}
-		cout << "\nD³ugoœæ: " << pops[i]->fitnes << endl;
+		temp = repopulate(pops[p1], pops[p2]);
+		for (int i = 0; i < population; i++) delete pops[i];
+		pops.clear();
+		pops = temp;
 	}
-	_getche();
+}
+
+//Funkcja tworz¹ca nowe pokolenie
+vector<Genes*> Solutions::repopulate(Genes *p1, Genes *p2)
+{
+
 }
 
 //Gettery i settery

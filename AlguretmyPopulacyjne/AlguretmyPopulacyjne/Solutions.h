@@ -22,6 +22,7 @@ private:
 	//Zmienne
 	int result;
 	int population = 10;
+	int sim = 10000;
 public:
 	//Metody
 	//Algorytm genetyczny
@@ -31,6 +32,7 @@ public:
 private:
 	//Algorytm genetyczny
 	void genetic_algorithm(vector<Genes*> pops);
+	vector<Genes*> repopulate(Genes *p1, Genes *p2);
 	//Generowanie tras pocz¹tkowych
 	vector<int> natural_route(int *path);
 	vector<int> naive_route(int *path);
