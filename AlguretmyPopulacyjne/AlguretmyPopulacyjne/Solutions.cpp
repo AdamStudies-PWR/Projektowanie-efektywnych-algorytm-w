@@ -16,7 +16,7 @@ void Solutions::genetic_setup()
 	}
 	genetic_algorithm(pops);
 	delete path;
-	for (int i = 0; i < population; i++) delete pops[i];
+	//for (int i = 0; i < population; i++) delete pops[i];
 	pops.clear();
 }
 
@@ -48,17 +48,11 @@ void Solutions::genetic_algorithm(vector<Genes*> pops)
 //Funkcja tworz¹ca nowe pokolenie
 vector<Genes*> Solutions::repopulate(Genes *p1, Genes *p2)
 {
-	int dice, last, index, cost;
+	int dice, last, index, cost, counter;
 	int *path = new int;
-	vector<Genes*> offspring;
+	vector<Genes*> offspring(population);
 	vector<int> line;
 	vector<bool> visited(ext);
-	/*system("cls");
-	cout << "Wartoœæ: " << p1->fitnes << "\nTrasa: " << endl;
-	for (int i = 0; i < p1->path.size(); i++)cout << p1->path[i] << ", ";
-	cout << "\nWartoœæ: " << p2->fitnes << "\nTrasa: " << endl;
-	for (int i = 0; i < p2->path.size(); i++)cout << p2->path[i] << ", ";
-	_getche();*/
 	for (int i = 0; i < population; i++)
 	{
 		dice = (rand() % 99);
@@ -79,11 +73,13 @@ vector<Genes*> Solutions::repopulate(Genes *p1, Genes *p2)
 				else index = p2->path[j];
 				if (visited[index])
 				{
-					dice = rand() % (ext - j);
-					for (int k = 0; k < dice; k++)
+					dice = (rand() % (ext - j)) + 1;
+					for (int k = 0, counter = 0; k < ext; k++)
 					{
-						if (visited[k]) { k--; continue; }
+						if (visited[k]) continue;
 						index = k;
+						counter++;
+						if (counter == dice) break;
 					}
 				}
 				visited[index] = true;
@@ -93,9 +89,24 @@ vector<Genes*> Solutions::repopulate(Genes *p1, Genes *p2)
 			cost = cost + tab[line.size() - 1][last];
 			line.push_back(last);
 			offspring[i] = new Genes(line, cost);
+			line.clear();
 		}
 		else offspring[i] = new Genes(random_route(path), *path);
 	}
+
+	/**/
+	system("cls");
+	for (int i = 0; i < population; i++)
+	{
+		cout << "\nRozmiar: " << offspring[i]->fitnes << "\nTrasa: ";
+		for (int j = 0; j < offspring[i]->path.size(); j++)
+		{
+			cout << offspring[i]->path[j] << ", ";
+		}
+	}
+	_getche();
+	/**/
+
 	return offspring;
 }
 

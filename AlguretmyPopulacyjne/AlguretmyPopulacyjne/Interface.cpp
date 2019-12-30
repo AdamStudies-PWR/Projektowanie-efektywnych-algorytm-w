@@ -80,7 +80,7 @@ void Interface::main_menu()
 			else
 			{
 				voy.genetic_setup();
-				cout << "\nWynik: " << voy.getResult();
+				cout << "\nWynik: " << voy.getResult() << endl;
 				_getche();
 			}
 		} break;
