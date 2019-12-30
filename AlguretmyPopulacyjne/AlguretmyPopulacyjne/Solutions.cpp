@@ -15,6 +15,9 @@ void Solutions::genetic_setup()
 		pops[i] = new Genes(random_route(path), *path);
 	}
 	genetic_algorithm(pops);
+	delete path;
+	for (int i = 0; i < population; i++) delete pops[i];
+	pops.clear();
 }
 
 //G³ówna pêtla algorytmu genetycznego
@@ -34,6 +37,7 @@ void Solutions::genetic_algorithm(vector<Genes*> pops)
 				min = pops[i]->fitnes;
 			}
 		}
+		if (min < result) result = min;
 		temp = repopulate(pops[p1], pops[p2]);
 		for (int i = 0; i < population; i++) delete pops[i];
 		pops.clear();
@@ -44,7 +48,55 @@ void Solutions::genetic_algorithm(vector<Genes*> pops)
 //Funkcja tworz¹ca nowe pokolenie
 vector<Genes*> Solutions::repopulate(Genes *p1, Genes *p2)
 {
-
+	int dice, last, index, cost;
+	int *path = new int;
+	vector<Genes*> offspring;
+	vector<int> line;
+	vector<bool> visited(ext);
+	/*system("cls");
+	cout << "Wartoœæ: " << p1->fitnes << "\nTrasa: " << endl;
+	for (int i = 0; i < p1->path.size(); i++)cout << p1->path[i] << ", ";
+	cout << "\nWartoœæ: " << p2->fitnes << "\nTrasa: " << endl;
+	for (int i = 0; i < p2->path.size(); i++)cout << p2->path[i] << ", ";
+	_getche();*/
+	for (int i = 0; i < population; i++)
+	{
+		dice = (rand() % 99);
+		if (dice != 1)
+		{
+			line.clear();
+			cost = 0;
+			for (int j = 0; j < ext; j++) visited[j] = false;
+			dice = rand() % 2;
+			if (dice == 0) last = p1->path[0];
+			else last = p2->path[0];
+			line.push_back(last);
+			visited[last] = true;
+			for (int j = 1; j < ext; j++)
+			{
+				dice = rand() % 2;
+				if (dice == 0) index = p1->path[j];
+				else index = p2->path[j];
+				if (visited[index])
+				{
+					dice = rand() % (ext - j);
+					for (int k = 0; k < dice; k++)
+					{
+						if (visited[k]) { k--; continue; }
+						index = k;
+					}
+				}
+				visited[index] = true;
+				line.push_back(index);
+				cost = cost + tab[line[j - 1]][line[j]];
+			}
+			cost = cost + tab[line.size() - 1][last];
+			line.push_back(last);
+			offspring[i] = new Genes(line, cost);
+		}
+		else offspring[i] = new Genes(random_route(path), *path);
+	}
+	return offspring;
 }
 
 //Gettery i settery
