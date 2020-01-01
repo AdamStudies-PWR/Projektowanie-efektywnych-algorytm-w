@@ -19,6 +19,7 @@ void Interface::main_menu()
 		cout << " [3] WprowadŸ rêcznie" << endl;
 		cout << " [4] Wyœwietl" << endl;
 		cout << " [5] Algorytm genetyczny" << endl;
+		cout << " [6] Alabama 0" << endl;
 		cout << " [0] Zakoñcz program" << endl;
 		cout << " Wybór: ";
 		choice = _getche();
@@ -79,7 +80,22 @@ void Interface::main_menu()
 			}
 			else
 			{
-				voy.genetic_setup();
+				voy.genetic_setup(1);
+				cout << "\nWynik: " << voy.getResult() << endl;
+				_getche();
+			}
+		} break;
+		case '6':
+		{
+			if (!exists)
+			{
+				system("cls");
+				cout << "Brak danych" << endl;
+				_getche();
+			}
+			else
+			{
+				voy.genetic_setup(2);
 				cout << "\nWynik: " << voy.getResult() << endl;
 				_getche();
 			}

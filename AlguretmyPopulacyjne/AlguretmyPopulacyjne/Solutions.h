@@ -26,12 +26,13 @@ private:
 public:
 	//Metody
 	//Algorytm genetyczny
-	void genetic_setup();
+	void genetic_setup(int mode);
 	//Gettery i settery
 	int getResult();
 private:
 	//Algorytm genetyczny
 	void genetic_algorithm(vector<Genes*> pops);
+	void genetic_new_blood(vector<Genes*> pops);
 	vector<Genes*> repopulate(Genes *p1, Genes *p2);
 	//Generowanie tras pocz¹tkowych
 	vector<int> natural_route(int *path);

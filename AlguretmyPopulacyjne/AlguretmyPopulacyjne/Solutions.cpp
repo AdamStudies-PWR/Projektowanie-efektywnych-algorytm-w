@@ -3,7 +3,7 @@
 #include "Solutions.h"
 
 //Funkcja inicuj¹j¹ca dzia³anie algorytmu genetycznego
-void Solutions::genetic_setup()
+void Solutions::genetic_setup(int mode)
 {
 	result = INT_MAX;
 	int *path = new int;
@@ -14,7 +14,8 @@ void Solutions::genetic_setup()
 	{
 		pops[i] = new Genes(random_route(path), *path);
 	}
-	genetic_algorithm(pops);
+	if(mode == 1) genetic_algorithm(pops);
+	else genetic_new_blood(pops);
 	delete path;
 	//for (int i = 0; i < population; i++) delete pops[i];
 	pops.clear();
@@ -45,6 +46,32 @@ void Solutions::genetic_algorithm(vector<Genes*> pops)
 	}
 }
 
+//G³ówna pêtla algorytmu genetycznego (z œwie¿¹ krwi¹)
+void Solutions::genetic_new_blood(vector<Genes*> pops)
+{
+	vector<Genes*> temp;
+	int p1, min;
+	int *path = new int;
+	for (int i = 0; i < sim; i++)
+	{
+		min = INT_MAX;
+		for (int i = 0; i < population; i++)
+		{
+			if (pops[i]->fitnes < min)
+			{
+				p1 = i;
+				min = pops[i]->fitnes;
+			}
+		}
+		if (min < result) result = min;
+		temp = repopulate(pops[p1], new Genes(random_route(path), *path));
+		for (int i = 0; i < population; i++) delete pops[i];
+		pops.clear();
+		pops = temp;
+	}
+	delete path;
+}
+
 //Funkcja tworz¹ca nowe pokolenie
 vector<Genes*> Solutions::repopulate(Genes *p1, Genes *p2)
 {
@@ -61,15 +88,15 @@ vector<Genes*> Solutions::repopulate(Genes *p1, Genes *p2)
 			line.clear();
 			cost = 0;
 			for (int j = 0; j < ext; j++) visited[j] = false;
-			dice = rand() % 2;
-			if (dice == 0) last = p1->path[0];
+			dice = rand() % 99;
+			if (dice > 49) last = p1->path[0];
 			else last = p2->path[0];
 			line.push_back(last);
 			visited[last] = true;
 			for (int j = 1; j < ext; j++)
 			{
-				dice = rand() % 2;
-				if (dice == 0) index = p1->path[j];
+				dice = rand() % 100;
+				if (dice > 49) index = p1->path[j];
 				else index = p2->path[j];
 				if (visited[index])
 				{
@@ -86,7 +113,7 @@ vector<Genes*> Solutions::repopulate(Genes *p1, Genes *p2)
 				line.push_back(index);
 				cost = cost + tab[line[j - 1]][line[j]];
 			}
-			cost = cost + tab[line.size() - 1][last];
+			cost = cost + tab[line[line.size() - 1]][last];
 			line.push_back(last);
 			offspring[i] = new Genes(line, cost);
 			line.clear();
@@ -94,7 +121,7 @@ vector<Genes*> Solutions::repopulate(Genes *p1, Genes *p2)
 		else offspring[i] = new Genes(random_route(path), *path);
 	}
 
-	/**/
+	/**
 	system("cls");
 	for (int i = 0; i < population; i++)
 	{
