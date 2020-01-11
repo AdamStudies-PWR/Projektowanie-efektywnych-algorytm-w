@@ -17,30 +17,34 @@ void Solutions::genetic_setup(int psize)
 	}
 	genetic_algorithm(pops);
 	delete path;
-	//for (int i = 0; i < population; i++) delete pops[i];
-	pops.clear();
 }
 
 //G³ówna pêtla algorytmu genetycznego
 void Solutions::genetic_algorithm(vector<Genes*> pops)
 {
 	vector<Genes*> temp;
+	vector<Genes*> build;
+	int steps;
 	int p1 = -1, p2, min;
 	for (int i = 0; i < sim; i++)
 	{
-		min = INT_MAX;
-		for (int i = 0; i < population; i++)
+		steps = 0;
+		for (int j = 0; j < (population / 2); j++)
 		{
-			if (pops[i]->fitnes < min)
+			min = INT_MAX;
+			for (int k = 0; k < (population - steps); k++)
 			{
-				p2 = p1;
-				p1 = i;
-				min = pops[i]->fitnes;
+				if (pops[k]->fitnes < min)
+				{
+					p2 = p1;
+					p1 = k;
+					min = pops[k]->fitnes;
+				}
 			}
+			if (min < result) result = min;
+			temp = repopulate(pops[p1], pops[p2]);
 		}
-		if (min < result) result = min;
-		temp = repopulate(pops[p1], pops[p2]);
-		for (int i = 0; i < population; i++) delete pops[i];
+		for (int k = 0; k < population; k++) delete pops[i];
 		pops.clear();
 		pops = temp;
 	}
@@ -49,66 +53,95 @@ void Solutions::genetic_algorithm(vector<Genes*> pops)
 //Funkcja tworz¹ca nowe pokolenie
 vector<Genes*> Solutions::repopulate(Genes *p1, Genes *p2)
 {
-	int dice, last, index, cost, counter;
-	int *path = new int;
-	vector<Genes*> offspring(population);
-	vector<int> line;
-	vector<bool> visited(ext);
-	for (int i = 0; i < population; i++)
+	int e1;
+	int div1 = rand() % ext;
+	if ((div1 + 2) >= ext) e1 = div1 - 2;
+	else if ((div1 - 2) < 0) e1 = div1 + 2;
+	else
 	{
-		dice = (rand() % 99);
-		if (dice != 1)
-		{
-			line.clear();
-			cost = 0;
-			for (int j = 0; j < ext; j++) visited[j] = false;
-			dice = rand() % 99;
-			if (dice > 49) last = p1->path[0];
-			else last = p2->path[0];
-			line.push_back(last);
-			visited[last] = true;
-			for (int j = 1; j < ext; j++)
-			{
-				dice = rand() % 100;
-				if (dice > 49) index = p1->path[j];
-				else index = p2->path[j];
-				if (visited[index])
-				{
-					dice = (rand() % (ext - j)) + 1;
-					for (int k = 0, counter = 0; k < ext; k++)
-					{
-						if (visited[k]) continue;
-						index = k;
-						counter++;
-						if (counter == dice) break;
-					}
-				}
-				visited[index] = true;
-				line.push_back(index);
-				cost = cost + tab[line[j - 1]][line[j]];
-			}
-			cost = cost + tab[line[line.size() - 1]][last];
-			line.push_back(last);
-			offspring[i] = new Genes(line, cost);
-			line.clear();
-		}
-		else offspring[i] = new Genes(random_route(path), *path);
+		e1 = rand() % 2;
+		if (e1 == 0) e1 = div1 + 2;
+		else e1 = div1 - 2;
 	}
 
-	/**
-	system("cls");
-	for (int i = 0; i < population; i++)
+	Genes *t1;
+	Genes *t2;
+	int cost1 = 0;
+	int cost2 = 0;
+	vector<bool> visited1(ext);
+	vector<bool> visited2(ext);
+	vector<int> path1(ext + 1);
+	vector<int> path2(ext + 1);
+	for (int i = 0; i < ext; i++)
 	{
-		cout << "\nRozmiar: " << offspring[i]->fitnes << "\nTrasa: ";
-		for (int j = 0; j < offspring[i]->path.size(); j++)
-		{
-			cout << offspring[i]->path[j] << ", ";
-		}
+		visited1[i] = false;
+		visited2[i] = false;
 	}
-	_getche();
-	/**/
+	if (e1 < div1) 
+	{
+		path1[0] = p2->path[e1];
+		path1[1] = p2->path[e1 + 1];
+		path1[2] = p2->path[e1 + 2];		
 
-	return offspring;
+		path2[0] = p1->path[e1];
+		path2[1] = p1->path[e1 + 1];
+		path2[2] = p1->path[e1 + 2];
+	}
+	else
+	{
+		path1[0] = p2->path[div1];
+		path1[1] = p2->path[div1 + 1];
+		path1[2] = p2->path[div1 + 2];
+
+		path2[0] = p1->path[div1];
+		path2[1] = p1->path[div1 + 1];
+		path2[2] = p1->path[div1 + 2];
+	}
+	visited1[path1[0]] = true;
+	visited1[path1[1]] = true;
+	visited1[path1[2]] = true;
+	visited2[path2[0]] = true;
+	visited2[path2[1]] = true;
+	visited2[path2[2]] = true;
+	cost1 = cost1 + tab[path1[0]][path1[1]] + tab[path1[1]][path1[2]];
+	cost2 = cost2 + tab[path2[0]][path2[1]] + tab[path2[1]][path2[2]];
+
+	int i1, i2;
+	if (e1 < div1) i1 = div1 + 1, i2 = i1;
+	else i1 = e1 + 1, i2 = i1;
+	for (int i = 3; i < ext; i++)
+	{
+		if (i2 >= ext) i2 = 0;
+		if (i1 >= ext) i1 = 0;
+		while (visited1[p1->path[i1]])
+		{
+			i1++;
+			if (i1 >= ext) i1 = 0;
+		};
+		path1[i] = p1->path[i1];
+		cost1 = cost1 + tab[path1[i - 1]][path1[i]];
+		visited1[path1[i]] = true;
+
+		while (visited2[p2->path[i2]])
+		{
+			i2++;
+			if (i2 >= ext) i2 = 0;
+		};
+		path2[i] = p2->path[i2];
+		cost2 = cost2 + tab[path2[i - 1]][path2[i]];
+		visited2[path2[i]] = true;
+		i1++;
+		i2++;
+	}
+	path1[ext] = path1[0];
+	cost1 = cost1 + tab[path1[ext - 1]][path1[ext]];
+	path2[ext] = path2[0];
+	cost2 = cost2 + tab[path2[ext - 1]][path2[ext]];
+
+	vector<Genes*> result;
+	result.push_back(new Genes(path1, cost1));
+	result.push_back(new Genes(path2, cost2));
+	return result;
 }
 
 //Gettery i settery
