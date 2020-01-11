@@ -3,8 +3,9 @@
 #include "Solutions.h"
 
 //Funkcja inicuj¹j¹ca dzia³anie algorytmu genetycznego
-void Solutions::genetic_setup(int mode)
+void Solutions::genetic_setup(int psize)
 {
+	population = psize;
 	result = INT_MAX;
 	int *path = new int;
 	vector<Genes*> pops(population);
@@ -14,8 +15,7 @@ void Solutions::genetic_setup(int mode)
 	{
 		pops[i] = new Genes(random_route(path), *path);
 	}
-	if(mode == 1) genetic_algorithm(pops);
-	else genetic_new_blood(pops);
+	genetic_algorithm(pops);
 	delete path;
 	//for (int i = 0; i < population; i++) delete pops[i];
 	pops.clear();
@@ -44,32 +44,6 @@ void Solutions::genetic_algorithm(vector<Genes*> pops)
 		pops.clear();
 		pops = temp;
 	}
-}
-
-//G³ówna pêtla algorytmu genetycznego (z œwie¿¹ krwi¹)
-void Solutions::genetic_new_blood(vector<Genes*> pops)
-{
-	vector<Genes*> temp;
-	int p1, min;
-	int *path = new int;
-	for (int i = 0; i < sim; i++)
-	{
-		min = INT_MAX;
-		for (int i = 0; i < population; i++)
-		{
-			if (pops[i]->fitnes < min)
-			{
-				p1 = i;
-				min = pops[i]->fitnes;
-			}
-		}
-		if (min < result) result = min;
-		temp = repopulate(pops[p1], new Genes(random_route(path), *path));
-		for (int i = 0; i < population; i++) delete pops[i];
-		pops.clear();
-		pops = temp;
-	}
-	delete path;
 }
 
 //Funkcja tworz¹ca nowe pokolenie

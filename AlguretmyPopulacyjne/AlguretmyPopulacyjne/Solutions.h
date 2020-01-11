@@ -21,18 +21,17 @@ class Solutions : public Data
 private:
 	//Zmienne
 	int result;
-	int population = 10;
+	int population;
 	int sim = 10000;
 public:
 	//Metody
 	//Algorytm genetyczny
-	void genetic_setup(int mode);
+	void genetic_setup(int psize);
 	//Gettery i settery
 	int getResult();
 private:
 	//Algorytm genetyczny
 	void genetic_algorithm(vector<Genes*> pops);
-	void genetic_new_blood(vector<Genes*> pops);
 	vector<Genes*> repopulate(Genes *p1, Genes *p2);
 	//Generowanie tras pocz¹tkowych
 	vector<int> natural_route(int *path);

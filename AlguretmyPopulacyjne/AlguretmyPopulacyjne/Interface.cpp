@@ -19,7 +19,6 @@ void Interface::main_menu()
 		cout << " [3] WprowadŸ rêcznie" << endl;
 		cout << " [4] Wyœwietl" << endl;
 		cout << " [5] Algorytm genetyczny" << endl;
-		cout << " [6] Alabama 0" << endl;
 		cout << " [0] Zakoñcz program" << endl;
 		cout << " Wybór: ";
 		choice = _getche();
@@ -78,27 +77,7 @@ void Interface::main_menu()
 				cout << "Brak danych" << endl;
 				_getche();
 			}
-			else
-			{
-				voy.genetic_setup(1);
-				cout << "\nWynik: " << voy.getResult() << endl;
-				_getche();
-			}
-		} break;
-		case '6':
-		{
-			if (!exists)
-			{
-				system("cls");
-				cout << "Brak danych" << endl;
-				_getche();
-			}
-			else
-			{
-				voy.genetic_setup(2);
-				cout << "\nWynik: " << voy.getResult() << endl;
-				_getche();
-			}
+			else genes_menu();
 		} break;
 		case '0':
 		{
@@ -106,6 +85,68 @@ void Interface::main_menu()
 			cout << "Koniec" << endl;
 			_getch();
 		} break;
+		default: cout << "\nB³¹d wprowadzenia, spróbuj ponownie" << endl, _getch();
+		}
+	} while (choice != '0');
+}
+
+//Funkcja obs³uguj¹ca interjfejs wyboru rozmiaru populacji  w algorytmie genetycznym
+void Interface::genes_menu()
+{
+	char choice;
+	do
+	{
+		system("cls");
+		cout << "\t---Algorytm genetyczny---" << endl;
+		cout << " Obecne dane: " << nazwa << endl;
+		cout << " [1] Populacja 50" << endl;
+		cout << " [2] Populacja 100" << endl;
+		cout << " [3] Populacja 200" << endl;
+		cout << " [4] Populacja 400" << endl;
+		cout << " [5] Populacja 800" << endl;
+		cout << " [6] Populacja 1000" << endl;
+		cout << " [0] Cofnij" << endl;
+		cout << " Wybór: ";
+		choice = _getche();
+		switch (choice)
+		{
+		case '1':
+		{
+			voy.genetic_setup(50);
+			cout << "\nWynik: " << voy.getResult() << endl;
+			_getch();
+		} break;
+		case '2':
+		{
+			voy.genetic_setup(100);
+			cout << "\nWynik: " << voy.getResult() << endl;
+			_getch();
+		} break;
+		case '3':
+		{
+			voy.genetic_setup(200);
+			cout << "\nWynik: " << voy.getResult() << endl;
+			_getch();
+		} break;
+		case '4':
+		{
+			voy.genetic_setup(400);
+			cout << "\nWynik: " << voy.getResult() << endl;
+			_getch();
+		} break;
+		case '5':
+		{
+			voy.genetic_setup(800);
+			cout << "\nWynik: " << voy.getResult() << endl;
+			_getch();
+		} break;
+		case '6':
+		{
+			voy.genetic_setup(1000);
+			cout << "\nWynik: " << voy.getResult() << endl;
+			_getch();
+		} break;
+		case '0': break;
 		default: cout << "\nB³¹d wprowadzenia, spróbuj ponownie" << endl, _getch();
 		}
 	} while (choice != '0');

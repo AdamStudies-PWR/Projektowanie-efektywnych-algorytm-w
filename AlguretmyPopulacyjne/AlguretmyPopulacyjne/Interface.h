@@ -17,6 +17,7 @@ private:
 public:
 	//Metody
 	void main_menu();
+	void genes_menu();
 private:
 };
 #endif
