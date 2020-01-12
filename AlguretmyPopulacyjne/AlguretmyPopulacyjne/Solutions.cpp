@@ -23,25 +23,26 @@ void Solutions::genetic_setup(int psize)
 void Solutions::genetic_algorithm(vector<Genes*> pops)
 {
 	vector<Genes*> temp;
+	vector<Genes*> newpop;
 	int p1, p2;
-	system("cls");
-	cout << "Before sorting:" << endl;
-	for (int i = 0; i < population; i++)
-	{
-		cout << pops[i]->fitnes << ", ";
-	}
-	quicksort(pops, 0, population - 1);
-	cout << "\n\nAfter sorting:" << endl;
-	for (int i = 0; i < population; i++)
-	{
-		cout << pops[i]->fitnes << ", ";
-	}
 	for (int i = 0; i < sim; i++)
 	{
+		quicksort(pops, 0, population - 1);
+		if (pops[0]->fitnes < result) result = pops[0]->fitnes;
 		for (int j = 0; j < (population / 2); j++)
 		{
-
+			p1 = rand() % (population / 2);
+			do
+			{
+				p2 = rand() % (population / 2);
+			} while (p1 == p2);
+			temp = repopulate(pops[p1], pops[p2]);
+			newpop.push_back(temp[0]);
+			newpop.push_back(temp[1]);
 		}
+		//for (int j = 0; j < population; j++) delete pops[i];
+		pops.clear();
+		pops = newpop;
 	}
 }
 
@@ -237,10 +238,10 @@ void Solutions::quicksort(vector<Genes*> &pops, int low, int high)
 	{
 		int pivot = pops[high]->fitnes;
 		int smol = low;
-		for (int i = low; i < (high - 1); i++)
+		for (int i = low; i <= (high - 1); i++)
 		{
 			if (pops[i]->fitnes <= pivot)
-			{				
+			{	
 				temp = pops[i];
 				pops[i] = pops[smol];
 				pops[smol] = temp;

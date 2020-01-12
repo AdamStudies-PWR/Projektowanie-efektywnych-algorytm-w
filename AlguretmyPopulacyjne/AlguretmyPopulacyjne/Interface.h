@@ -18,6 +18,7 @@ public:
 	//Metody
 	void main_menu();
 	void genes_menu();
+	void iterations();
 private:
 };
 #endif

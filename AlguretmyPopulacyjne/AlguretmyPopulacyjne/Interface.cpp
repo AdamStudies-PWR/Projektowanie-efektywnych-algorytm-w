@@ -151,3 +151,5 @@ void Interface::genes_menu()
 		}
 	} while (choice != '0');
 }
+
+//Program s³u¿¹cy do wyboru iloœci iteracji
