@@ -54,8 +54,10 @@ void Solutions::genetic_algorithm(vector<Genes*> pops)
 			temp = repopulate(pops[p1], pops[p2]);
 			newpop.push_back(temp[0]);
 			newpop.push_back(temp[1]);
+			//delete temp[0];
+			//delete temp[1];
 		}
-		//for (int j = 0; j < population; j++) delete pops[i];
+		for (int j = 0; j < population; j++) delete pops[i];
 		pops.clear();
 		pops = newpop;
 	}

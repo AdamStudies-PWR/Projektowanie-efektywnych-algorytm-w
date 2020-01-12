@@ -174,11 +174,11 @@ void Interface::iterations()
 		system("cls");
 		cout << "\t---Algorytm genetyczny---" << endl;
 		cout << " Obecne dane: " << nazwa << endl;
-		cout << " [1] 100    " << t1 << endl;
-		cout << " [2] 1000   " << t2 << endl;
-		cout << " [3] 2000   " << t3 << endl;
-		cout << " [4] 5000   " << t4 << endl;
-		cout << " [5] 10000  " << t5 << endl;
+		cout << " [1] 100    [" << t1 << "]" << endl;
+		cout << " [2] 1000   [" << t2 << "]" << endl;
+		cout << " [3] 2000   [" << t3 << "]" << endl;
+		cout << " [4] 5000   [" << t4 << "]" << endl;
+		cout << " [5] 10000  [" << t5 << "]" << endl;
 		cout << " [0] Cofnij" << endl;
 		cout << " Wybór: ";
 		choice = _getche();
