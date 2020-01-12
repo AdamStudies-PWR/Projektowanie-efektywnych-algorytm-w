@@ -27,10 +27,25 @@ void Solutions::genetic_algorithm(vector<Genes*> pops)
 	int p1, p2;
 	for (int i = 0; i < sim; i++)
 	{
-		quicksort(pops, 0, population - 1);
+		quicksort(pops, 0, (population - 1));
+		newpop.clear();
+		/**
+		system("cls");
+		cout << "Iteracja: " << i << " z: " << sim << endl;
+		for (int i = 0; i < population; i++)
+		{
+			cout << "\nRozmiar: " << pops[i]->fitnes << "\nTrasa: ";
+			for (int j = 0; j < pops[i]->path.size(); j++)
+			{
+				cout << pops[i]->path[j] << ", ";
+			}
+		}
+		_getche();
+		/**/
 		if (pops[0]->fitnes < result) result = pops[0]->fitnes;
 		for (int j = 0; j < (population / 2); j++)
 		{
+			temp.clear();
 			p1 = rand() % (population / 2);
 			do
 			{
@@ -49,94 +64,104 @@ void Solutions::genetic_algorithm(vector<Genes*> pops)
 //Funkcja tworz¹ca nowe pokolenie
 vector<Genes*> Solutions::repopulate(Genes *p1, Genes *p2)
 {
-	int e1;
-	int div1 = rand() % ext;
-	if ((div1 + 2) >= ext) e1 = div1 - 2;
-	else if ((div1 - 2) < 0) e1 = div1 + 2;
-	else
-	{
-		e1 = rand() % 2;
-		if (e1 == 0) e1 = div1 + 2;
-		else e1 = div1 - 2;
-	}
-
-	Genes *t1;
-	Genes *t2;
-	int cost1 = 0;
-	int cost2 = 0;
-	vector<bool> visited1(ext);
-	vector<bool> visited2(ext);
-	vector<int> path1(ext + 1);
-	vector<int> path2(ext + 1);
-	for (int i = 0; i < ext; i++)
-	{
-		visited1[i] = false;
-		visited2[i] = false;
-	}
-	if (e1 < div1) 
-	{
-		path1[0] = p2->path[e1];
-		path1[1] = p2->path[e1 + 1];
-		path1[2] = p2->path[e1 + 2];		
-
-		path2[0] = p1->path[e1];
-		path2[1] = p1->path[e1 + 1];
-		path2[2] = p1->path[e1 + 2];
-	}
-	else
-	{
-		path1[0] = p2->path[div1];
-		path1[1] = p2->path[div1 + 1];
-		path1[2] = p2->path[div1 + 2];
-
-		path2[0] = p1->path[div1];
-		path2[1] = p1->path[div1 + 1];
-		path2[2] = p1->path[div1 + 2];
-	}
-	visited1[path1[0]] = true;
-	visited1[path1[1]] = true;
-	visited1[path1[2]] = true;
-	visited2[path2[0]] = true;
-	visited2[path2[1]] = true;
-	visited2[path2[2]] = true;
-	cost1 = cost1 + tab[path1[0]][path1[1]] + tab[path1[1]][path1[2]];
-	cost2 = cost2 + tab[path2[0]][path2[1]] + tab[path2[1]][path2[2]];
-
-	int i1, i2;
-	if (e1 < div1) i1 = div1 + 1, i2 = i1;
-	else i1 = e1 + 1, i2 = i1;
-	for (int i = 3; i < ext; i++)
-	{
-		if (i2 >= ext) i2 = 0;
-		if (i1 >= ext) i1 = 0;
-		while (visited1[p1->path[i1]])
-		{
-			i1++;
-			if (i1 >= ext) i1 = 0;
-		};
-		path1[i] = p1->path[i1];
-		cost1 = cost1 + tab[path1[i - 1]][path1[i]];
-		visited1[path1[i]] = true;
-
-		while (visited2[p2->path[i2]])
-		{
-			i2++;
-			if (i2 >= ext) i2 = 0;
-		};
-		path2[i] = p2->path[i2];
-		cost2 = cost2 + tab[path2[i - 1]][path2[i]];
-		visited2[path2[i]] = true;
-		i1++;
-		i2++;
-	}
-	path1[ext] = path1[0];
-	cost1 = cost1 + tab[path1[ext - 1]][path1[ext]];
-	path2[ext] = path2[0];
-	cost2 = cost2 + tab[path2[ext - 1]][path2[ext]];
-
 	vector<Genes*> result;
-	result.push_back(new Genes(path1, cost1));
-	result.push_back(new Genes(path2, cost2));
+	int mutation = rand() % 100;
+	if (mutation != 1)
+	{
+		int e1;
+		int div1 = rand() % ext;
+		if ((div1 + 2) >= ext) e1 = div1 - 2;
+		else if ((div1 - 2) < 0) e1 = div1 + 2;
+		else
+		{
+			e1 = rand() % 2;
+			if (e1 == 0) e1 = div1 + 2;
+			else e1 = div1 - 2;
+		}
+
+		Genes *t1;
+		Genes *t2;
+		int cost1 = 0;
+		int cost2 = 0;
+		vector<bool> visited1(ext);
+		vector<bool> visited2(ext);
+		vector<int> path1(ext + 1);
+		vector<int> path2(ext + 1);
+		for (int i = 0; i < ext; i++)
+		{
+			visited1[i] = false;
+			visited2[i] = false;
+		}
+		if (e1 < div1)
+		{
+			path1[0] = p2->path[e1];
+			path1[1] = p2->path[e1 + 1];
+			path1[2] = p2->path[e1 + 2];
+
+			path2[0] = p1->path[e1];
+			path2[1] = p1->path[e1 + 1];
+			path2[2] = p1->path[e1 + 2];
+		}
+		else
+		{
+			path1[0] = p2->path[div1];
+			path1[1] = p2->path[div1 + 1];
+			path1[2] = p2->path[div1 + 2];
+
+			path2[0] = p1->path[div1];
+			path2[1] = p1->path[div1 + 1];
+			path2[2] = p1->path[div1 + 2];
+		}
+		visited1[path1[0]] = true;
+		visited1[path1[1]] = true;
+		visited1[path1[2]] = true;
+		visited2[path2[0]] = true;
+		visited2[path2[1]] = true;
+		visited2[path2[2]] = true;
+		cost1 = cost1 + tab[path1[0]][path1[1]] + tab[path1[1]][path1[2]];
+		cost2 = cost2 + tab[path2[0]][path2[1]] + tab[path2[1]][path2[2]];
+
+		int i1, i2;
+		if (e1 < div1) i1 = div1 + 1, i2 = i1;
+		else i1 = e1 + 1, i2 = i1;
+		for (int i = 3; i < ext; i++)
+		{
+			if (i2 >= ext) i2 = 0;
+			if (i1 >= ext) i1 = 0;
+			while (visited1[p1->path[i1]])
+			{
+				i1++;
+				if (i1 >= ext) i1 = 0;
+			};
+			path1[i] = p1->path[i1];
+			cost1 = cost1 + tab[path1[i - 1]][path1[i]];
+			visited1[path1[i]] = true;
+
+			while (visited2[p2->path[i2]])
+			{
+				i2++;
+				if (i2 >= ext) i2 = 0;
+			};
+			path2[i] = p2->path[i2];
+			cost2 = cost2 + tab[path2[i - 1]][path2[i]];
+			visited2[path2[i]] = true;
+			i1++;
+			i2++;
+		}
+		path1[ext] = path1[0];
+		cost1 = cost1 + tab[path1[ext - 1]][path1[ext]];
+		path2[ext] = path2[0];
+		cost2 = cost2 + tab[path2[ext - 1]][path2[ext]];
+		result.push_back(new Genes(path1, cost1));
+		result.push_back(new Genes(path2, cost2));
+	}
+	else
+	{
+		int *path = new int;
+		result.push_back(new Genes(random_route(path), *path));
+		result.push_back(new Genes(random_route(path), *path));
+		delete path;
+	}
 	return result;
 }
 
@@ -144,6 +169,10 @@ vector<Genes*> Solutions::repopulate(Genes *p1, Genes *p2)
 
 //Funkcja zwracaj¹ca wartoœæ koñcow¹ algorytmu
 int Solutions::getResult() { return result; }
+
+int Solutions::getSim() { return sim; }
+
+void Solutions::setSim(int iter) { sim = iter; }
 
 //Generowanie pocz¹tkowej trasy
 

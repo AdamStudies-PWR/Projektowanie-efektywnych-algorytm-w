@@ -29,6 +29,8 @@ public:
 	void genetic_setup(int psize);
 	//Gettery i settery
 	int getResult();
+	void setSim(int iter);
+	int getSim();
 private:
 	//Algorytm genetyczny
 	void genetic_algorithm(vector<Genes*> pops);
