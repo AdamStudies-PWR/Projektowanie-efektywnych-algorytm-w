@@ -3,7 +3,7 @@
 #include "Solutions.h"
 
 //Funkcja inicuj¹j¹ca dzia³anie algorytmu genetycznego
-void Solutions::genetic_setup(int psize)
+void Solutions::genetic_setup(int psize, bool mode)
 {
 	population = psize;
 	result = INT_MAX;
@@ -15,7 +15,8 @@ void Solutions::genetic_setup(int psize)
 	{
 		pops[i] = new Genes(random_route(path), *path);
 	}
-	genetic_algorithm(pops);
+	if(mode) genetic_algorithm(pops);
+	else genetic_algorithm_10(pops);
 	delete path;
 }
 
@@ -54,13 +55,60 @@ void Solutions::genetic_algorithm(vector<Genes*> pops)
 			temp = repopulate(pops[p1], pops[p2]);
 			newpop.push_back(temp[0]);
 			newpop.push_back(temp[1]);
-			//delete temp[0];
-			//delete temp[1];
 		}
-		for (int j = 0; j < population; j++) delete pops[i];
+		for (int j = 0; j < population; j++) delete pops[j];
 		pops.clear();
 		pops = newpop;
 	}
+	for (int j = 0; j < population; j++) delete pops[j];
+	pops.clear();
+}
+
+//G³ówna pêtla algorytmu genetycznego wersja 2
+void Solutions::genetic_algorithm_10(vector<Genes*> pops)
+{
+	vector<Genes*> temp;
+	vector<Genes*> newpop;
+	int p1, p2;
+	int elyta = 0.1 * population;
+	if ((elyta % 2) != 0) elyta++;
+	for (int i = 0; i < sim; i++)
+	{
+		quicksort(pops, 0, (population - 1));
+		newpop.clear();
+		/**
+		system("cls");
+		cout << "Iteracja: " << i << " z: " << sim << endl;
+		for (int i = 0; i < population; i++)
+		{
+			cout << "\nRozmiar: " << pops[i]->fitnes << "\nTrasa: ";
+			for (int j = 0; j < pops[i]->path.size(); j++)
+			{
+				cout << pops[i]->path[j] << ", ";
+			}
+		}
+		_getche();
+		/**/
+		if (pops[0]->fitnes < result) result = pops[0]->fitnes;
+		for (int j = 0; j < elyta; j++) newpop.push_back(pops[j]);
+		for (int j = 0; j < ((population - elyta) / 2); j++)
+		{
+			temp.clear();
+			p1 = rand() % (population / 2);
+			do
+			{
+				p2 = rand() % (population / 2);
+			} while (p1 == p2);
+			temp = repopulate(pops[p1], pops[p2]);
+			newpop.push_back(temp[0]);
+			newpop.push_back(temp[1]);
+		}
+		for (int j = (elyta); j < population; j++) delete pops[j];
+		pops.clear();
+		pops = newpop;
+	}
+	for (int j = 0; j < population; j++) delete pops[j];
+	pops.clear();
 }
 
 //Funkcja tworz¹ca nowe pokolenie

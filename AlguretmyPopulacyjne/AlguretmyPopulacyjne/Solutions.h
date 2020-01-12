@@ -13,6 +13,10 @@ struct Genes
 		this->path = path;
 		this->fitnes = fitnes;
 	}
+	~Genes()
+	{
+		path.clear();
+	}
 };
 
 //Klasa obs³uguj¹ce obliczenia dla realizowanych w tym programie problemów
@@ -26,7 +30,7 @@ private:
 public:
 	//Metody
 	//Algorytm genetyczny
-	void genetic_setup(int psize);
+	void genetic_setup(int psize, bool mode);
 	//Gettery i settery
 	int getResult();
 	void setSim(int iter);
@@ -34,6 +38,7 @@ public:
 private:
 	//Algorytm genetyczny
 	void genetic_algorithm(vector<Genes*> pops);
+	void genetic_algorithm_10(vector<Genes*> pops);
 	vector<Genes*> repopulate(Genes *p1, Genes *p2);
 	//Generowanie tras pocz¹tkowych
 	vector<int> natural_route(int *path);

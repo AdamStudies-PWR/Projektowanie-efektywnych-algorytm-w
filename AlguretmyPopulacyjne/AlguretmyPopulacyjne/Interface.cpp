@@ -99,6 +99,7 @@ void Interface::genes_menu()
 		system("cls");
 		cout << "\t---Algorytm genetyczny---" << endl;
 		cout << " Obecne dane: " << nazwa << endl;
+		cout << " Tryb: " << modeS << endl;
 		cout << " [1] Populacja 50" << endl;
 		cout << " [2] Populacja 100" << endl;
 		cout << " [3] Populacja 200" << endl;
@@ -106,6 +107,7 @@ void Interface::genes_menu()
 		cout << " [5] Populacja 800" << endl;
 		cout << " [6] Populacja 1000" << endl;
 		cout << " [7] Zmieñ iloœæ iteracji" << endl;
+		cout << " [8] Prze³¹cz tryb" << endl;
 		cout << " [0] Cofnij" << endl;
 		cout << " Wybór: ";
 		choice = _getche();
@@ -113,42 +115,48 @@ void Interface::genes_menu()
 		{
 		case '1':
 		{
-			voy.genetic_setup(50);
+			voy.genetic_setup(50, mode);
 			cout << "\nWynik: " << voy.getResult() << endl;
 			_getch();
 		} break;
 		case '2':
 		{
-			voy.genetic_setup(100);
+			voy.genetic_setup(100, mode);
 			cout << "\nWynik: " << voy.getResult() << endl;
 			_getch();
 		} break;
 		case '3':
 		{
-			voy.genetic_setup(200);
+			voy.genetic_setup(200, mode);
 			cout << "\nWynik: " << voy.getResult() << endl;
 			_getch();
 		} break;
 		case '4':
 		{
-			voy.genetic_setup(400);
+			voy.genetic_setup(400, mode);
 			cout << "\nWynik: " << voy.getResult() << endl;
 			_getch();
 		} break;
 		case '5':
 		{
-			voy.genetic_setup(800);
+			voy.genetic_setup(800, mode);
 			cout << "\nWynik: " << voy.getResult() << endl;
 			_getch();
 		} break;
 		case '6':
 		{
-			voy.genetic_setup(1000);
+			voy.genetic_setup(1000, mode);
 			cout << "\nWynik: " << voy.getResult() << endl;
 			_getch();
 		} break;
 		case '7': iterations();
 			break;
+		case '8':
+		{
+			mode = !mode;
+			if(mode) modeS = "Brak rodziców";
+			else modeS = "10% najlepszych";
+		} break;
 		case '0': break;
 		default: cout << "\nB³¹d wprowadzenia, spróbuj ponownie" << endl, _getch();
 		}

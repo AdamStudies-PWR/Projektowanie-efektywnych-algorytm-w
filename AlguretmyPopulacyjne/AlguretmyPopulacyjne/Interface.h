@@ -14,6 +14,8 @@ private:
 	string nazwa = "brak";
 	Solutions voy;
 	bool exists = false;
+	bool mode = true;
+	string modeS = "Brak rodziców";
 public:
 	//Metody
 	void main_menu();
