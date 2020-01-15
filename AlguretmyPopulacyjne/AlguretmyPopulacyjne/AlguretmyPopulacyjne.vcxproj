@@ -152,12 +152,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AlguretmyPopulacyjne.cpp" />
+    <ClCompile Include="Counter.cpp" />
     <ClCompile Include="Data.cpp" />
     <ClCompile Include="Interface.cpp" />
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="Solutions.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Counter.h" />
     <ClInclude Include="Data.h" />
     <ClInclude Include="Interface.h" />
     <ClInclude Include="pch.h" />

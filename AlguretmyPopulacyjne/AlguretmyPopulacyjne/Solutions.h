@@ -35,6 +35,7 @@ public:
 	int getResult();
 	void setSim(int iter);
 	int getSim();
+	void testing(int number, bool pop[], bool rounds[]);
 private:
 	//Algorytm genetyczny
 	void genetic_algorithm(vector<Genes*> pops);

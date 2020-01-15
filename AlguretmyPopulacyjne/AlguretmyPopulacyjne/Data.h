@@ -2,6 +2,8 @@
 #ifndef Data_hpp
 #define Data_hpp
 
+#include "Counter.h"
+
 using namespace std;
 
 //Klasa przechowuj¹ca i ob³uguj¹ca wygenerowane dane
@@ -9,6 +11,7 @@ class Data
 {
 protected:
 	//Atrybuty
+	Counter count;
 	bool exists = false;
 	int **tab;
 	int ext;
@@ -21,6 +24,9 @@ public:
 	void randomify(int size, bool mirror);
 	void manual(int size, bool mirror);
 	void display();
+	//Testowanie
+	void dispaly_results(bool pop[], bool sizes[], int size);
+	void save(bool pop[], bool sizes[], int size, string filename);
 protected:
 	int counttarget();
 };

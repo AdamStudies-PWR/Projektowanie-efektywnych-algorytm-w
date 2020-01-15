@@ -334,3 +334,404 @@ void Solutions::quicksort(vector<Genes*> &pops, int low, int high)
 		quicksort(pops, smol + 1, high);
 	}
 }
+
+//Funkcja testuj¹ca
+void Solutions::testing(int size, bool pop[], bool sizes[])
+{
+	system("cls");
+	if (results != nullptr)
+	{
+		for (int i = 0; i < 120; i++)
+		{
+			delete[] results[i];
+		}
+		delete[] results;
+	}
+	results = new double*[120];
+	for (int i = 0; i < 120; i++)
+	{
+		results[i] = new double[size];
+	}
+	for (int i = 0; i < size; i++)
+	{
+		cout << i << endl;
+		if (pop[0])
+		{
+			if (sizes[0])
+			{
+				this->setSim(100);
+				count.StartFileCounter();
+				this->genetic_setup(50, true);
+				results[0][i] = count.GetCounter();
+				results[1][i] = result;
+				count.StartFileCounter();
+				this->genetic_setup(50, false);
+				results[2][i] = count.GetCounter();
+				results[3][i] = result;
+			}
+			if (sizes[1])
+			{
+				this->setSim(1000);
+				count.StartFileCounter();
+				this->genetic_setup(50, true);
+				results[4][i] = count.GetCounter();
+				results[5][i] = result;
+				count.StartFileCounter();
+				this->genetic_setup(50, false);
+				results[6][i] = count.GetCounter();
+				results[7][i] = result;
+			}
+			if (sizes[2])
+			{
+				this->setSim(2000);
+				count.StartFileCounter();
+				this->genetic_setup(50, true);
+				results[8][i] = count.GetCounter();
+				results[9][i] = result;
+				count.StartFileCounter();
+				this->genetic_setup(50, false);
+				results[10][i] = count.GetCounter();
+				results[11][i] = result;
+			}
+			if (sizes[3])
+			{
+				this->setSim(5000);
+				count.StartFileCounter();
+				this->genetic_setup(50, true);
+				results[12][i] = count.GetCounter();
+				results[13][i] = result;
+				count.StartFileCounter();
+				this->genetic_setup(50, false);
+				results[14][i] = count.GetCounter();
+				results[15][i] = result;
+			}
+			if (sizes[4])
+			{
+				this->setSim(10000);
+				count.StartFileCounter();
+				this->genetic_setup(50, true);
+				results[16][i] = count.GetCounter();
+				results[17][i] = result;
+				count.StartFileCounter();
+				this->genetic_setup(50, false);
+				results[18][i] = count.GetCounter();
+				results[19][i] = result;
+			}
+		}
+		if (pop[1])
+		{
+			if (sizes[0])
+			{
+				this->setSim(100);
+				count.StartFileCounter();
+				this->genetic_setup(100, true);
+				results[20][i] = count.GetCounter();
+				results[21][i] = result;
+				count.StartFileCounter();
+				this->genetic_setup(100, false);
+				results[22][i] = count.GetCounter();
+				results[23][i] = result;
+			}
+			if (sizes[1])
+			{
+				this->setSim(1000);
+				count.StartFileCounter();
+				this->genetic_setup(100, true);
+				results[24][i] = count.GetCounter();
+				results[25][i] = result;
+				count.StartFileCounter();
+				this->genetic_setup(100, false);
+				results[26][i] = count.GetCounter();
+				results[27][i] = result;
+			}
+			if (sizes[2])
+			{
+				this->setSim(2000);
+				count.StartFileCounter();
+				this->genetic_setup(100, true);
+				results[28][i] = count.GetCounter();
+				results[29][i] = result;
+				count.StartFileCounter();
+				this->genetic_setup(100, false);
+				results[30][i] = count.GetCounter();
+				results[31][i] = result;
+			}
+			if (sizes[3])
+			{
+				this->setSim(5000);
+				count.StartFileCounter();
+				this->genetic_setup(100, true);
+				results[32][i] = count.GetCounter();
+				results[33][i] = result;
+				count.StartFileCounter();
+				this->genetic_setup(100, false);
+				results[34][i] = count.GetCounter();
+				results[35][i] = result;
+			}
+			if (sizes[4])
+			{
+				this->setSim(10000);
+				count.StartFileCounter();
+				this->genetic_setup(100, true);
+				results[36][i] = count.GetCounter();
+				results[37][i] = result;
+				count.StartFileCounter();
+				this->genetic_setup(100, false);
+				results[38][i] = count.GetCounter();
+				results[39][i] = result;
+			}
+		}
+		if (pop[2])
+		{
+			if (sizes[0])
+			{
+				this->setSim(100);
+				count.StartFileCounter();
+				this->genetic_setup(200, true);
+				results[40][i] = count.GetCounter();
+				results[41][i] = result;
+				count.StartFileCounter();
+				this->genetic_setup(200, false);
+				results[42][i] = count.GetCounter();
+				results[43][i] = result;
+			}
+			if (sizes[1])
+			{
+				this->setSim(1000);
+				count.StartFileCounter();
+				this->genetic_setup(200, true);
+				results[44][i] = count.GetCounter();
+				results[45][i] = result;
+				count.StartFileCounter();
+				this->genetic_setup(200, false);
+				results[46][i] = count.GetCounter();
+				results[47][i] = result;
+			}
+			if (sizes[2])
+			{
+				this->setSim(2000);
+				count.StartFileCounter();
+				this->genetic_setup(200, true);
+				results[48][i] = count.GetCounter();
+				results[49][i] = result;
+				count.StartFileCounter();
+				this->genetic_setup(200, false);
+				results[50][i] = count.GetCounter();
+				results[51][i] = result;
+			}
+			if (sizes[3])
+			{
+				this->setSim(5000);
+				count.StartFileCounter();
+				this->genetic_setup(200, true);
+				results[52][i] = count.GetCounter();
+				results[53][i] = result;
+				count.StartFileCounter();
+				this->genetic_setup(200, false);
+				results[54][i] = count.GetCounter();
+				results[55][i] = result;
+			}
+			if (sizes[4])
+			{
+				this->setSim(10000);
+				count.StartFileCounter();
+				this->genetic_setup(200, true);
+				results[56][i] = count.GetCounter();
+				results[57][i] = result;
+				count.StartFileCounter();
+				this->genetic_setup(200, false);
+				results[58][i] = count.GetCounter();
+				results[59][i] = result;
+			}
+		}
+		if (pop[3])
+		{
+			if (sizes[0])
+			{
+				this->setSim(100);
+				count.StartFileCounter();
+				this->genetic_setup(400, true);
+				results[60][i] = count.GetCounter();
+				results[61][i] = result;
+				count.StartFileCounter();
+				this->genetic_setup(400, false);
+				results[62][i] = count.GetCounter();
+				results[63][i] = result;
+			}
+			if (sizes[1])
+			{
+				this->setSim(1000);
+				count.StartFileCounter();
+				this->genetic_setup(400, true);
+				results[64][i] = count.GetCounter();
+				results[65][i] = result;
+				count.StartFileCounter();
+				this->genetic_setup(400, false);
+				results[66][i] = count.GetCounter();
+				results[67][i] = result;
+			}
+			if (sizes[2])
+			{
+				this->setSim(2000);
+				count.StartFileCounter();
+				this->genetic_setup(400, true);
+				results[68][i] = count.GetCounter();
+				results[69][i] = result;
+				count.StartFileCounter();
+				this->genetic_setup(400, false);
+				results[70][i] = count.GetCounter();
+				results[71][i] = result;
+			}
+			if (sizes[3])
+			{
+				this->setSim(5000);
+				count.StartFileCounter();
+				this->genetic_setup(400, true);
+				results[72][i] = count.GetCounter();
+				results[73][i] = result;
+				count.StartFileCounter();
+				this->genetic_setup(400, false);
+				results[74][i] = count.GetCounter();
+				results[75][i] = result;
+			}
+			if (sizes[4])
+			{
+				this->setSim(10000);
+				count.StartFileCounter();
+				this->genetic_setup(400, true);
+				results[76][i] = count.GetCounter();
+				results[77][i] = result;
+				count.StartFileCounter();
+				this->genetic_setup(400, false);
+				results[78][i] = count.GetCounter();
+				results[79][i] = result;
+			}
+		}
+		if (pop[4])
+		{
+			if (sizes[0])
+			{
+				this->setSim(100);
+				count.StartFileCounter();
+				this->genetic_setup(800, true);
+				results[80][i] = count.GetCounter();
+				results[81][i] = result;
+				count.StartFileCounter();
+				this->genetic_setup(800, false);
+				results[82][i] = count.GetCounter();
+				results[83][i] = result;
+			}
+			if (sizes[1])
+			{
+				this->setSim(1000);
+				count.StartFileCounter();
+				this->genetic_setup(800, true);
+				results[84][i] = count.GetCounter();
+				results[85][i] = result;
+				count.StartFileCounter();
+				this->genetic_setup(800, false);
+				results[86][i] = count.GetCounter();
+				results[87][i] = result;
+			}
+			if (sizes[2])
+			{
+				this->setSim(2000);
+				count.StartFileCounter();
+				this->genetic_setup(800, true);
+				results[88][i] = count.GetCounter();
+				results[89][i] = result;
+				count.StartFileCounter();
+				this->genetic_setup(800, false);
+				results[90][i] = count.GetCounter();
+				results[91][i] = result;
+			}
+			if (sizes[3])
+			{
+				this->setSim(5000);
+				count.StartFileCounter();
+				this->genetic_setup(800, true);
+				results[92][i] = count.GetCounter();
+				results[93][i] = result;
+				count.StartFileCounter();
+				this->genetic_setup(800, false);
+				results[94][i] = count.GetCounter();
+				results[95][i] = result;
+			}
+			if (sizes[4])
+			{
+				this->setSim(10000);
+				count.StartFileCounter();
+				this->genetic_setup(800, true);
+				results[96][i] = count.GetCounter();
+				results[97][i] = result;
+				count.StartFileCounter();
+				this->genetic_setup(800, false);
+				results[98][i] = count.GetCounter();
+				results[99][i] = result;
+			}
+		}
+		if (pop[5])
+		{
+			if (sizes[0])
+			{
+				this->setSim(100);
+				count.StartFileCounter();
+				this->genetic_setup(1000, true);
+				results[100][i] = count.GetCounter();
+				results[101][i] = result;
+				count.StartFileCounter();
+				this->genetic_setup(1000, false);
+				results[102][i] = count.GetCounter();
+				results[103][i] = result;
+			}
+			if (sizes[1])
+			{
+				this->setSim(1000);
+				count.StartFileCounter();
+				this->genetic_setup(1000, true);
+				results[104][i] = count.GetCounter();
+				results[105][i] = result;
+				count.StartFileCounter();
+				this->genetic_setup(1000, false);
+				results[106][i] = count.GetCounter();
+				results[107][i] = result;
+			}
+			if (sizes[2])
+			{
+				this->setSim(2000);
+				count.StartFileCounter();
+				this->genetic_setup(1000, true);
+				results[108][i] = count.GetCounter();
+				results[109][i] = result;
+				count.StartFileCounter();
+				this->genetic_setup(1000, false);
+				results[110][i] = count.GetCounter();
+				results[111][i] = result;
+			}
+			if (sizes[3])
+			{
+				this->setSim(5000);
+				count.StartFileCounter();
+				this->genetic_setup(1000, true);
+				results[112][i] = count.GetCounter();
+				results[113][i] = result;
+				count.StartFileCounter();
+				this->genetic_setup(1000, false);
+				results[114][i] = count.GetCounter();
+				results[115][i] = result;
+			}
+			if (sizes[4])
+			{
+				this->setSim(10000);
+				count.StartFileCounter();
+				this->genetic_setup(1000, true);
+				results[116][i] = count.GetCounter();
+				results[117][i] = result;
+				count.StartFileCounter();
+				this->genetic_setup(1000, false);
+				results[118][i] = count.GetCounter();
+				results[119][i] = result;
+			}
+		}
+	}
+}
