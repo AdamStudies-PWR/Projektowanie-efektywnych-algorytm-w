@@ -282,7 +282,7 @@ void Interface::test_menu()
 			system("cls");
 			cout << "WprowadŸ nazwê pliku: ";
 			cin >> filename;
-			//voy.save(tested, loops, filename);
+			voy.save(pop, sizes, loops, filename);
 		}; break;
 		case '0': {}break;
 		default: cout << "\nB³¹d wprowadzenia, spróbuj ponownie" << endl, _getch();

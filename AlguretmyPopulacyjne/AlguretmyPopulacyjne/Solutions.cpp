@@ -351,6 +351,10 @@ void Solutions::testing(int size, bool pop[], bool sizes[])
 	for (int i = 0; i < 120; i++)
 	{
 		results[i] = new double[size];
+		for (int j = 0; j < size; j++)
+		{
+			results[i][j] = 0;
+		}
 	}
 	for (int i = 0; i < size; i++)
 	{
